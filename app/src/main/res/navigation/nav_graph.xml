@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/serverListFragment">
+
+    <fragment
+        android:id="@+id/addServerFragment"
+        android:name="ehu.das.myconnect.fragment.AddServerFragment"
+        android:label="fragment_add_server"
+        tools:layout="@layout/fragment_add_server" />
+    <fragment
+        android:id="@+id/serverListFragment"
+        android:name="ehu.das.myconnect.fragment.ServerListFragment"
+        android:label="fragment_server_list"
+        tools:layout="@layout/fragment_server_list" >
+        <action
+            android:id="@+id/action_serverListFragment_to_addServerFragment"
+            app:destination="@id/addServerFragment" />
+        <action
+            android:id="@+id/action_serverListFragment_to_serverManagmentFragment"
+            app:destination="@id/serverManagmentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/serverManagmentFragment"
+        android:name="ehu.das.myconnect.fragment.ServerManagmentFragment"
+        android:label="fragment_server_managment"
+        tools:layout="@layout/fragment_server_managment" />
+</navigation>
