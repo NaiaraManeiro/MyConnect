@@ -1,4 +1,4 @@
-package ehu.das.myconnect.fragment;
+package ehu.das.myconnect;
 
 import android.os.Bundle;
 
@@ -7,8 +7,6 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import ehu.das.myconnect.R;
 
 /**
  * A simple {@link Fragment} subclass.
