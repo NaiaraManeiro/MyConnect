@@ -1,5 +1,14 @@
 <resources>
     <string name="app_name">MyConnect</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="usuario">Usuario</string>
+    <string name="puerto">Puerto</string>
+    <string name="nombreServidor">Nombre servidor</string>
+    <string name="datosServidor">Añade los datos de tu servidor:</string>
+    <string name="addServidor">Añadir servidor</string>
+    <string name="contrasena">Contraseña</string>
+    <string name="servidorExistente">Ese nombre de servidor ya existe, piense en otro.</string>
+    <string name="servidorCreado">¡Servidor creado!</string>
+    <string name="authFail">Error de autenticación, compruebe los datos.</string>
 </resources>

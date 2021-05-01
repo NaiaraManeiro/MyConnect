@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MyConnect</string>
+    <string name="usuario">User</string>
+    <string name="puerto">Port</string>
+    <string name="nombreServidor">Server name</string>
+    <string name="datosServidor">Add your serve data:</string>
+    <string name="addServidor">Add server</string>
+    <string name="contrasena">Password</string>
+    <string name="servidorExistente">That server name already exists, think another one.</string>
+    <string name="servidorCreado">Server created!</string>
+    <string name="authFail">Authentication error, chech the data.</string>
+</resources>
