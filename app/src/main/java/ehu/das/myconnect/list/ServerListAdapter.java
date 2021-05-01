@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import ehu.das.myconnect.R;
-import ehu.das.myconnect.fragment.Server;
+import ehu.das.myconnect.Server;
 
 public class ServerListAdapter extends RecyclerView.Adapter<ServerListElementViewHolder> {
 

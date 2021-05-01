@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ehu.das.myconnect.R;
+import ehu.das.myconnect.Server;
 import ehu.das.myconnect.list.ServerListAdapter;
 
 
