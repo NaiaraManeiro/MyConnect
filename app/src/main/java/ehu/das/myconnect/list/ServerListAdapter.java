@@ -30,7 +30,8 @@ public class ServerListAdapter extends RecyclerView.Adapter<ServerListElementVie
 
     @Override
     public void onBindViewHolder(@NonNull ServerListElementViewHolder holder, int position) {
-        // Rellenar el view holder
+        holder.nameShort.setText("S" + position);
+        holder.name.setText(servers.get(position).getName());
     }
 
     @Override
