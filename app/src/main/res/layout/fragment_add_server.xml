@@ -14,13 +14,13 @@
             android:id="@+id/usuario"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="70dp"
+            android:layout_marginTop="32dp"
             android:ems="10"
             android:hint='@string/usuario'
             android:inputType="textPersonName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
+            app:layout_constraintTop_toBottomOf="@+id/nombreServidor" />
 
         <EditText
             android:id="@+id/host"
@@ -51,13 +51,14 @@
             android:id="@+id/nombreServidor"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="70dp"
             android:ems="10"
             android:hint="@string/nombreServidor"
             android:inputType="textPersonName"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.495"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/contrasena" />
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
 
         <TextView
             android:id="@+id/textView"
@@ -88,8 +89,31 @@
             android:hint="@string/contrasena"
             android:inputType="textPassword"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.504"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/puerto" />
+
+        <Button
+            android:id="@+id/keyPemButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:layout_marginEnd="56dp"
+            android:layout_marginRight="56dp"
+            android:text="Key .pem"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/contrasena" />
+
+        <Switch
+            android:id="@+id/keyPem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:text="Key .pm"
+            app:layout_constraintEnd_toStartOf="@+id/keyPemButton"
+            app:layout_constraintHorizontal_bias="0.516"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/contrasena" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

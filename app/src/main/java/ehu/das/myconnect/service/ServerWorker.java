@@ -47,7 +47,7 @@ public class ServerWorker extends Worker {
             if (funcion.equals("addServer")) {
                 SSHConnector sshConnector = new SSHConnector();
                 try {
-                    exception = sshConnector.connect(getInputData().getString("usuario"), getInputData().getString("contrasena"), getInputData().getString("host"), getInputData().getInt("puerto",22));
+                    exception = sshConnector.connect(getInputData().getString("usuario"), getInputData().getString("contrasena"), getInputData().getString("host"), getInputData().getInt("puerto",22),getInputData().getBoolean("keyPem", false));
                     sshConnector.disconnect();
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
