@@ -1,6 +1,5 @@
 package ehu.das.myconnect.list;
 
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +32,7 @@ public class ServerListAdapter extends RecyclerView.Adapter<ServerListElementVie
     public void onBindViewHolder(@NonNull ServerListElementViewHolder holder, int position) {
         holder.nombreServidor.setText(servers.get(position).getNombre());
         holder.usuarioHost.setText(servers.get(position).getUsuario() + "@"+ servers.get(position).getHost());
-        holder.port.setText(servers.get(position).getPuerto());
+        holder.port.setText(""+servers.get(position).getPuerto()+"");
     }
 
     @Override

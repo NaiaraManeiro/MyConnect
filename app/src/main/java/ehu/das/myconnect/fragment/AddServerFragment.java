@@ -157,7 +157,6 @@ public class AddServerFragment extends Fragment {
                                 }
                             });
                     WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
-
                 }
             }
         });

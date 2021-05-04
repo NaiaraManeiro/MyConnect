@@ -17,15 +17,16 @@ if (mysqli_connect_errno($con)) {
 
     $accion = $parametros["funcion"]; 
 
+    $nombreUsuario = $parametros["nombreUsuario"]; 
+
     if ($accion == "addServer") {
         $usuario = $parametros["usuario"]; 
         $host = $parametros["host"]; 
         $puerto = $parametros["puerto"];
         $contrasena = $parametros["contrasena"]; 
         $nombreServidor = $parametros["nombreServidor"]; 
-        $nombreUsuario = $parametros["nombreUsuario"]; 
 
-        $resultado = mysqli_query($con, "SELECT Nombre FROM Servidor WHERE NombreServidor = '$nombreServidor'");
+        $resultado = mysqli_query($con, "SELECT NombreServidor FROM Servidor WHERE NombreServidor = '$nombreServidor'");
         if (!$resultado) {
             echo 'Ha ocurrido algún error: ' . mysqli_error($con);
         } else {
@@ -39,6 +40,31 @@ if (mysqli_connect_errno($con)) {
                 if (!$resultado2) {
                     echo 'Ha ocurrido algún error: ' . mysqli_error($con);
                 }
+            }
+        }
+    } else if ($accion == "datosServer") {
+        $resultado = mysqli_query($con, "SELECT NombreServidor,Usuario,Host,Puerto FROM Servidor WHERE NombreUsuario = '$nombreUsuario'");
+        if (!$resultado) {
+            echo 'Ha ocurrido algún error: ' . mysqli_error($con);
+        } else {
+            $nombres = array();
+            $usuarios = array();
+            $hosts = array();
+            $puertos = array();
+
+            if($fila = mysqli_fetch_assoc($resultado)) {
+                $nombres = explode(",", $fila["NombreServidor"]);
+                $usuarios = explode(",", $fila["Usuario"]);
+                $hosts = explode(",", $fila["Host"]);
+                $puertos = explode(",", $fila["Puerto"]);
+                
+                $arrayresultados = array(
+                    'nombresServidores' => $nombres,
+                    'usuarios' => $usuarios,
+                    'hosts' => $hosts,
+                    'puertos' => $puertos,
+                    );
+                echo json_encode($arrayresultados);
             }
         }
     }

@@ -17,7 +17,7 @@
             android:id="@+id/servidorNombre"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:scaleType="centerCrop" />
+            android:scaleType="center" />
 
         <TextView
             android:id="@+id/servidorUsuarioHost"

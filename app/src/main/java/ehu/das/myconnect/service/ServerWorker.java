@@ -43,7 +43,6 @@ public class ServerWorker extends Worker {
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoOutput(true);
 
-            JSONObject parametrosJSON = new JSONObject();
             if (funcion.equals("addServer")) {
                 SSHConnector sshConnector = new SSHConnector();
                 try {
@@ -57,13 +56,19 @@ public class ServerWorker extends Worker {
             if (exception.contains("Auth fail")) {
                 result = "authFail";
             } else {
+                JSONObject parametrosJSON = new JSONObject();
+
                 parametrosJSON.put("funcion", funcion);
-                parametrosJSON.put("usuario", getInputData().getString("usuario"));
-                parametrosJSON.put("host", getInputData().getString("host"));
-                parametrosJSON.put("puerto", getInputData().getInt("puerto",22));
-                parametrosJSON.put("contrasena", getInputData().getString("contrasena"));
-                parametrosJSON.put("nombreServidor", getInputData().getString("nombreServidor"));
                 parametrosJSON.put("nombreUsuario", getInputData().getString("nombreUsuario"));
+
+                if (funcion.equals("addServer")) {
+                    parametrosJSON.put("usuario", getInputData().getString("usuario"));
+                    parametrosJSON.put("host", getInputData().getString("host"));
+                    parametrosJSON.put("puerto", getInputData().getInt("puerto",22));
+                    parametrosJSON.put("contrasena", getInputData().getString("contrasena"));
+                    parametrosJSON.put("nombreServidor", getInputData().getString("nombreServidor"));
+
+                }
 
                 urlConnection.setRequestProperty("Content-Type","application/json");
 
