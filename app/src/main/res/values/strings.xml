@@ -11,4 +11,9 @@
     <string name="servidorExistente">Ese nombre de servidor ya existe, piense en otro.</string>
     <string name="servidorCreado">¡Servidor creado!</string>
     <string name="authFail">Error de autenticación, compruebe los datos.</string>
+    <string name="usuarioVacio">El usuario no puede estar vacío.</string>
+    <string name="contraVacia">La contraseña no puede estar vacía</string>
+    <string name="servidorVacio">El nombre del servidor no puede estar vacío.</string>
+    <string name="servidorLargo">EL nombre del servidor no puede tener más de 20 letras.</string>
+    <string name="hostPattern">El host tiene que tener formato \'XXX.XXX.XXX.XXX\'.</string>
 </resources>

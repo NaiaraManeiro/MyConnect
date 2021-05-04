@@ -10,4 +10,9 @@
     <string name="servidorExistente">That server name already exists, think another one.</string>
     <string name="servidorCreado">Server created!</string>
     <string name="authFail">Authentication error, chech the data.</string>
+    <string name="usuarioVacio">The user can\'t be empty.</string>
+    <string name="contraVacia">The password can\'t be empty.</string>
+    <string name="servidorVacio">The server name can\'t be empty.</string>
+    <string name="servidorLargo">The server name can\'t be longer than 20 letters.</string>
+    <string name="hostPattern">The host format has to be \'XXX.XXX.XXX.XXX\'.</string>
 </resources>

@@ -57,6 +57,7 @@ public class ServerWorker extends Worker {
             if (exception.contains("Auth fail")) {
                 result = "authFail";
             } else {
+                parametrosJSON.put("funcion", funcion);
                 parametrosJSON.put("usuario", getInputData().getString("usuario"));
                 parametrosJSON.put("host", getInputData().getString("host"));
                 parametrosJSON.put("puerto", getInputData().getInt("puerto",22));

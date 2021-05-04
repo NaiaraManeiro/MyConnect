@@ -55,6 +55,7 @@ public class SSHConnector {
                 this.session.setConfig("StrictHostKeyChecking", "no");
 
                 this.session.connect();
+                return "";
             } catch (JSchException e) {
                 e.printStackTrace();
                 return String.valueOf(e);
@@ -62,7 +63,6 @@ public class SSHConnector {
         } else {
             throw new IllegalAccessException("Sesion SSH ya iniciada.");
         }
-        return "";
     }
 
     /**
