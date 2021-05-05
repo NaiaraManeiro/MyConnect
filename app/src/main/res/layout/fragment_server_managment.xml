@@ -19,6 +19,7 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/down_border"
                 android:minHeight="?attr/actionBarSize"
                 android:theme="?attr/actionBarTheme"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -40,8 +41,8 @@
 
             <ImageButton
                 android:id="@+id/imageButton"
-                android:layout_width="32dp"
-                android:layout_height="37dp"
+                android:layout_width="23dp"
+                android:layout_height="28dp"
                 android:background="@android:color/transparent"
                 android:scaleType="fitCenter"
                 android:src="@drawable/logout"
@@ -54,8 +55,8 @@
 
             <ImageButton
                 android:id="@+id/imageButton2"
-                android:layout_width="36dp"
-                android:layout_height="33dp"
+                android:layout_width="24dp"
+                android:layout_height="26dp"
                 android:background="@android:color/transparent"
                 android:scaleType="fitCenter"
                 android:src="@drawable/settings"
@@ -70,13 +71,14 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/serverListRV"
             android:layout_width="match_parent"
-            android:layout_height="109dp" />
+            android:layout_height="79dp"
+            android:background="@drawable/down_border" />
 
         <fragment
             android:id="@+id/fragment2"
             android:name="ehu.das.myconnect.fragment.MenuFragment"
             android:layout_width="match_parent"
-            android:layout_height="567dp" />
+            android:layout_height="598dp" />
     </LinearLayout>
 
 </FrameLayout>

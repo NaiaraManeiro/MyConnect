@@ -13,9 +13,8 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
-    <string name="menu_slideshow">Slideshow</string>
     <string name="path">path</string>
-    <string name="files">files</string>
+    <string name="file">files</string>
     <string name="scripts">scripts</string>
     <string name="monitoring">monitoring</string>
     <string name="back">..</string>

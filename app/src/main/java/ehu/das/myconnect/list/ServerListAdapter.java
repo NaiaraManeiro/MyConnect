@@ -1,5 +1,6 @@
 package ehu.das.myconnect.list;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +16,11 @@ import ehu.das.myconnect.Server;
 public class ServerListAdapter extends RecyclerView.Adapter<ServerListElementViewHolder> {
 
     private List<Server> servers;
+    private Server connectedServer;
 
-    public ServerListAdapter(List<Server> servers) {
+    public ServerListAdapter(List<Server> servers, Server connectedServer) {
         this.servers = servers;
+        this.connectedServer = connectedServer;
     }
 
     @NonNull
@@ -32,6 +35,13 @@ public class ServerListAdapter extends RecyclerView.Adapter<ServerListElementVie
     public void onBindViewHolder(@NonNull ServerListElementViewHolder holder, int position) {
         holder.nameShort.setText("S" + position);
         holder.name.setText(servers.get(position).getName());
+        // holder.name.setText("ander");
+        holder.serverCircle.setImageResource(R.drawable.circle);
+        if (servers.get(position).equals(connectedServer)) {
+            holder.serverCircle.setColorFilter(Color.GREEN);
+        } else {
+            holder.serverCircle.setColorFilter(Color.RED);
+        }
     }
 
     @Override

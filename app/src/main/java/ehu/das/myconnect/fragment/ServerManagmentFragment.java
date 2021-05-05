@@ -40,9 +40,15 @@ public class ServerManagmentFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         RecyclerView serverListRV = getActivity().findViewById(R.id.serverListRV);
-        List<Server> serverList = new ArrayList<Server>();
-        serverListRV.setAdapter(new ServerListAdapter(serverList));
-        LinearLayoutManager linearLayoutManager= new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false);
+        List<Server> serverList = new ArrayList<>();
+        serverList.add(new Server("ander"));
+        serverList.add(new Server("dawe"));
+        serverList.add(new Server("das"));
+        serverList.add(new Server("dawe2"));
+        serverList.add(new Server("das2"));
+        serverList.add(new Server("das3"));
+        serverListRV.setAdapter(new ServerListAdapter(serverList, serverList.get(1)));
+        LinearLayoutManager linearLayoutManager= new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false);
         serverListRV.setLayoutManager(linearLayoutManager);
     }
 }

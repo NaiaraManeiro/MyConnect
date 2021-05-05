@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/serverListFragment">
+    app:startDestination="@id/serverManagmentFragment">
 
     <fragment
         android:id="@+id/addServerFragment"
@@ -27,4 +27,9 @@
         android:name="ehu.das.myconnect.fragment.ServerManagmentFragment"
         android:label="fragment_server_managment"
         tools:layout="@layout/fragment_server_managment" />
+    <fragment
+        android:id="@+id/filesFragment"
+        android:name="ehu.das.myconnect.fragment.FilesFragment"
+        android:label="fragment_files"
+        tools:layout="@layout/fragment_files" />
 </navigation>

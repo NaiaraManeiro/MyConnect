@@ -42,11 +42,12 @@ public class ServerListFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        RecyclerView serverListRV = getActivity().findViewById(R.id.serverListRV);
+        /**RecyclerView serverListRV = getActivity().findViewById(R.id.serverListRV);
         List<Server> serverList = new ArrayList<Server>();
         serverListRV.setAdapter(new ServerListAdapter(serverList));
         LinearLayoutManager linearLayoutManager= new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false);
         serverListRV.setLayoutManager(linearLayoutManager);
+         */
     }
 
 }
