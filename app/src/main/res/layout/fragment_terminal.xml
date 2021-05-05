@@ -50,13 +50,21 @@
 
                 <EditText
                     android:id="@+id/editTextTextPersonName2"
-                    android:layout_width="match_parent"
+                    android:layout_width="233dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:gravity="left"
                     android:hint="command"
                     android:includeFontPadding="false"
                     android:inputType="textPersonName"
                     android:textSize="14sp" />
+
+                <Button
+                    android:id="@+id/button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/border"
+                    android:text="@string/run" />
 
             </LinearLayout>
 
@@ -64,11 +72,12 @@
                 android:id="@+id/textView10"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingTop="10dp"
                 android:text="@string/output" />
 
             <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="403dp"
+                android:layout_height="432dp"
                 android:fillViewport="true">
 
                 <LinearLayout
@@ -79,7 +88,7 @@
                     <TextView
                         android:id="@+id/textView11"
                         android:layout_width="match_parent"
-                        android:layout_height="373dp"
+                        android:layout_height="403dp"
                         android:layout_marginTop="5dp"
                         android:background="@drawable/border" />
                 </LinearLayout>

@@ -20,4 +20,5 @@
     <string name="back">..</string>
     <string name="command">command:</string>
     <string name="output">output:</string>
+    <string name="run">run</string>
 </resources>

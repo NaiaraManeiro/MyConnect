@@ -45,31 +45,36 @@
 
                 <ImageButton
                     android:id="@+id/imageButton"
-                    android:layout_width="23dp"
-                    android:layout_height="28dp"
+                    android:layout_width="30dp"
+                    android:layout_height="34dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginRight="4dp"
                     android:background="@android:color/transparent"
+                    android:padding="3dp"
                     android:scaleType="fitCenter"
                     android:src="@drawable/disconnect"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.766"
-                    app:layout_constraintStart_toEndOf="@+id/textView6"
+                    app:layout_constraintEnd_toStartOf="@+id/imageButton2"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.526" />
+                    app:layout_constraintVertical_bias="0.454" />
 
                 <ImageButton
                     android:id="@+id/imageButton2"
-                    android:layout_width="24dp"
-                    android:layout_height="26dp"
+                    android:layout_width="29dp"
+                    android:layout_height="32dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
                     android:background="@android:color/transparent"
+                    android:padding="3dp"
                     android:scaleType="fitCenter"
                     android:src="@drawable/settings"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/toolbar"
-                    app:layout_constraintHorizontal_bias="0.15"
-                    app:layout_constraintStart_toEndOf="@+id/imageButton"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.521" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.958"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -82,7 +87,7 @@
                 android:id="@+id/fragment2"
                 android:name="ehu.das.myconnect.fragment.MenuFragment"
                 android:layout_width="match_parent"
-                android:layout_height="598dp" />
+                android:layout_height="596dp" />
         </LinearLayout>
     </ScrollView>
 
