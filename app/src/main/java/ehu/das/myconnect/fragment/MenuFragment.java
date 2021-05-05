@@ -16,6 +16,8 @@ import android.view.ViewGroup;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 
+import java.util.ArrayList;
+
 import ehu.das.myconnect.R;
 import ehu.das.myconnect.list.ViewPagerAdapter;
 import ehu.das.myconnect.list.ZoomOutPageTransformer;
@@ -30,7 +32,7 @@ public class MenuFragment extends Fragment {
     private ViewPager mPager;
     private ViewPagerAdapter pagerAdapter;
     private int[] tabs = {R.id.filesFragment, R.id.terminalTab, R.id.terminalTab, R.id.terminalTab};
-    private int[] tabsLayout = {R.id.filesFragment, R.id.scriptsTab, R.id.monitoringTab, R.id.terminalTab};
+    private ArrayList<Integer> tabsLayout;
     public MenuFragment() {
         // Required empty public constructor
     }
@@ -55,6 +57,7 @@ public class MenuFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         mPager = getActivity().findViewById(R.id.viewPager);
         pagerAdapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
         pagerAdapter.addFragment(new FilesFragment(),"rutinas");
@@ -69,6 +72,27 @@ public class MenuFragment extends Fragment {
         tabslay.getTabAt(1).setId(R.id.scriptsTab);
         tabslay.getTabAt(2).setId(R.id.monitoringTab);
         tabslay.getTabAt(3).setId(R.id.terminalTab);
+        tabsLayout = new ArrayList<>();
+        tabsLayout.add(R.id.filesTab);
+        tabsLayout.add(R.id.scriptsTab);
+        tabsLayout.add(R.id.monitoringTab);
+        tabsLayout.add(R.id.terminalTab);
+        tabslay.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                mPager.setCurrentItem(tabsLayout.indexOf(tab.getId()));
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
         mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             public void onPageScrollStateChanged(int state) {
             }
