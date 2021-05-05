@@ -59,7 +59,6 @@ public class ServerWorker extends Worker {
                 JSONObject parametrosJSON = new JSONObject();
 
                 parametrosJSON.put("funcion", funcion);
-                parametrosJSON.put("nombreUsuario", getInputData().getString("nombreUsuario"));
 
                 if (funcion.equals("addServer")) {
                     parametrosJSON.put("usuario", getInputData().getString("usuario"));
@@ -67,7 +66,11 @@ public class ServerWorker extends Worker {
                     parametrosJSON.put("puerto", getInputData().getInt("puerto",22));
                     parametrosJSON.put("contrasena", getInputData().getString("contrasena"));
                     parametrosJSON.put("nombreServidor", getInputData().getString("nombreServidor"));
-
+                    parametrosJSON.put("nombreUsuario", getInputData().getString("nombreUsuario"));
+                } else if (funcion.equals("datosServer")) {
+                    parametrosJSON.put("nombreUsuario", getInputData().getString("nombreUsuario"));
+                } else if (funcion.equals("eliminarServer") || funcion.equals("infoServer")) {
+                    parametrosJSON.put("nombreServidor", getInputData().getString("nombreServidor"));
                 }
 
                 urlConnection.setRequestProperty("Content-Type","application/json");

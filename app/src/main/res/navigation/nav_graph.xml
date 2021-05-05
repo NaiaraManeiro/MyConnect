@@ -21,10 +21,18 @@
         <action
             android:id="@+id/action_serverListFragment_to_serverManagmentFragment"
             app:destination="@id/serverManagmentFragment" />
+        <action
+            android:id="@+id/action_serverListFragment_to_serverInfoFragment"
+            app:destination="@id/serverInfoFragment" />
     </fragment>
     <fragment
         android:id="@+id/serverManagmentFragment"
         android:name="ehu.das.myconnect.fragment.ServerManagmentFragment"
         android:label="fragment_server_managment"
         tools:layout="@layout/fragment_server_managment" />
+    <fragment
+        android:id="@+id/serverInfoFragment"
+        android:name="ehu.das.myconnect.fragment.ServerInfoFragment"
+        android:label="fragment_server_info"
+        tools:layout="@layout/fragment_server_info" />
 </navigation>

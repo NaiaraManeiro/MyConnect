@@ -11,6 +11,7 @@ import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +33,7 @@ import ehu.das.myconnect.service.ServerWorker;
 public class ServerListFragment extends Fragment {
 
     private String nombreUsuario = "Naiara";
-    List<Server> serverList = new ArrayList();
+    private List<Server> serverList = new ArrayList();
 
     public ServerListFragment() {}
 
@@ -53,7 +54,7 @@ public class ServerListFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        /*Bundle extras = getActivity().getIntent().getExtras();
+        /*Bundle extras = this.getArguments();
         if (extras != null) {
             nombreUsuario = extras.getString("nombreUsuario");
         }*/
@@ -109,9 +110,11 @@ public class ServerListFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 int itemPosition = serverListRV.getChildLayoutPosition(v);
-                /*String item = recetasNombre[itemPosition];
-                iInfoReceta.putExtra("nombreReceta", item);
-                startActivity(iInfoReceta);*/
+                String serverName = serverList.get(itemPosition).getNombre();
+                Bundle bundle = new Bundle();
+                bundle.putString("serverName", serverName); //Para saber cual es el server seleccionado
+                //bundle.putParcelableArrayList("listaServidores", (ArrayList<? extends Parcelable>) serverList);
+                Navigation.findNavController(v).navigate(R.id.action_serverListFragment_to_serverManagmentFragment, bundle);
             }
         });
 

@@ -59,7 +59,7 @@ public class AddServerFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        /*Bundle extras = getActivity().getIntent().getExtras();
+        /*Bundle extras = this.getArguments();
         if (extras != null) {
             nombreUsuario = extras.getString("nombreUsuario");
         }*/

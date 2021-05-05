@@ -15,4 +15,11 @@
     <string name="servidorVacio">The server name can\'t be empty.</string>
     <string name="servidorLargo">The server name can\'t be longer than 20 letters.</string>
     <string name="hostPattern">The host format has to be \'XXX.XXX.XXX.XXX\'.</string>
+    <string name="eliminar">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="editData">Edit data</string>
+    <string name="nuevaContra">New password</string>
+    <string name="eliminarServer">Do you want to delete the server?</string>
+    <string name="serverInfo">Server data:</string>
+    <string name="volver">Back</string>
 </resources>

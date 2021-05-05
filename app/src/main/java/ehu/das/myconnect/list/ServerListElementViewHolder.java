@@ -1,10 +1,11 @@
 package ehu.das.myconnect.list;
 
+import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ehu.das.myconnect.R;
@@ -21,9 +22,16 @@ public class ServerListElementViewHolder extends RecyclerView.ViewHolder {
         usuarioHost = itemView.findViewById(R.id.servidorUsuarioHost);
         port = itemView.findViewById(R.id.servidorPuerto);
 
-        itemView.setOnClickListener(v -> {
-            // Conectarse al servidor
+        itemView.setOnLongClickListener(v -> {
+            Bundle bundle = new Bundle();
+            bundle.putString("serverName", nombreServidor.getText().toString()); //Para saber cual es el server seleccionado
+            Navigation.findNavController(v).navigate(R.id.action_serverListFragment_to_serverInfoFragment, bundle);
+            return false;
         });
+
+        /*itemView.setOnClickListener(v -> {
+            // Conectarse al servidor
+        });*/
     }
 
 }
