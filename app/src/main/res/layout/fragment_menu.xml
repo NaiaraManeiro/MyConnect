@@ -12,6 +12,7 @@
         android:orientation="vertical">
 
         <com.google.android.material.tabs.TabLayout
+            android:id="@+id/menuTabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/down_border"
@@ -20,26 +21,34 @@
             app:tabTextAppearance="?android:attr/textAppearanceSmall">
 
             <com.google.android.material.tabs.TabItem
+                android:id="@+id/filesTab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/file" />
 
             <com.google.android.material.tabs.TabItem
+                android:id="@+id/scriptsTab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/scripts" />
 
             <com.google.android.material.tabs.TabItem
+                android:id="@+id/monitoringTab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/monitoring" />
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/terminalTab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="terminal" />
         </com.google.android.material.tabs.TabLayout>
 
-        <fragment
-            android:id="@+id/fragment3"
-            android:name="ehu.das.myconnect.fragment.FilesFragment"
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewPager"
             android:layout_width="match_parent"
-            android:layout_height="683dp" />
+            android:layout_height="match_parent" />
 
     </LinearLayout>
 

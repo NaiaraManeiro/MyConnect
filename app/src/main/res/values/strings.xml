@@ -18,4 +18,6 @@
     <string name="scripts">scripts</string>
     <string name="monitoring">monitoring</string>
     <string name="back">..</string>
+    <string name="command">command:</string>
+    <string name="output">output:</string>
 </resources>
