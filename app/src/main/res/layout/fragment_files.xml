@@ -8,44 +8,34 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="596dp"
-        android:orientation="vertical"
-        android:padding="20dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="475dp">
+            android:layout_height="match_parent"
+            android:layout_weight="1">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="15dp">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/fileListRV"
                     android:layout_width="match_parent"
-                    android:layout_height="469dp"
-                    android:padding="20dp">
+                    android:layout_height="match_parent">
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/fileListRV"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/border"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                    </androidx.recyclerview.widget.RecyclerView>
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.recyclerview.widget.RecyclerView>
 
             </LinearLayout>
         </ScrollView>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="45dp"
+            android:layout_height="150dp"
+            android:layout_weight="1"
             android:background="@drawable/up_border">
 
             <TextView

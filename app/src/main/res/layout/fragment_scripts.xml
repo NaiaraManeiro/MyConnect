@@ -19,14 +19,15 @@
 
             <EditText
                 android:id="@+id/searchScript"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="264dp"
+                android:layout_height="32dp"
                 android:layout_weight="1"
                 android:background="@drawable/border"
                 android:ems="10"
                 android:hint="@string/search"
                 android:inputType="textPersonName"
-                android:paddingLeft="10dp" />
+                android:paddingLeft="10dp"
+                android:textSize="12sp" />
 
             <Space
                 android:layout_width="10dp"
@@ -34,9 +35,9 @@
                 android:layout_weight="0" />
 
             <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="50dp"
-                android:layout_height="match_parent"
+                android:id="@+id/addScriptButton"
+                android:layout_width="36dp"
+                android:layout_height="32dp"
                 android:layout_weight="0"
                 android:background="@drawable/border"
                 android:src="@drawable/add" />

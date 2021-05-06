@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -57,14 +58,16 @@
                     android:hint="command"
                     android:includeFontPadding="false"
                     android:inputType="textPersonName"
-                    android:textSize="14sp" />
+                    android:textSize="12sp" />
 
                 <Button
                     android:id="@+id/button"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:background="@drawable/border"
-                    android:text="@string/run" />
+                    android:text="@string/run"
+                    android:textSize="10sp"
+                    app:backgroundTint="@color/material_on_background_disabled" />
 
             </LinearLayout>
 
@@ -88,7 +91,7 @@
                     <TextView
                         android:id="@+id/textView11"
                         android:layout_width="match_parent"
-                        android:layout_height="403dp"
+                        android:layout_height="match_parent"
                         android:layout_marginTop="5dp"
                         android:background="@drawable/border" />
                 </LinearLayout>

@@ -15,11 +15,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import ehu.das.myconnect.R;
+import ehu.das.myconnect.dialog.AddScriptDialog;
 import ehu.das.myconnect.list.ScriptListAdapter;
 
 public class ScriptsFragment extends Fragment {
@@ -81,6 +84,14 @@ public class ScriptsFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
 
+            }
+        });
+        ImageView ib = getActivity().findViewById(R.id.addScriptButton);
+        ib.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddScriptDialog addScriptDialog = new AddScriptDialog();
+                addScriptDialog.show(getActivity().getSupportFragmentManager(), "add_script");
             }
         });
     }

@@ -22,4 +22,11 @@
     <string name="output">output:</string>
     <string name="run">run</string>
     <string name="search">search</string>
+    <string name="add_script">Add script</string>
+    <string name="add_script_name">What does the script do?</string>
+    <string name="add_script_name_hint">choose a name</string>
+    <string name="add_script_enter_command">Enter the command:</string>
+    <string name="add_script_enter_command_hint">cmd</string>
+    <string name="add">Add</string>
+    <string name="cancel">Cancel</string>
 </resources>
