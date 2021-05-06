@@ -1,7 +1,9 @@
 package ehu.das.myconnect.dialog;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
@@ -56,9 +59,16 @@ public class DialogoEliminar extends DialogFragment {
                 OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(ServerWorker.class)
                         .setInputData(datos)
                         .build();
+                WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(otwr.getId())
+                        .observe(getActivity(), status -> {
+                            if (status != null && status.getState().isFinished()) {
+                                String result = status.getOutputData().getString("resultado");
+                                if (result.equals("Borrado")) {
+                                    dismiss();
+                                }
+                            }
+                        });
                 WorkManager.getInstance(getContext()).enqueue(otwr);
-
-                dismiss();
             }
         });
 
@@ -74,4 +84,13 @@ public class DialogoEliminar extends DialogFragment {
 
         return builder.create();
     }
+
+    /*@Override
+    public void onDismiss(final DialogInterface dialog) {
+        super.onDismiss(dialog);
+        Fragment parentFragment = getParentFragment();
+        if (parentFragment instanceof DialogInterface.OnDismissListener) {
+            ((DialogInterface.OnDismissListener) parentFragment).onDismiss(dialog);
+        }
+    }*/
 }

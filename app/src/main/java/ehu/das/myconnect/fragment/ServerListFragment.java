@@ -63,55 +63,51 @@ public class ServerListFragment extends Fragment {
         //Obtenemos los datos de los servidores del usuario
         RecyclerView serverListRV = getActivity().findViewById(R.id.serverListRV);
 
-        if (serverList.size() > 0) {
-            serverListRV.setAdapter(new ServerListAdapter(serverList));
-            GridLayoutManager gridLayoutManager= new GridLayoutManager(getContext(), 3, LinearLayoutManager.HORIZONTAL,false);
-            serverListRV.setLayoutManager(gridLayoutManager);
-        } else {
-            Data datos = new Data.Builder()
-                    .putString("funcion", "datosServer")
-                    .putString("nombreUsuario", nombreUsuario)
-                    .build();
+        serverList = new ArrayList<>();
 
-            OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(ServerWorker.class)
-                    .setInputData(datos)
-                    .build();
-            WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(otwr.getId())
-                    .observe(getActivity(), status -> {
-                        if (status != null && status.getState().isFinished()) {
-                            String result = status.getOutputData().getString("resultado");
+        Data datos = new Data.Builder()
+                .putString("funcion", "datosServer")
+                .putString("nombreUsuario", nombreUsuario)
+                .build();
 
-                            if (!result.equals("")) {
-                                JSONObject jsonObject;
-                                try {
-                                    jsonObject = new JSONObject(result);
-                                    JSONArray jsonArrayServidores = jsonObject.getJSONArray("nombresServidores");
-                                    JSONArray jsonArrayUsuarios = jsonObject.getJSONArray("usuarios");
-                                    JSONArray jsonArrayHosts = jsonObject.getJSONArray("hosts");
-                                    JSONArray jsonArrayPuertos = jsonObject.getJSONArray("puertos");
+        OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(ServerWorker.class)
+                .setInputData(datos)
+                .build();
+        WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(otwr.getId())
+                .observe(getActivity(), status -> {
+                    if (status != null && status.getState().isFinished()) {
+                        String result = status.getOutputData().getString("resultado");
 
-                                    for (int i = 0; i < jsonArrayServidores.length(); i++) {
-                                        String nombreServidor = jsonArrayServidores.get(i).toString();
-                                        String usuario = jsonArrayUsuarios.get(i).toString();
-                                        String host = jsonArrayHosts.get(i).toString();
-                                        int puerto = Integer.parseInt(jsonArrayPuertos.get(i).toString());
-                                        Server servidor = new Server(nombreServidor,usuario,host,puerto);
-                                        serverList.add(servidor);
-                                    }
+                        if (!result.equals("")) {
+                            JSONObject jsonObject;
+                            try {
+                                jsonObject = new JSONObject(result);
+                                JSONArray jsonArrayServidores = jsonObject.getJSONArray("nombresServidores");
+                                JSONArray jsonArrayUsuarios = jsonObject.getJSONArray("usuarios");
+                                JSONArray jsonArrayHosts = jsonObject.getJSONArray("hosts");
+                                JSONArray jsonArrayPuertos = jsonObject.getJSONArray("puertos");
 
-                                    if (serverList.size() == jsonArrayHosts.length()) {
-                                        serverListRV.setAdapter(new ServerListAdapter(serverList));
-                                        GridLayoutManager gridLayoutManager= new GridLayoutManager(getContext(), 3, LinearLayoutManager.HORIZONTAL,false);
-                                        serverListRV.setLayoutManager(gridLayoutManager);
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
+                                for (int i = 0; i < jsonArrayServidores.length(); i++) {
+                                    String nombreServidor = jsonArrayServidores.get(i).toString();
+                                    String usuario = jsonArrayUsuarios.get(i).toString();
+                                    String host = jsonArrayHosts.get(i).toString();
+                                    int puerto = Integer.parseInt(jsonArrayPuertos.get(i).toString());
+                                    Server servidor = new Server(nombreServidor,usuario,host,puerto);
+                                    serverList.add(servidor);
                                 }
+
+                                if (serverList.size() == jsonArrayHosts.length()) {
+                                    serverListRV.setAdapter(new ServerListAdapter(serverList));
+                                    GridLayoutManager gridLayoutManager= new GridLayoutManager(getContext(), 3, LinearLayoutManager.HORIZONTAL,false);
+                                    serverListRV.setLayoutManager(gridLayoutManager);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
                         }
-                    });
-            WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
-        }
+                    }
+                });
+        WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
 
         Button addServer = getActivity().findViewById(R.id.addServer);
         addServer.setOnClickListener(new View.OnClickListener() {

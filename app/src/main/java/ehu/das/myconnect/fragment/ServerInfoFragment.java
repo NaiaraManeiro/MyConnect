@@ -18,14 +18,12 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -34,10 +32,9 @@ import java.util.regex.Pattern;
 import ehu.das.myconnect.R;
 import ehu.das.myconnect.dialog.DialogoContrasena;
 import ehu.das.myconnect.dialog.DialogoEliminar;
-import ehu.das.myconnect.list.ServerListAdapter;
 import ehu.das.myconnect.service.ServerWorker;
 
-public class ServerInfoFragment extends Fragment {
+public class ServerInfoFragment extends Fragment { //} implements DialogInterface.OnDismissListener {
 
     private Button editar;
     private String nombreServer;
@@ -46,6 +43,7 @@ public class ServerInfoFragment extends Fragment {
     private EditText usuarioServidor;
     private EditText hostServidor;
     private EditText puertoServidor;
+    private View view;
 
     public ServerInfoFragment() {}
 
@@ -109,6 +107,7 @@ public class ServerInfoFragment extends Fragment {
                     Toast.makeText(getContext(), getString(R.string.servidorLargo), Toast.LENGTH_SHORT).show();
                 } else {
                     //Pedimos la contraseña para asegurar que se puede hacer ssh
+                    FragmentManager fm = getActivity().getSupportFragmentManager();
                     DialogFragment dialogoContrasena = new DialogoContrasena();
                     Bundle bundle = new Bundle();
                     bundle.putString("nombreServerViejo", nombreServer);
@@ -118,7 +117,33 @@ public class ServerInfoFragment extends Fragment {
                     bundle.putString("nombreUsuario", nombreUsuario);
                     bundle.putInt("puerto", puerto);
                     dialogoContrasena.setArguments(bundle);
-                    dialogoContrasena.show(getActivity().getSupportFragmentManager(), "contrasena");
+                    dialogoContrasena.show(fm, "contrasena");
+
+                    //fm.executePendingTransactions();
+                    /*dialogoContrasena.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialogInterface) {
+                            //Comprobamos si se ha eliminado el servidor y si es así volvemos al fragmento anterior
+                            Data datos = new Data.Builder()
+                                    .putString("funcion", "servidorEliminado")
+                                    .putString("nombreServer", nombreServer)
+                                    .build();
+
+                            OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(ServerWorker.class)
+                                    .setInputData(datos)
+                                    .build();
+                            WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(otwr.getId())
+                                    .observe(getActivity(), status -> {
+                                        if (status != null && status.getState().isFinished()) {
+                                            String result = status.getOutputData().getString("resultado");
+                                            if (result.equals("Borrado")) {
+                                                Navigation.findNavController(v).popBackStack();
+                                            }
+                                        }
+                                    });
+                            WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
+                        }
+                    });*/
 
                     nombreServer = nombre;
                 }
@@ -200,4 +225,9 @@ public class ServerInfoFragment extends Fragment {
                 });
         WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
     }
+
+    /*@Override
+    public void onDismiss(DialogInterface dialog) {
+
+    }*/
 }
