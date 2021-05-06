@@ -21,4 +21,5 @@
     <string name="command">command:</string>
     <string name="output">output:</string>
     <string name="run">run</string>
+    <string name="search">search</string>
 </resources>

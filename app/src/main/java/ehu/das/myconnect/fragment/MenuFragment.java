@@ -61,7 +61,7 @@ public class MenuFragment extends Fragment {
         mPager = getActivity().findViewById(R.id.viewPager);
         pagerAdapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
         pagerAdapter.addFragment(new FilesFragment(),"rutinas");
-        pagerAdapter.addFragment(new TerminalFragment(),"scripts");
+        pagerAdapter.addFragment(new ScriptsFragment(),"scripts");
         pagerAdapter.addFragment(new TerminalFragment(),"monitoreo");
         pagerAdapter.addFragment(new TerminalFragment(),"terminal");
         mPager.setAdapter(pagerAdapter);
