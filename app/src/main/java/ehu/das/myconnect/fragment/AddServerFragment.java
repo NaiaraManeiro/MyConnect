@@ -149,7 +149,9 @@ public class AddServerFragment extends Fragment {
                                         Toast.makeText(getContext(), getString(R.string.servidorExistente), Toast.LENGTH_SHORT).show();
                                         servidorCaja.setText("");
                                     } else if (result.equals("authFail")) {
-                                        Toast.makeText(getContext(), getString(R.string.authFail), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getContext(), getString(R.string.authFail), Toast.LENGTH_LONG).show();
+                                    } else if (result.equals("failConnect")) {
+                                        Toast.makeText(getContext(), getString(R.string.sshFailConnect), Toast.LENGTH_LONG).show();
                                     } else {
                                         Toast.makeText(getContext(), getString(R.string.servidorCreado), Toast.LENGTH_SHORT).show();
                                         Navigation.findNavController(v).popBackStack();
@@ -158,6 +160,14 @@ public class AddServerFragment extends Fragment {
                             });
                     WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
                 }
+            }
+        });
+
+        Button volver = getActivity().findViewById(R.id.volverAdd);
+        volver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).popBackStack();
             }
         });
     }

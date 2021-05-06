@@ -22,4 +22,8 @@
     <string name="eliminarServer">Do you want to delete the server?</string>
     <string name="serverInfo">Server data:</string>
     <string name="volver">Back</string>
+    <string name="servidorEditado">Server data has been updated!</string>
+    <string name="meteContraseña">Write the password:</string>
+    <string name="aceptar">Okey</string>
+    <string name="sshFailConnect">Waiting time for connection too long.</string>
 </resources>

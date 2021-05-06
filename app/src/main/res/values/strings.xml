@@ -14,7 +14,7 @@
     <string name="usuarioVacio">El usuario no puede estar vacío.</string>
     <string name="contraVacia">La contraseña no puede estar vacía</string>
     <string name="servidorVacio">El nombre del servidor no puede estar vacío.</string>
-    <string name="servidorLargo">EL nombre del servidor no puede tener más de 20 letras.</string>
+    <string name="servidorLargo">El nombre del servidor no puede tener más de 20 letras.</string>
     <string name="hostPattern">El host tiene que tener formato \'XXX.XXX.XXX.XXX\'.</string>
     <string name="eliminar">Eliminar</string>
     <string name="edit">Editar</string>
@@ -23,4 +23,8 @@
     <string name="eliminarServer">¿Quieres eliminar el servidor?</string>
     <string name="serverInfo">Datos del servidor:</string>
     <string name="volver">Volver</string>
+    <string name="servidorEditado">¡Los datos del servidor han sido editados!</string>
+    <string name="meteContraseña">Inserte la contraseña:</string>
+    <string name="aceptar">Aceptar</string>
+    <string name="sshFailConnect">Tiempo de espera para la conexión demasiado largo.</string>
 </resources>

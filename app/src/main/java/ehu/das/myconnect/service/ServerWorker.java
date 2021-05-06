@@ -43,10 +43,10 @@ public class ServerWorker extends Worker {
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoOutput(true);
 
-            if (funcion.equals("addServer")) {
+            if (funcion.equals("addServer") || funcion.equals("editServer")) {
                 SSHConnector sshConnector = new SSHConnector();
                 try {
-                    exception = sshConnector.connect(getInputData().getString("usuario"), getInputData().getString("contrasena"), getInputData().getString("host"), getInputData().getInt("puerto",22),getInputData().getBoolean("keyPem", false));
+                    exception = sshConnector.connect(getInputData().getString("usuario"), getInputData().getString("contrasena"), getInputData().getString("host"), getInputData().getInt("puerto",22), getInputData().getBoolean("keyPem", false));
                     sshConnector.disconnect();
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
@@ -55,6 +55,8 @@ public class ServerWorker extends Worker {
 
             if (exception.contains("Auth fail")) {
                 result = "authFail";
+            } else if (exception.contains("failed to")) {
+                result = "failConnect";
             } else {
                 JSONObject parametrosJSON = new JSONObject();
 
@@ -69,8 +71,14 @@ public class ServerWorker extends Worker {
                     parametrosJSON.put("nombreUsuario", getInputData().getString("nombreUsuario"));
                 } else if (funcion.equals("datosServer")) {
                     parametrosJSON.put("nombreUsuario", getInputData().getString("nombreUsuario"));
-                } else if (funcion.equals("eliminarServer") || funcion.equals("infoServer")) {
+                } else if (funcion.equals("eliminarServer") || funcion.equals("infoServer") || funcion.equals("servidorEliminado")) {
                     parametrosJSON.put("nombreServidor", getInputData().getString("nombreServidor"));
+                } else if (funcion.equals("editServer")) {
+                    parametrosJSON.put("usuario", getInputData().getString("usuario"));
+                    parametrosJSON.put("host", getInputData().getString("host"));
+                    parametrosJSON.put("puerto", getInputData().getInt("puerto",22));
+                    parametrosJSON.put("nombreServidor", getInputData().getString("nombreServidor"));
+                    parametrosJSON.put("nombreServidorViejo", getInputData().getString("nombreServidorViejo"));
                 }
 
                 urlConnection.setRequestProperty("Content-Type","application/json");

@@ -29,9 +29,11 @@ public class ServerListElementViewHolder extends RecyclerView.ViewHolder {
             return false;
         });
 
-        /*itemView.setOnClickListener(v -> {
-            // Conectarse al servidor
-        });*/
+        itemView.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+            bundle.putString("serverName", nombreServidor.getText().toString()); //Para saber cual es el server seleccionado
+            Navigation.findNavController(v).navigate(R.id.action_serverListFragment_to_serverManagmentFragment, bundle);
+        });
     }
 
 }

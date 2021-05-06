@@ -2,33 +2,36 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cv"
-    android:layout_width="170dp"
-    android:layout_height="160dp"
+    android:layout_width="360dp"
+    android:layout_height="200dp"
     app:cardCornerRadius="8dp"
     app:cardElevation="5dp"
     app:cardUseCompatPadding="true">
 
     <LinearLayout
-        android:layout_width="170dp"
-        android:layout_height="160dp"
+        android:layout_width="360dp"
+        android:layout_height="200dp"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/servidorNombre"
+            style="@style/Texto"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:scaleType="center" />
+            android:layout_height="60dp"
+            android:gravity="center" />
 
         <TextView
             android:id="@+id/servidorUsuarioHost"
+            style="@style/Texto"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="60dp"
             android:gravity="center" />
 
         <TextView
             android:id="@+id/servidorPuerto"
+            style="@style/Texto"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="60dp"
             android:gravity="center" />
 
     </LinearLayout>
