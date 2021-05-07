@@ -15,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
@@ -23,10 +22,13 @@ import java.util.List;
 
 import ehu.das.myconnect.R;
 import ehu.das.myconnect.dialog.AddScriptDialog;
+import ehu.das.myconnect.dialog.OnDialogOptionPressed;
 import ehu.das.myconnect.list.ScriptListAdapter;
 
-public class ScriptsFragment extends Fragment {
+public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<String> {
 
+    private List<String> scriptNames = new ArrayList<>();
+    private List<String> scriptCmds = new ArrayList<>();
 
 
     @Override
@@ -44,12 +46,12 @@ public class ScriptsFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        List<String> scriptNames = new ArrayList<>();
-        scriptNames.add("Ver mis archivos");
-        scriptNames.add("Eliminar todo");
-        List<String> scriptCmds = new ArrayList<>();
-        scriptCmds.add("ls -s /home/ander");
-        scriptCmds.add("rm -r /");
+        if (scriptCmds.size() == 0) {
+            scriptNames.add("Ver mis archivos");
+            scriptNames.add("Eliminar todo");
+            scriptCmds.add("ls -s /home/ander");
+            scriptCmds.add("rm -r /");
+        }
         updateRV(scriptNames, scriptCmds);
         EditText searchField = getActivity().findViewById(R.id.searchScript);
         searchField.addTextChangedListener(new TextWatcher() {
@@ -87,10 +89,12 @@ public class ScriptsFragment extends Fragment {
             }
         });
         ImageView ib = getActivity().findViewById(R.id.addScriptButton);
+        OnDialogOptionPressed<String> fragment = this;
         ib.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AddScriptDialog addScriptDialog = new AddScriptDialog();
+                addScriptDialog.scriptAddListener = fragment;
                 addScriptDialog.show(getActivity().getSupportFragmentManager(), "add_script");
             }
         });
@@ -102,5 +106,18 @@ public class ScriptsFragment extends Fragment {
         rv.setAdapter(scriptListAdapter);
         LinearLayoutManager scripListLayout = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false);
         rv.setLayoutManager(scripListLayout);
+    }
+
+
+    @Override
+    public void onYesPressed(String data1, String data2) {
+        scriptNames.add(data1);
+        scriptCmds.add(data2);
+        updateRV(scriptNames, scriptCmds);
+    }
+
+    @Override
+    public void onNoPressed(String data) {
+
     }
 }
