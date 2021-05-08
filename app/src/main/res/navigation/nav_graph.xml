@@ -34,5 +34,17 @@
         android:id="@+id/serverInfoFragment"
         android:name="ehu.das.myconnect.fragment.ServerInfoFragment"
         android:label="fragment_server_info"
-        tools:layout="@layout/fragment_server_info" />
+        tools:layout="@layout/fragment_server_info" >
+        <action
+            android:id="@+id/action_serverInfoFragment_to_serverListFragment"
+            app:destination="@id/serverListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/dialogoEliminar"
+        android:name="ehu.das.myconnect.dialog.DialogoEliminar"
+        android:label="DialogoEliminar" >
+        <action
+            android:id="@+id/action_dialogoEliminar_to_serverListFragment"
+            app:destination="@id/serverListFragment" />
+    </fragment>
 </navigation>

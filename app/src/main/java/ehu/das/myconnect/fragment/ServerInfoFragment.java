@@ -1,7 +1,5 @@
 package ehu.das.myconnect.fragment;
 
-import android.content.DialogInterface;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,7 +12,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
@@ -34,7 +31,7 @@ import ehu.das.myconnect.dialog.DialogoContrasena;
 import ehu.das.myconnect.dialog.DialogoEliminar;
 import ehu.das.myconnect.service.ServerWorker;
 
-public class ServerInfoFragment extends Fragment { //} implements DialogInterface.OnDismissListener {
+public class ServerInfoFragment extends Fragment {
 
     private Button editar;
     private String nombreServer;
@@ -43,7 +40,6 @@ public class ServerInfoFragment extends Fragment { //} implements DialogInterfac
     private EditText usuarioServidor;
     private EditText hostServidor;
     private EditText puertoServidor;
-    private View view;
 
     public ServerInfoFragment() {}
 
@@ -119,31 +115,7 @@ public class ServerInfoFragment extends Fragment { //} implements DialogInterfac
                     dialogoContrasena.setArguments(bundle);
                     dialogoContrasena.show(fm, "contrasena");
 
-                    //fm.executePendingTransactions();
-                    /*dialogoContrasena.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
-                        @Override
-                        public void onDismiss(DialogInterface dialogInterface) {
-                            //Comprobamos si se ha eliminado el servidor y si es así volvemos al fragmento anterior
-                            Data datos = new Data.Builder()
-                                    .putString("funcion", "servidorEliminado")
-                                    .putString("nombreServer", nombreServer)
-                                    .build();
-
-                            OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(ServerWorker.class)
-                                    .setInputData(datos)
-                                    .build();
-                            WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(otwr.getId())
-                                    .observe(getActivity(), status -> {
-                                        if (status != null && status.getState().isFinished()) {
-                                            String result = status.getOutputData().getString("resultado");
-                                            if (result.equals("Borrado")) {
-                                                Navigation.findNavController(v).popBackStack();
-                                            }
-                                        }
-                                    });
-                            WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
-                        }
-                    });*/
+                    fm.executePendingTransactions();
 
                     nombreServer = nombre;
                 }
@@ -170,8 +142,9 @@ public class ServerInfoFragment extends Fragment { //} implements DialogInterfac
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.eliminar) {
-            DialogFragment dialogoEliminar = new DialogoEliminar();
+            DialogoEliminar dialogoEliminar = new DialogoEliminar();
             Bundle bundle = new Bundle();
+            dialogoEliminar.view = getView();
             bundle.putString("nombreServer", nombreServer);
             dialogoEliminar.setArguments(bundle);
             dialogoEliminar.show(getActivity().getSupportFragmentManager(), "eliminar");
@@ -225,9 +198,4 @@ public class ServerInfoFragment extends Fragment { //} implements DialogInterfac
                 });
         WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
     }
-
-    /*@Override
-    public void onDismiss(DialogInterface dialog) {
-
-    }*/
 }
