@@ -36,18 +36,30 @@ public class SSHConnector {
      * @throws IllegalAccessException Indica que ya existe una conexión
      *                                SSH establecida.
      */
-    public void connect(String username, String password, String host, int port)
-            throws JSchException, IllegalAccessException {
+    public String connect(String username, String password, String host, int port, boolean keyPem)
+            throws IllegalAccessException {
         if (this.session == null || !this.session.isConnected()) {
             JSch jsch = new JSch();
+            try {
+                if (keyPem) {
+                    jsch.addIdentity(password);
+                }
 
-            this.session = jsch.getSession(username, host, port);
-            this.session.setPassword(password);
+                this.session = jsch.getSession(username, host, port);
 
-            // Parametro para no validar key de conexion.
-            this.session.setConfig("StrictHostKeyChecking", "no");
+                if (!keyPem) {
+                    this.session.setPassword(password);
+                }
 
-            this.session.connect();
+                // Parametro para no validar key de conexion.
+                this.session.setConfig("StrictHostKeyChecking", "no");
+
+                this.session.connect();
+                return "";
+            } catch (JSchException e) {
+                e.printStackTrace();
+                return String.valueOf(e);
+            }
         } else {
             throw new IllegalAccessException("Sesion SSH ya iniciada.");
         }

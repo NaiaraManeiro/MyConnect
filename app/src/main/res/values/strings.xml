@@ -29,4 +29,30 @@
     <string name="add_script_enter_command_hint">cmd</string>
     <string name="add">Add</string>
     <string name="cancel">Cancel</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="usuario">Usuario</string>
+    <string name="puerto">Puerto</string>
+    <string name="nombreServidor">Nombre servidor</string>
+    <string name="datosServidor">Añade los datos de tu servidor:</string>
+    <string name="addServidor">Añadir servidor</string>
+    <string name="contrasena">Contraseña</string>
+    <string name="servidorExistente">Ese nombre de servidor ya existe, piense en otro.</string>
+    <string name="servidorCreado">¡Servidor creado!</string>
+    <string name="authFail">Error de autenticación, compruebe los datos.</string>
+    <string name="usuarioVacio">El usuario no puede estar vacío.</string>
+    <string name="contraVacia">La contraseña no puede estar vacía</string>
+    <string name="servidorVacio">El nombre del servidor no puede estar vacío.</string>
+    <string name="servidorLargo">El nombre del servidor no puede tener más de 20 letras.</string>
+    <string name="hostPattern">El host tiene que tener formato \'XXX.XXX.XXX.XXX\'.</string>
+    <string name="eliminar">Eliminar</string>
+    <string name="edit">Editar</string>
+    <string name="editData">Editar datos</string>
+    <string name="nuevaContra">Nueva contraseña</string>
+    <string name="eliminarServer">¿Quieres eliminar el servidor?</string>
+    <string name="serverInfo">Datos del servidor:</string>
+    <string name="volver">Volver</string>
+    <string name="servidorEditado">¡Los datos del servidor han sido editados!</string>
+    <string name="meteContraseña">Inserte la contraseña:</string>
+    <string name="aceptar">Aceptar</string>
+    <string name="sshFailConnect">Tiempo de espera para la conexión demasiado largo.</string>
 </resources>
