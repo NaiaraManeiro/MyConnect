@@ -14,7 +14,7 @@
         android:id="@+id/serverListFragment"
         android:name="ehu.das.myconnect.fragment.ServerListFragment"
         android:label="fragment_server_list"
-        tools:layout="@layout/fragment_server_list" >
+        tools:layout="@layout/fragment_server_list_reduced" >
         <action
             android:id="@+id/action_serverListFragment_to_addServerFragment"
             app:destination="@id/addServerFragment" />

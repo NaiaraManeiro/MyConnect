@@ -26,7 +26,7 @@ public class ServerListReducedAdapter extends RecyclerView.Adapter<ServerListRed
     @NonNull
     @Override
     public ServerListReducedElementViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View serverLayout = LayoutInflater.from(parent.getContext()).inflate(R.layout.server_element_layout, null);
+        View serverLayout = LayoutInflater.from(parent.getContext()).inflate(R.layout.server_reduced_element_layout, null);
         ServerListReducedElementViewHolder serverListReducedElementViewHolder = new ServerListReducedElementViewHolder(serverLayout);
         return serverListReducedElementViewHolder;
     }
