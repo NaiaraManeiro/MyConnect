@@ -22,11 +22,7 @@ import ehu.das.myconnect.R;
 import ehu.das.myconnect.list.ViewPagerAdapter;
 import ehu.das.myconnect.list.ZoomOutPageTransformer;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link MenuFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class MenuFragment extends Fragment {
 
     private ViewPager mPager;
@@ -37,10 +33,7 @@ public class MenuFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static MenuFragment newInstance(String param1, String param2) {
-        MenuFragment fragment = new MenuFragment();
-        return fragment;
-    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

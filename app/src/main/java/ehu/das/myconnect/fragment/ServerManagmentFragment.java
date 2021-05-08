@@ -16,7 +16,7 @@ import java.util.List;
 
 import ehu.das.myconnect.R;
 import ehu.das.myconnect.Server;
-import ehu.das.myconnect.list.ServerListAdapter;
+import ehu.das.myconnect.list.ServerListReducedAdapter;
 
 public class ServerManagmentFragment extends Fragment {
 
@@ -49,7 +49,7 @@ public class ServerManagmentFragment extends Fragment {
         serverList.add(new Server("das3"));
         serverList.add(new Server("das4"));
         serverList.add(new Server("das5"));
-        serverListRV.setAdapter(new ServerListAdapter(serverList, serverList.get(4)));
+        serverListRV.setAdapter(new ServerListReducedAdapter(serverList, serverList.get(4)));
         LinearLayoutManager linearLayoutManager= new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false);
         serverListRV.setLayoutManager(linearLayoutManager);
     }

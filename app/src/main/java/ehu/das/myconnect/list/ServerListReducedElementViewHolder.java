@@ -11,13 +11,13 @@ import org.w3c.dom.Text;
 
 import ehu.das.myconnect.R;
 
-public class ServerListElementViewHolder extends RecyclerView.ViewHolder {
+public class ServerListReducedElementViewHolder extends RecyclerView.ViewHolder {
 
     public TextView nameShort;
     public TextView name;
     public ImageView serverCircle;
 
-    public ServerListElementViewHolder(@NonNull View itemView) {
+    public ServerListReducedElementViewHolder(@NonNull View itemView) {
         super(itemView);
         nameShort = itemView.findViewById(R.id.serverNameShort);
         name = itemView.findViewById(R.id.serverName);

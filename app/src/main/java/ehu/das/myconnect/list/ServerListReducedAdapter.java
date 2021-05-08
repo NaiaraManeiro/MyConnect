@@ -13,26 +13,26 @@ import java.util.List;
 import ehu.das.myconnect.R;
 import ehu.das.myconnect.Server;
 
-public class ServerListAdapter extends RecyclerView.Adapter<ServerListElementViewHolder> {
+public class ServerListReducedAdapter extends RecyclerView.Adapter<ServerListReducedElementViewHolder> {
 
     private List<Server> servers;
     private Server connectedServer;
 
-    public ServerListAdapter(List<Server> servers, Server connectedServer) {
+    public ServerListReducedAdapter(List<Server> servers, Server connectedServer) {
         this.servers = servers;
         this.connectedServer = connectedServer;
     }
 
     @NonNull
     @Override
-    public ServerListElementViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ServerListReducedElementViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View serverLayout = LayoutInflater.from(parent.getContext()).inflate(R.layout.server_element_layout, null);
-        ServerListElementViewHolder serverListElementViewHolder = new ServerListElementViewHolder(serverLayout);
-        return serverListElementViewHolder;
+        ServerListReducedElementViewHolder serverListReducedElementViewHolder = new ServerListReducedElementViewHolder(serverLayout);
+        return serverListReducedElementViewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ServerListElementViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ServerListReducedElementViewHolder holder, int position) {
         holder.nameShort.setText("S" + position);
         holder.name.setText(servers.get(position).getName());
         // holder.name.setText("ander");
