@@ -71,7 +71,7 @@ public class ServerWorker extends Worker {
                     parametrosJSON.put("nombreUsuario", getInputData().getString("nombreUsuario"));
                 } else if (funcion.equals("datosServer")) {
                     parametrosJSON.put("nombreUsuario", getInputData().getString("nombreUsuario"));
-                } else if (funcion.equals("eliminarServer") || funcion.equals("infoServer") || funcion.equals("servidorEliminado")) {
+                } else if (funcion.equals("eliminarServer") || funcion.equals("infoServer")) {
                     parametrosJSON.put("nombreServidor", getInputData().getString("nombreServidor"));
                 } else if (funcion.equals("editServer")) {
                     parametrosJSON.put("usuario", getInputData().getString("usuario"));
