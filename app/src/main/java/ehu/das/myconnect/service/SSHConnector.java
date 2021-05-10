@@ -17,7 +17,7 @@ public class SSHConnector {
     /**
      * Constante que representa un enter.
      */
-    private static final String ENTER_KEY = "n";
+    private static final String ENTER_KEY = ",";
     /**
      * Sesión SSH establecida.
      */

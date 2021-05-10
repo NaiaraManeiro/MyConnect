@@ -12,12 +12,10 @@ import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -103,7 +101,7 @@ public class ServerListFragment extends Fragment {
                                 }
 
                                 if (serverList.size() == jsonArrayHosts.length()) {
-                                    serverListRV.setAdapter(new ServerListAdapter(serverList));
+                                    serverListRV.setAdapter(new ServerListAdapter(serverList, getChildFragmentManager(), getView()));
                                     GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3, LinearLayoutManager.HORIZONTAL,false);
                                     serverListRV.setLayoutManager(gridLayoutManager);
                                 }
@@ -123,5 +121,4 @@ public class ServerListFragment extends Fragment {
             }
         });
     }
-
 }

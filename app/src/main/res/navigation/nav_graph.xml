@@ -24,6 +24,9 @@
         <action
             android:id="@+id/action_serverListFragment_to_serverInfoFragment"
             app:destination="@id/serverInfoFragment" />
+        <action
+            android:id="@+id/action_serverListFragment_to_filesFragment"
+            app:destination="@id/filesFragment" />
     </fragment>
     <fragment
         android:id="@+id/serverManagmentFragment"

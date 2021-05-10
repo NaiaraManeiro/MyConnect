@@ -103,7 +103,6 @@ public class ServerInfoFragment extends Fragment {
                     Toast.makeText(getContext(), getString(R.string.servidorLargo), Toast.LENGTH_SHORT).show();
                 } else {
                     //Pedimos la contraseña para asegurar que se puede hacer ssh
-                    FragmentManager fm = getActivity().getSupportFragmentManager();
                     DialogFragment dialogoContrasena = new DialogoContrasena();
                     Bundle bundle = new Bundle();
                     bundle.putString("nombreServerViejo", nombreServer);
@@ -113,9 +112,6 @@ public class ServerInfoFragment extends Fragment {
                     bundle.putString("nombreUsuario", nombreUsuario);
                     bundle.putInt("puerto", puerto);
                     dialogoContrasena.setArguments(bundle);
-                    dialogoContrasena.show(fm, "contrasena");
-
-                    fm.executePendingTransactions();
 
                     nombreServer = nombre;
                 }
