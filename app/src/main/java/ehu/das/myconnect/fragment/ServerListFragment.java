@@ -34,7 +34,7 @@ import ehu.das.myconnect.service.ServerWorker;
 public class ServerListFragment extends Fragment {
 
     private String nombreUsuario = "Naiara";
-    private List<Server> serverList = new ArrayList();
+    public static List<Server> serverList = new ArrayList();
 
     public ServerListFragment() {}
 
@@ -104,7 +104,7 @@ public class ServerListFragment extends Fragment {
 
                                 if (serverList.size() == jsonArrayHosts.length()) {
                                     serverListRV.setAdapter(new ServerListAdapter(serverList));
-                                    GridLayoutManager gridLayoutManager= new GridLayoutManager(getContext(), 3, LinearLayoutManager.HORIZONTAL,false);
+                                    GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3, LinearLayoutManager.HORIZONTAL,false);
                                     serverListRV.setLayoutManager(gridLayoutManager);
                                 }
                             } catch (JSONException e) {
