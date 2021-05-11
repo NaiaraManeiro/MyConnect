@@ -143,6 +143,7 @@ public class ServerInfoFragment extends Fragment {
             Bundle bundle = new Bundle();
             dialogoEliminar.view = getView();
             bundle.putString("serverName", serverName);
+            bundle.putString("where", "server");
             dialogoEliminar.setArguments(bundle);
             dialogoEliminar.show(getActivity().getSupportFragmentManager(), "eliminar");
         } if (id == R.id.edit) {

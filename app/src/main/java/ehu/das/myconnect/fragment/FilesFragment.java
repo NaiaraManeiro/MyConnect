@@ -34,6 +34,7 @@ public class FilesFragment extends Fragment implements OnClickRecycleView {
     private int port;
     private List<String> fileTypes;
     private List<String> fileNames;
+    private String path;
 
     public FilesFragment() {
         // Required empty public constructor
@@ -61,10 +62,25 @@ public class FilesFragment extends Fragment implements OnClickRecycleView {
             host = extras.getString("host");
             password = extras.getString("password");
             port = extras.getInt("port");
+            path = extras.getString("path");
         }
 
-        //Actualizamos el path
-        showPath("pwd");
+        if (path == null) {
+            //Actualizamos el path
+            showPath("pwd"); //No funciona correctamente
+        } else {
+            TextView oldPath = getActivity().findViewById(R.id.path);
+            oldPath.setText(path);
+            Data data = new Data.Builder()
+                    .putString("action", "ls")
+                    .putString("user", user)
+                    .putString("host", host)
+                    .putString("password", password)
+                    .putInt("port", port)
+                    .putString("path", path)
+                    .build();
+            showData(data);
+        }
 
         ImageView back = getActivity().findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {

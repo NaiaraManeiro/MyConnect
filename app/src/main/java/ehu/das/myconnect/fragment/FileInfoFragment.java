@@ -123,12 +123,17 @@ public class FileInfoFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.eliminar) {
-            /*RemoveDialog dialogoEliminar = new RemoveDialog();
+            RemoveDialog dialogoEliminar = new RemoveDialog();
             Bundle bundle = new Bundle();
             dialogoEliminar.view = getView();
-            bundle.putString("serverName", serverName);
+            bundle.putString("path", path);
+            bundle.putString("where", "file");
+            bundle.putString("user", user);
+            bundle.putString("host", host);
+            bundle.putString("password", password);
+            bundle.putInt("port", port);
             dialogoEliminar.setArguments(bundle);
-            dialogoEliminar.show(getActivity().getSupportFragmentManager(), "eliminar");*/
+            dialogoEliminar.show(getActivity().getSupportFragmentManager(), "eliminar");
         } if (id == R.id.edit) {
             /*if (edit.getVisibility() == View.VISIBLE) {
                 edit.setVisibility(View.INVISIBLE);

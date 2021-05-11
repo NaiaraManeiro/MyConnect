@@ -47,7 +47,10 @@ public class SSHWorker  extends Worker {
             command = "ls -l "+path;
         } else if (action.equals("cat")) {
             String path = getInputData().getString("path");
-            command = "cat  "+path;
+            command = "cat "+path;
+        } else if (action.equals("rm")) {
+            String path = getInputData().getString("path");
+            command = "rm "+path;
         }
 
         if (!exception.contains("Auth fail") && !exception.contains("failed to")) {

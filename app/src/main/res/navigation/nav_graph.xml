@@ -62,5 +62,9 @@
     <fragment
         android:id="@+id/fileInfoFragment"
         android:name="ehu.das.myconnect.fragment.FileInfoFragment"
-        android:label="FileInfoFragment" />
+        android:label="FileInfoFragment" >
+        <action
+            android:id="@+id/action_fileInfoFragment_to_filesFragment"
+            app:destination="@id/filesFragment" />
+    </fragment>
 </navigation>
