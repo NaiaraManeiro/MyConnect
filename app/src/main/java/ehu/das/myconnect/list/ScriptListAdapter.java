@@ -1,6 +1,5 @@
 package ehu.das.myconnect.list;
 
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import ehu.das.myconnect.R;
-import ehu.das.myconnect.Server;
 
 public class ScriptListAdapter extends RecyclerView.Adapter<ScriptElementViewHolder> {
 

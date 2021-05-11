@@ -11,12 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import ehu.das.myconnect.R;
-import ehu.das.myconnect.Server;
 import ehu.das.myconnect.list.ServerListReducedAdapter;
+
+import static ehu.das.myconnect.fragment.ServerListFragment.serverList;
 
 public class ServerManagmentFragment extends Fragment {
 
@@ -40,6 +40,7 @@ public class ServerManagmentFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         RecyclerView serverListRV = getActivity().findViewById(R.id.serverListRV);
+        /**
         List<Server> serverList = new ArrayList<>();
         serverList.add(new Server("ander"));
         serverList.add(new Server("dawe"));
@@ -49,7 +50,10 @@ public class ServerManagmentFragment extends Fragment {
         serverList.add(new Server("das3"));
         serverList.add(new Server("das4"));
         serverList.add(new Server("das5"));
-        serverListRV.setAdapter(new ServerListReducedAdapter(serverList, serverList.get(4)));
+        */
+        List<Server> servers =  ServerListFragment.serverList;
+        Server s = ServerListFragment.serverList.get(ServerListFragment.selected);
+        serverListRV.setAdapter(new ServerListReducedAdapter(servers, s));
         LinearLayoutManager linearLayoutManager= new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false);
         serverListRV.setLayoutManager(linearLayoutManager);
     }

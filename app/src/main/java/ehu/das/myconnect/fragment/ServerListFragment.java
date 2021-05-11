@@ -34,7 +34,8 @@ import ehu.das.myconnect.service.ServerWorker;
 public class ServerListFragment extends Fragment {
 
     private String nombreUsuario = "Naiara";
-    private List<Server> serverList = new ArrayList();
+    public static List<Server> serverList;
+    public static int selected;
 
     public ServerListFragment() {}
 
