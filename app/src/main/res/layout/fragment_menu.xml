@@ -1,14 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragment.MenuFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:orientation="vertical">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/menuTabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/down_border"
+            app:tabIconTint="@color/black"
+            app:tabIndicatorColor="#000000"
+            app:tabTextAppearance="?android:attr/textAppearanceSmall">
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/filesTab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/file" />
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/scriptsTab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/scripts" />
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/monitoringTab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/monitoring" />
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/terminalTab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="terminal" />
+        </com.google.android.material.tabs.TabLayout>
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
 
 </FrameLayout>

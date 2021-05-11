@@ -14,17 +14,42 @@
         android:id="@+id/serverListFragment"
         android:name="ehu.das.myconnect.fragment.ServerListFragment"
         android:label="fragment_server_list"
-        tools:layout="@layout/fragment_server_list" >
+        tools:layout="@layout/fragment_server_list_reduced" >
         <action
             android:id="@+id/action_serverListFragment_to_addServerFragment"
             app:destination="@id/addServerFragment" />
         <action
             android:id="@+id/action_serverListFragment_to_serverManagmentFragment"
             app:destination="@id/serverManagmentFragment" />
+        <action
+            android:id="@+id/action_serverListFragment_to_serverInfoFragment"
+            app:destination="@id/serverInfoFragment" />
     </fragment>
     <fragment
         android:id="@+id/serverManagmentFragment"
         android:name="ehu.das.myconnect.fragment.ServerManagmentFragment"
         android:label="fragment_server_managment"
         tools:layout="@layout/fragment_server_managment" />
+    <fragment
+        android:id="@+id/filesFragment"
+        android:name="ehu.das.myconnect.fragment.FilesFragment"
+        android:label="fragment_files"
+        tools:layout="@layout/fragment_files" />
+    <fragment
+        android:id="@+id/serverInfoFragment"
+        android:name="ehu.das.myconnect.fragment.ServerInfoFragment"
+        android:label="fragment_server_info"
+        tools:layout="@layout/fragment_server_info" >
+        <action
+            android:id="@+id/action_serverInfoFragment_to_serverListFragment"
+            app:destination="@id/serverListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/dialogoEliminar"
+        android:name="ehu.das.myconnect.dialog.DialogoEliminar"
+        android:label="DialogoEliminar" >
+        <action
+            android:id="@+id/action_dialogoEliminar_to_serverListFragment"
+            app:destination="@id/serverListFragment" />
+    </fragment>
 </navigation>
