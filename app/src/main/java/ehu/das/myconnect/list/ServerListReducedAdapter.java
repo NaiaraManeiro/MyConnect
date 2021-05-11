@@ -1,4 +1,4 @@
-package ehu.das.myconnect.list; 
+package ehu.das.myconnect.list;
 
 import android.graphics.Color;
 import android.view.LayoutInflater;

@@ -35,7 +35,7 @@ public class ServerListFragment extends Fragment {
 
     private String nombreUsuario = "Naiara";
     public static List<Server> serverList;
-    public static int selected;
+    public static Server selectedServer;
 
     public ServerListFragment() {}
 

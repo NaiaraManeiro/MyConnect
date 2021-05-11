@@ -44,7 +44,7 @@ public class ServerListAdapter extends RecyclerView.Adapter<ServerListElementVie
         });
 
         holder.itemView.setOnClickListener(v -> {
-            ServerListFragment.selected = position;
+            ServerListFragment.selectedServer = servers.get(position);
             Bundle bundle = new Bundle();
             bundle.putString("serverName", holder.nombreServidor.getText().toString()); //Para saber cual es el server seleccionado
             Navigation.findNavController(v).navigate(R.id.action_serverListFragment_to_serverManagmentFragment, bundle);

@@ -51,9 +51,7 @@ public class ServerManagmentFragment extends Fragment {
         serverList.add(new Server("das4"));
         serverList.add(new Server("das5"));
         */
-        List<Server> servers =  ServerListFragment.serverList;
-        Server s = ServerListFragment.serverList.get(ServerListFragment.selected);
-        serverListRV.setAdapter(new ServerListReducedAdapter(servers, s));
+        serverListRV.setAdapter(new ServerListReducedAdapter(ServerListFragment.serverList, ServerListFragment.selectedServer));
         LinearLayoutManager linearLayoutManager= new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false);
         serverListRV.setLayoutManager(linearLayoutManager);
     }
