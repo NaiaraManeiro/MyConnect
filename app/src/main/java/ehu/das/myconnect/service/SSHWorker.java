@@ -15,6 +15,7 @@ public class SSHWorker  extends Worker {
 
     private String result = "";
     private String exception = "";
+    private String command;
 
     public SSHWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
@@ -36,20 +37,21 @@ public class SSHWorker  extends Worker {
             result = "authFail";
         } else if (exception.contains("failed to")) {
             result = "failConnect";
+        } else if (action.equals("pwd")) {
+            command = "pwd";
         } else if (action.equals("ls")) {
-            try {
-                result = sshConnector.executeCommand("ls -l /storage/emulated/0"); //El path se añade solo para las pruebas en mi móvil
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (JSchException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            command = "ls -l /storage/emulated/0"; //El path se añade solo para las pruebas en mi móvil
         } else if (action.equals("cd_ls")) {
             String folderName = getInputData().getString("folderName");
+            command = "ls -l /storage/emulated/0" +"/"+folderName;
+        } else if (action.equals("cat")) {
+            String fileName = getInputData().getString("fileName");
+            command = "cat /storage/emulated/0" +"/"+fileName;
+        }
+
+        if (!exception.contains("Auth fail") && !exception.contains("failed to")) {
             try {
-                result = sshConnector.executeCommand("ls -l /storage/emulated/0" +"/"+folderName); //El path se añade solo para las pruebas en mi móvil
+                result = sshConnector.executeCommand(command); //El path se añade solo para las pruebas en mi móvil
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             } catch (JSchException e) {

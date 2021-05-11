@@ -37,7 +37,11 @@
         android:id="@+id/filesFragment"
         android:name="ehu.das.myconnect.fragment.FilesFragment"
         android:label="fragment_files"
-        tools:layout="@layout/fragment_files" />
+        tools:layout="@layout/fragment_files" >
+        <action
+            android:id="@+id/action_filesFragment_to_fileInfoFragment"
+            app:destination="@id/fileInfoFragment" />
+    </fragment>
     <fragment
         android:id="@+id/serverInfoFragment"
         android:name="ehu.das.myconnect.fragment.ServerInfoFragment"
@@ -55,4 +59,8 @@
             android:id="@+id/action_dialogoEliminar_to_serverListFragment"
             app:destination="@id/serverListFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/fileInfoFragment"
+        android:name="ehu.das.myconnect.fragment.FileInfoFragment"
+        android:label="FileInfoFragment" />
 </navigation>
