@@ -34,7 +34,7 @@ public class FileInfoFragment extends Fragment {
     private String host;
     private String password;
     private int port;
-    private String fileName;
+    private String path;
 
     public FileInfoFragment() {}
 
@@ -61,10 +61,13 @@ public class FileInfoFragment extends Fragment {
             host = extras.getString("host");
             password = extras.getString("password");
             port = extras.getInt("port");
-            fileName = extras.getString("fileName");
+            path = extras.getString("path");
         }
 
         ((AppCompatActivity) getActivity()).setSupportActionBar(getActivity().findViewById(R.id.labarra));
+
+        TextView filePath = getActivity().findViewById(R.id.filePath);
+        filePath.setText(path);
 
         Data data = new Data.Builder()
                 .putString("action", "cat")
@@ -72,7 +75,7 @@ public class FileInfoFragment extends Fragment {
                 .putString("host", host)
                 .putString("password", password)
                 .putInt("port", port)
-                .putString("fileName", fileName)
+                .putString("path", path)
                 .build();
         OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(SSHWorker.class)
                 .setInputData(data)
@@ -87,7 +90,12 @@ public class FileInfoFragment extends Fragment {
                             Toast.makeText(getContext(), getString(R.string.sshFailConnect), Toast.LENGTH_LONG).show();
                         } else {
                             TextView fileText = getActivity().findViewById(R.id.fileText);
-                            fileText.setText(result);
+                            String[] lines = result.split(",");
+                            String text = "";
+                            for (String line : lines) {
+                                text += line + "\n";
+                            }
+                            fileText.setText(text);
                         }
                     }
                 });

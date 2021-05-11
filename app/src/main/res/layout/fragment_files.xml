@@ -34,14 +34,28 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="200dp"
             android:layout_weight="1"
             android:background="@drawable/up_border">
+
+            <ImageView
+                android:id="@+id/back"
+                android:layout_width="40dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/back"
+                app:layout_constraintBottom_toTopOf="@+id/path"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.15" />
 
             <TextView
                 android:id="@+id/path"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:background="@drawable/up_down_right_border"
                 android:paddingLeft="4dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -55,6 +69,7 @@
                 android:id="@+id/textView3"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:background="@drawable/border"
                 android:paddingLeft="4dp"
                 android:text="@string/path"
@@ -69,6 +84,7 @@
                 android:id="@+id/imageView2"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                android:layout_marginTop="16dp"
                 android:background="@drawable/border"
                 android:src="@drawable/arrowup"
                 app:layout_constraintBottom_toBottomOf="parent"

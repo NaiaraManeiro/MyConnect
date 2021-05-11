@@ -14,6 +14,7 @@ import androidx.work.WorkManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,73 +63,57 @@ public class FilesFragment extends Fragment implements OnClickRecycleView {
             port = extras.getInt("port");
         }
 
-        TextView path = getActivity().findViewById(R.id.path);
-        path.setText("/storage/emulated/0");
+        //Actualizamos el path
+        showPath("pwd");
 
-        /*Data data = new Data.Builder()
-                .putString("action", "pwd")
-                .putString("user", user)
-                .putString("host", host)
-                .putString("password", password)
-                .putInt("port", port)
-                .build();
-
-        OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(SSHWorker.class)
-                .setInputData(data)
-                .build();
-        WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(otwr.getId())
-                .observe(getActivity(), status -> {
-                    if (status != null && status.getState().isFinished()) {
-                        String result = status.getOutputData().getString("result");
-                        if (result.equals("authFail")) {
-                            Toast.makeText(getContext(), getString(R.string.authFail), Toast.LENGTH_LONG).show();
-                        } else if (result.equals("failConnect")) {
-                            Toast.makeText(getContext(), getString(R.string.sshFailConnect), Toast.LENGTH_LONG).show();
-                        } else {
-                            TextView path = getActivity().findViewById(R.id.path);
-                            path.setText(result);
-                        }
-                    }
-                });
-        WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);*/
-
-
-        Data data1 = new Data.Builder()
-                .putString("action", "ls")
-                .putString("user", user)
-                .putString("host", host)
-                .putString("password", password)
-                .putInt("port", port)
-                .build();
-
-        showData(data1);
+        ImageView back = getActivity().findViewById(R.id.back);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Ejecutamos el comando cd .. y actualizamos el path
+                TextView oldPath = getActivity().findViewById(R.id.path);
+                String path = oldPath.getText().toString();
+                String newPath = path.substring(0, path.lastIndexOf("/"));
+                oldPath.setText(newPath);
+                Data data = new Data.Builder()
+                        .putString("action", "ls")
+                        .putString("user", user)
+                        .putString("host", host)
+                        .putString("password", password)
+                        .putInt("port", port)
+                        .putString("path", newPath)
+                        .build();
+                showData(data);
+            }
+        });
     }
 
     @Override
     public void onItemClick(int position) {
         String fileType = fileTypes.get(position);
+        String name = fileNames.get(position);
+        TextView path = getActivity().findViewById(R.id.path);
+        String newPath = path.getText().toString();
+        String completePath = newPath + "/"+ name;
         if (fileType.equals("folder")) {
-            String folderName = fileNames.get(position);
+            path.setText(completePath);
             Data data = new Data.Builder()
                     .putString("action", "cd_ls")
                     .putString("user", user)
                     .putString("host", host)
                     .putString("password", password)
                     .putInt("port", port)
-                    .putString("folderName", folderName)
+                    .putString("path", completePath)
                     .build();
+            //Cambiamos de carpeta y mostramos los archivos del nuevo path
             showData(data);
-            TextView path = getActivity().findViewById(R.id.path);
-            String newPath = path.getText().toString();
-            path.setText(newPath + "/"+ folderName);
         } if (fileType.equals("file")) {
-
             Bundle bundle = new Bundle();
             bundle.putString("user", user);
             bundle.putString("host", host);
             bundle.putString("password", password);
             bundle.putInt("port", port);
-            bundle.putString("fileName", fileNames.get(position));
+            bundle.putString("path", completePath);
 
             Navigation.findNavController(getView()).navigate(R.id.action_filesFragment_to_fileInfoFragment, bundle);
         }
@@ -168,6 +153,48 @@ public class FilesFragment extends Fragment implements OnClickRecycleView {
                                 GridLayoutManager layout = new GridLayoutManager(getActivity(), 4, GridLayoutManager.VERTICAL, false);
                                 rv.setLayoutManager(layout);
                             }
+                        }
+                    }
+                });
+        WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
+    }
+
+    private void showPath(String action) {
+        Data data = new Data.Builder()
+                .putString("action", action)
+                .putString("user", user)
+                .putString("host", host)
+                .putString("password", password)
+                .putInt("port", port)
+                .build();
+
+        OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(SSHWorker.class)
+                .setInputData(data)
+                .build();
+        WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(otwr.getId())
+                .observe(getActivity(), status -> {
+                    if (status != null && status.getState().isFinished()) {
+                        String result = status.getOutputData().getString("result");
+                        if (result.equals("authFail")) {
+                            Toast.makeText(getContext(), getString(R.string.authFail), Toast.LENGTH_LONG).show();
+                        } else if (result.equals("failConnect")) {
+                            Toast.makeText(getContext(), getString(R.string.sshFailConnect), Toast.LENGTH_LONG).show();
+                        } else {
+                            TextView path = getActivity().findViewById(R.id.path);
+                            //path.setText(result);
+                            path.setText("/storage/emulated/0");
+
+                            Data data1 = new Data.Builder()
+                                    .putString("action", "ls")
+                                    .putString("user", user)
+                                    .putString("host", host)
+                                    .putString("password", password)
+                                    .putInt("port", port)
+                                    .putString("path", path.getText().toString())
+                                    .build();
+
+                            //Mostramos los archivos del path actual
+                            showData(data1);
                         }
                     }
                 });

@@ -40,13 +40,14 @@ public class SSHWorker  extends Worker {
         } else if (action.equals("pwd")) {
             command = "pwd";
         } else if (action.equals("ls")) {
-            command = "ls -l /storage/emulated/0"; //El path se añade solo para las pruebas en mi móvil
+            String path = getInputData().getString("path");
+            command = "ls -l "+path; //El path se añade solo para las pruebas en mi móvil
         } else if (action.equals("cd_ls")) {
-            String folderName = getInputData().getString("folderName");
-            command = "ls -l /storage/emulated/0" +"/"+folderName;
+            String path = getInputData().getString("path");
+            command = "ls -l "+path;
         } else if (action.equals("cat")) {
-            String fileName = getInputData().getString("fileName");
-            command = "cat /storage/emulated/0" +"/"+fileName;
+            String path = getInputData().getString("path");
+            command = "cat  "+path;
         }
 
         if (!exception.contains("Auth fail") && !exception.contains("failed to")) {
