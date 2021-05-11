@@ -31,7 +31,7 @@ import ehu.das.myconnect.service.ServerWorker;
 
 public class ServerListFragment extends Fragment {
 
-    private String nombreUsuario = "Naiara";
+    private String userName = "Naiara";
     public static List<Server> serverList = new ArrayList();
 
     public ServerListFragment() {}
@@ -61,7 +61,7 @@ public class ServerListFragment extends Fragment {
 
         /*Bundle extras = this.getArguments();
         if (extras != null) {
-            nombreUsuario = extras.getString("nombreUsuario");
+            userName = extras.getString("userName");
         }*/
 
         //Obtenemos los datos de los servidores del usuario
@@ -69,39 +69,39 @@ public class ServerListFragment extends Fragment {
 
         serverList = new ArrayList<>();
 
-        Data datos = new Data.Builder()
-                .putString("funcion", "datosServer")
-                .putString("nombreUsuario", nombreUsuario)
+        Data data = new Data.Builder()
+                .putString("action", "serverData")
+                .putString("userName", userName)
                 .build();
 
         OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(ServerWorker.class)
-                .setInputData(datos)
+                .setInputData(data)
                 .build();
         WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(otwr.getId())
                 .observe(getActivity(), status -> {
                     if (status != null && status.getState().isFinished()) {
-                        String result = status.getOutputData().getString("resultado");
+                        String result = status.getOutputData().getString("result");
 
                         if (!result.equals("")) {
                             JSONObject jsonObject;
                             try {
                                 jsonObject = new JSONObject(result);
-                                JSONArray jsonArrayServidores = jsonObject.getJSONArray("nombresServidores");
-                                JSONArray jsonArrayUsuarios = jsonObject.getJSONArray("usuarios");
+                                JSONArray jsonArrayServers = jsonObject.getJSONArray("serversNames");
+                                JSONArray jsonArrayUsers = jsonObject.getJSONArray("users");
                                 JSONArray jsonArrayHosts = jsonObject.getJSONArray("hosts");
-                                JSONArray jsonArrayPuertos = jsonObject.getJSONArray("puertos");
+                                JSONArray jsonArrayPorts = jsonObject.getJSONArray("ports");
 
-                                for (int i = 0; i < jsonArrayServidores.length(); i++) {
-                                    String nombreServidor = jsonArrayServidores.get(i).toString();
-                                    String usuario = jsonArrayUsuarios.get(i).toString();
+                                for (int i = 0; i < jsonArrayServers.length(); i++) {
+                                    String serverName = jsonArrayServers.get(i).toString();
+                                    String user = jsonArrayUsers.get(i).toString();
                                     String host = jsonArrayHosts.get(i).toString();
-                                    int puerto = Integer.parseInt(jsonArrayPuertos.get(i).toString());
-                                    Server servidor = new Server(nombreServidor,usuario,host,puerto);
-                                    serverList.add(servidor);
+                                    int port = Integer.parseInt(jsonArrayPorts.get(i).toString());
+                                    Server server = new Server(serverName,user,host,port);
+                                    serverList.add(server);
                                 }
 
                                 if (serverList.size() == jsonArrayHosts.length()) {
-                                    serverListRV.setAdapter(new ServerListAdapter(serverList, getChildFragmentManager(), getView()));
+                                    serverListRV.setAdapter(new ServerListAdapter(serverList, getChildFragmentManager()));
                                     GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3, LinearLayoutManager.HORIZONTAL,false);
                                     serverListRV.setLayoutManager(gridLayoutManager);
                                 }

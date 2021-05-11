@@ -15,30 +15,27 @@ import ehu.das.myconnect.fragment.Server;
 
 public class ServerListAdapter extends RecyclerView.Adapter<ServerListElementViewHolder> {
 
-    private List<Server> servers;
-    private FragmentManager fragmentManager;
-    private View view;
+    private final List<Server> servers;
+    private final FragmentManager fragmentManager;
 
-    public ServerListAdapter(List<Server> servers, FragmentManager fragmentManager, View view) {
+    public ServerListAdapter(List<Server> servers, FragmentManager fragmentManager) {
         this.servers = servers;
         this.fragmentManager = fragmentManager;
-        this.view = view;
     }
 
     @NonNull
     @Override
     public ServerListElementViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View serverLayout = LayoutInflater.from(parent.getContext()).inflate(R.layout.server_element_layout, null);
-        ServerListElementViewHolder serverListElementViewHolder = new ServerListElementViewHolder(serverLayout, fragmentManager, view);
-        return serverListElementViewHolder;
+        return new ServerListElementViewHolder(serverLayout, fragmentManager);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ServerListElementViewHolder holder, int position) {
-        holder.nombreServidor.setText(servers.get(position).getNombre());
-        holder.usuario.setText(servers.get(position).getUsuario());
+        holder.serverName.setText(servers.get(position).getName());
+        holder.user.setText(servers.get(position).getUser());
         holder.host.setText(servers.get(position).getHost());
-        holder.port.setText(""+servers.get(position).getPuerto()+"");
+        holder.port.setText(""+servers.get(position).getPort()+"");
     }
 
     @Override

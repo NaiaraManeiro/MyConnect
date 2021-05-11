@@ -33,7 +33,7 @@ public class ServerWorker extends Worker {
     public Result doWork() {
         String direccion = "http://ec2-54-167-31-169.compute-1.amazonaws.com/nmaneiro001/WEB/MyConnect/servidor.php";
         HttpURLConnection urlConnection = null;
-        String funcion = getInputData().getString("funcion");
+        String action = getInputData().getString("action");
 
         try {
             URL destino = new URL(direccion);
@@ -43,11 +43,11 @@ public class ServerWorker extends Worker {
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoOutput(true);
 
-            if (funcion.equals("addServer") || funcion.equals("editServer") || funcion.equals("conectServer")) {
+            if (action.equals("addServer") || action.equals("editServer") || action.equals("conectServer")) {
                 SSHConnector sshConnector = new SSHConnector();
                 try {
-                    exception = sshConnector.connect(getInputData().getString("usuario"), getInputData().getString("contrasena"), getInputData().getString("host"), getInputData().getInt("puerto",22), getInputData().getBoolean("keyPem", false));
-                    if (!funcion.equals("conectServer")) {
+                    exception = sshConnector.connect(getInputData().getString("user"), getInputData().getString("password"), getInputData().getString("host"), getInputData().getInt("port",22), getInputData().getBoolean("keyPem", false));
+                    if (!action.equals("conectServer")) {
                         sshConnector.disconnect();
                     }
                 } catch (IllegalAccessException e) {
@@ -60,28 +60,28 @@ public class ServerWorker extends Worker {
             } else if (exception.contains("failed to")) {
                 result = "failConnect";
             } else {
-                if (!funcion.equals("conectServer")) {
+                if (!action.equals("conectServer")) {
                     JSONObject parametrosJSON = new JSONObject();
 
-                    parametrosJSON.put("funcion", funcion);
+                    parametrosJSON.put("action", action);
 
-                    if (funcion.equals("addServer")) {
-                        parametrosJSON.put("usuario", getInputData().getString("usuario"));
+                    if (action.equals("addServer")) {
+                        parametrosJSON.put("user", getInputData().getString("user"));
                         parametrosJSON.put("host", getInputData().getString("host"));
-                        parametrosJSON.put("puerto", getInputData().getInt("puerto",22));
-                        parametrosJSON.put("contrasena", getInputData().getString("contrasena"));
-                        parametrosJSON.put("nombreServidor", getInputData().getString("nombreServidor"));
-                        parametrosJSON.put("nombreUsuario", getInputData().getString("nombreUsuario"));
-                    } else if (funcion.equals("datosServer")) {
-                        parametrosJSON.put("nombreUsuario", getInputData().getString("nombreUsuario"));
-                    } else if (funcion.equals("eliminarServer") || funcion.equals("infoServer")) {
-                        parametrosJSON.put("nombreServidor", getInputData().getString("nombreServidor"));
-                    } else if (funcion.equals("editServer")) {
-                        parametrosJSON.put("usuario", getInputData().getString("usuario"));
+                        parametrosJSON.put("port", getInputData().getInt("port",22));
+                        parametrosJSON.put("password", getInputData().getString("password"));
+                        parametrosJSON.put("serverName", getInputData().getString("serverName"));
+                        parametrosJSON.put("userName", getInputData().getString("userName"));
+                    } else if (action.equals("serverData")) {
+                        parametrosJSON.put("userName", getInputData().getString("userName"));
+                    } else if (action.equals("removeServer") || action.equals("infoServer")) {
+                        parametrosJSON.put("serverName", getInputData().getString("serverName"));
+                    } else if (action.equals("editServer")) {
+                        parametrosJSON.put("user", getInputData().getString("user"));
                         parametrosJSON.put("host", getInputData().getString("host"));
-                        parametrosJSON.put("puerto", getInputData().getInt("puerto",22));
-                        parametrosJSON.put("nombreServidor", getInputData().getString("nombreServidor"));
-                        parametrosJSON.put("nombreServidorViejo", getInputData().getString("nombreServidorViejo"));
+                        parametrosJSON.put("port", getInputData().getInt("port",22));
+                        parametrosJSON.put("serverName", getInputData().getString("serverName"));
+                        parametrosJSON.put("oldServerName", getInputData().getString("oldServerName"));
                     }
 
                     urlConnection.setRequestProperty("Content-Type","application/json");
@@ -117,7 +117,7 @@ public class ServerWorker extends Worker {
         }
 
         Data resultados = new Data.Builder()
-                .putString("resultado", result)
+                .putString("result", result)
                 .build();
 
         return Result.success(resultados);

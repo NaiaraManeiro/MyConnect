@@ -49,7 +49,7 @@
     </fragment>
     <fragment
         android:id="@+id/dialogoEliminar"
-        android:name="ehu.das.myconnect.dialog.DialogoEliminar"
+        android:name="ehu.das.myconnect.dialog.RemoveDialog"
         android:label="DialogoEliminar" >
         <action
             android:id="@+id/action_dialogoEliminar_to_serverListFragment"

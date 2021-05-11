@@ -15,7 +15,6 @@ public class SSHWorker  extends Worker {
 
     private String result = "";
     private String exception = "";
-    private SSHConnector sshConnector;
 
     public SSHWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
@@ -24,11 +23,11 @@ public class SSHWorker  extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        String funcion = getInputData().getString("funcion");
+        String action = getInputData().getString("action");
 
-        sshConnector = new SSHConnector();
+        SSHConnector sshConnector = new SSHConnector();
         try {
-            exception = sshConnector.connect(getInputData().getString("usuario"), getInputData().getString("contrasena"), getInputData().getString("host"), getInputData().getInt("puerto",22), getInputData().getBoolean("keyPem", false));
+            exception = sshConnector.connect(getInputData().getString("user"), getInputData().getString("password"), getInputData().getString("host"), getInputData().getInt("port",22), getInputData().getBoolean("keyPem", false));
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
@@ -37,7 +36,7 @@ public class SSHWorker  extends Worker {
             result = "authFail";
         } else if (exception.contains("failed to")) {
             result = "failConnect";
-        } else if (funcion.equals("ls")) {
+        } else if (action.equals("ls")) {
             try {
                 result = sshConnector.executeCommand("ls -l /storage/emulated/0"); //El path se añade solo para las pruebas en mi móvil
             } catch (IllegalAccessException e) {
@@ -50,7 +49,7 @@ public class SSHWorker  extends Worker {
         }
 
         Data resultados = new Data.Builder()
-                .putString("resultado", result)
+                .putString("result", result)
                 .build();
 
         return Result.success(resultados);

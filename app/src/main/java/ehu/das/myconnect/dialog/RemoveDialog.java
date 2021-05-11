@@ -20,9 +20,9 @@ import androidx.work.WorkManager;
 import ehu.das.myconnect.R;
 import ehu.das.myconnect.service.ServerWorker;
 
-public class DialogoEliminar extends DialogFragment {
+public class RemoveDialog extends DialogFragment {
 
-    private String nombreServer;
+    private String serverName;
     public View view;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -34,32 +34,32 @@ public class DialogoEliminar extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View vista = inflater.inflate(R.layout.dialogo_eliminar, null);
+        View vw = inflater.inflate(R.layout.dialogo_eliminar, null);
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-            nombreServer = bundle.getString("nombreServer");
+            serverName = bundle.getString("serverName");
         }
 
-        ImageView si = vista.findViewById(R.id.imageSi);
+        ImageView yes = vw.findViewById(R.id.imageSi);
 
         //Eliminamos el servidor de la base de datos
-        si.setOnClickListener(new View.OnClickListener() {
+        yes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Data datos = new Data.Builder()
-                        .putString("funcion", "eliminarServer")
-                        .putString("nombreServidor", nombreServer)
+                Data data = new Data.Builder()
+                        .putString("action", "removeServer")
+                        .putString("serverName", serverName)
                         .build();
 
                 OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(ServerWorker.class)
-                        .setInputData(datos)
+                        .setInputData(data)
                         .build();
                 WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(otwr.getId())
                         .observe(getActivity(), status -> {
                             if (status != null && status.getState().isFinished()) {
-                                String result = status.getOutputData().getString("resultado");
-                                if (result.equals("Borrado")) {
+                                String result = status.getOutputData().getString("result");
+                                if (result.equals("Remove")) {
                                     dismiss();
                                     Navigation.findNavController(view).navigate(R.id.action_serverInfoFragment_to_serverListFragment);
                                 }
@@ -69,7 +69,7 @@ public class DialogoEliminar extends DialogFragment {
             }
         });
 
-        ImageView no = vista.findViewById(R.id.imageNo);
+        ImageView no = vw.findViewById(R.id.imageNo);
         no.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,7 +77,7 @@ public class DialogoEliminar extends DialogFragment {
             }
         });
 
-        builder.setView(vista);
+        builder.setView(vw);
 
         builder.setOnDismissListener(this);
 

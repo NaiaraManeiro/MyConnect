@@ -4,9 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
@@ -17,25 +15,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.jcraft.jsch.JSchException;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import ehu.das.myconnect.R;
+import ehu.das.myconnect.dialog.OnClickRecycleView;
 import ehu.das.myconnect.list.FilesListAdapter;
-import ehu.das.myconnect.service.SSHConnector;
 import ehu.das.myconnect.service.SSHWorker;
-import ehu.das.myconnect.service.ServerWorker;
 
+public class FilesFragment extends Fragment implements OnClickRecycleView {
 
-public class FilesFragment extends Fragment {
-
-    private String usuario;
+    private String user;
     private String host;
-    private String contra;
-    private int puerto;
+    private String password;
+    private int port;
+    private List<String> fileTypes;
+    private List<String> fileNames;
 
     public FilesFragment() {
         // Required empty public constructor
@@ -59,51 +54,73 @@ public class FilesFragment extends Fragment {
 
         Bundle extras = this.getArguments();
         if (extras != null) {
-            usuario = extras.getString("usuario");
+            user = extras.getString("user");
             host = extras.getString("host");
-            contra = extras.getString("contrasena");
-            puerto = extras.getInt("puerto");
+            password = extras.getString("password");
+            port = extras.getInt("port");
         }
 
-        RecyclerView rv = getActivity().findViewById(R.id.fileListRV);
-
-        Data datos = new Data.Builder()
-                .putString("funcion", "ls")
-                .putString("usuario", usuario)
+        Data data = new Data.Builder()
+                .putString("action", "ls")
+                .putString("user", user)
                 .putString("host", host)
-                .putString("contrasena", contra)
-                .putInt("puerto", puerto)
+                .putString("password", password)
+                .putInt("port", port)
                 .build();
 
+        showData(data);
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        String fileType = fileTypes.get(position);
+        if (fileType.equals("folder")) {
+            Data data = new Data.Builder()
+                    .putString("action", "cd_ls")
+                    .putString("user", user)
+                    .putString("host", host)
+                    .putString("password", password)
+                    .putInt("port", port)
+                    .putString("folderName", fileNames.get(position))
+                    .build();
+            showData(data);
+        }
+    }
+
+    private void showData(Data data) {
+        RecyclerView rv = getActivity().findViewById(R.id.fileListRV);
+
         OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(SSHWorker.class)
-                .setInputData(datos)
+                .setInputData(data)
                 .build();
         WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(otwr.getId())
                 .observe(getActivity(), status -> {
                     if (status != null && status.getState().isFinished()) {
-                        String result = status.getOutputData().getString("resultado");
+                        String result = status.getOutputData().getString("result");
                         if (result.equals("authFail")) {
                             Toast.makeText(getContext(), getString(R.string.authFail), Toast.LENGTH_LONG).show();
                         } else if (result.equals("failConnect")) {
                             Toast.makeText(getContext(), getString(R.string.sshFailConnect), Toast.LENGTH_LONG).show();
                         } else {
-                            List<String> fileTypes = new ArrayList<>();
-                            List<String> fileNames = new ArrayList<>();
-                            String[] lineas = result.split(",");
-                            for (String linea : lineas) {
-                                if (linea.startsWith("d")) {
+                            fileTypes = new ArrayList<>();
+                            fileNames = new ArrayList<>();
+                            String[] lines = result.split(",");
+                            for (String line : lines) {
+                                if (line.startsWith("d")) {
                                     fileTypes.add("folder");
-                                    fileNames.add(linea.substring(linea.lastIndexOf(" ")+1));
-                                } else if (linea.startsWith("-")) {
+                                    fileNames.add(line.substring(line.lastIndexOf(" ")+1));
+                                } else if (line.startsWith("-")) {
                                     fileTypes.add("file");
-                                    fileNames.add(linea.substring(linea.lastIndexOf(" ")+1));
+                                    fileNames.add(line.substring(line.lastIndexOf(" ")+1));
                                 }
                             }
 
-                            FilesListAdapter fla = new FilesListAdapter(fileNames, fileTypes);
-                            rv.setAdapter(fla);
-                            GridLayoutManager layout = new GridLayoutManager(getActivity(), 4, GridLayoutManager.VERTICAL, false);
-                            rv.setLayoutManager(layout);
+                            if (lines.length - 1 == fileNames.size()) {
+                                FilesListAdapter fla = new FilesListAdapter(fileNames, fileTypes, this);
+                                rv.setAdapter(fla);
+                                GridLayoutManager layout = new GridLayoutManager(getActivity(), 4, GridLayoutManager.VERTICAL, false);
+                                rv.setLayoutManager(layout);
+                            }
                         }
                     }
                 });
