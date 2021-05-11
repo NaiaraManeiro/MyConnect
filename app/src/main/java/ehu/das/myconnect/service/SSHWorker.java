@@ -46,6 +46,17 @@ public class SSHWorker  extends Worker {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        } else if (action.equals("cd_ls")) {
+            String folderName = getInputData().getString("folderName");
+            try {
+                result = sshConnector.executeCommand("ls -l /storage/emulated/0" +"/"+folderName); //El path se añade solo para las pruebas en mi móvil
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (JSchException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         Data resultados = new Data.Builder()
