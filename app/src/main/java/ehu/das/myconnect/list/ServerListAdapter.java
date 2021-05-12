@@ -20,17 +20,18 @@ public class ServerListAdapter extends RecyclerView.Adapter<ServerListElementVie
 
     public ServerListFragment fragment;
     private List<Server> servers;
+    private final FragmentManager fragmentManager;
 
-    public ServerListAdapter(List<Server> servers) {
+    public ServerListAdapter(List<Server> servers, FragmentManager fragmentManager) {
         this.servers = servers;
+        this.fragmentManager = fragmentManager;
     }
 
     @NonNull
     @Override
     public ServerListElementViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View serverLayout = LayoutInflater.from(parent.getContext()).inflate(R.layout.server_element_layout, null);
-        ServerListElementViewHolder serverListElementViewHolder = new ServerListElementViewHolder(serverLayout);
-        return serverListElementViewHolder;
+        return new ServerListElementViewHolder(serverLayout, fragmentManager);
     }
 
     @Override

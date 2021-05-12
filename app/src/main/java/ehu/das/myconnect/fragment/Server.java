@@ -1,31 +1,31 @@
 package ehu.das.myconnect.fragment;
 
 public class Server {
-    private String nombre;
-    private String usuario;
-    private String host;
-    private int puerto;
+    private final String name;
+    private final String user;
+    private final String host;
+    private final int port;
 
-    public Server (String nombre, String usuario, String host, int puerto) {
-        this.nombre = nombre;
-        this.usuario = usuario;
+    public Server (String name, String user, String host, int port) {
+        this.name = name;
+        this.user = user;
         this.host = host;
-        this.puerto = puerto;
+        this.port = port;
     }
 
-    public String getNombre() {
-        return this.nombre;
+    public String getName() {
+        return this.name;
     }
 
-    public String getUsuario() {
-        return this.usuario;
+    public String getUser() {
+        return this.user;
     }
 
     public String getHost() {
         return this.host;
     }
 
-    public int getPuerto() {
-        return this.puerto;
+    public int getPort() {
+        return this.port;
     }
 }

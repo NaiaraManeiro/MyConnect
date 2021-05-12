@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cv"
     android:layout_width="360dp"
-    android:layout_height="200dp"
+    android:layout_height="260dp"
     app:cardCornerRadius="8dp"
     app:cardElevation="5dp"
     app:cardUseCompatPadding="true">
 
     <LinearLayout
         android:layout_width="360dp"
-        android:layout_height="200dp"
+        android:layout_height="260dp"
         android:orientation="vertical">
 
         <TextView
@@ -21,7 +21,14 @@
             android:gravity="center" />
 
         <TextView
-            android:id="@+id/servidorUsuarioHost"
+            android:id="@+id/servidorUsuario"
+            style="@style/Texto"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center" />
+
+        <TextView
+            android:id="@+id/servidorHost"
             style="@style/Texto"
             android:layout_width="match_parent"
             android:layout_height="60dp"

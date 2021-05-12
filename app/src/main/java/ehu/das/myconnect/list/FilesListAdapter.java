@@ -10,22 +10,25 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import ehu.das.myconnect.R;
+import ehu.das.myconnect.dialog.OnClickRecycleView;
 
 public class FilesListAdapter extends RecyclerView.Adapter<FileListElementViewHolder> {
 
-    private List<String> fileNames;
-    private List<String> fileTypes;
+    private final List<String> fileNames;
+    private final List<String> fileTypes;
+    private OnClickRecycleView onClickRecycleView;
 
-    public FilesListAdapter(List<String> fileNames, List<String> fileTypes) {
+    public FilesListAdapter(List<String> fileNames, List<String> fileTypes, OnClickRecycleView onClickRecycleView) {
         this.fileTypes = fileTypes;
         this.fileNames = fileNames;
+        this.onClickRecycleView = onClickRecycleView;
     }
 
     @NonNull
     @Override
     public FileListElementViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View filaLayout = LayoutInflater.from(parent.getContext()).inflate(R.layout.file_element_layout, null);
-        return new FileListElementViewHolder(filaLayout);
+        return new FileListElementViewHolder(filaLayout, this.onClickRecycleView);
     }
 
     @Override
