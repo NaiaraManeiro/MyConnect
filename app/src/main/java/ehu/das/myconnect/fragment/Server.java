@@ -5,6 +5,7 @@ public class Server {
     private final String user;
     private final String host;
     private final int port;
+    private String password;
 
     public Server (String name, String user, String host, int port) {
         this.name = name;
@@ -27,5 +28,13 @@ public class Server {
 
     public int getPort() {
         return this.port;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }

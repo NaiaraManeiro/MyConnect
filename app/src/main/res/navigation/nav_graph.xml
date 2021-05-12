@@ -32,7 +32,11 @@
         android:id="@+id/serverManagmentFragment"
         android:name="ehu.das.myconnect.fragment.ServerManagmentFragment"
         android:label="fragment_server_managment"
-        tools:layout="@layout/fragment_server_managment" />
+        tools:layout="@layout/fragment_server_managment" >
+        <action
+            android:id="@+id/action_serverManagmentFragment_to_serverListFragment"
+            app:destination="@id/serverListFragment" />
+    </fragment>
     <fragment
         android:id="@+id/filesFragment"
         android:name="ehu.das.myconnect.fragment.FilesFragment"

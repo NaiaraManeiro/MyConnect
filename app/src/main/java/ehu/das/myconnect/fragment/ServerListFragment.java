@@ -52,26 +52,8 @@ public class ServerListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_server_list, container, false);
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        /**RecyclerView serverListRV = getActivity().findViewById(R.id.serverListRV);
-        List<Server> serverList = new ArrayList<Server>();
-        serverListRV.setAdapter(new ServerListAdapter(serverList));
-        LinearLayoutManager linearLayoutManager= new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false);
-        serverListRV.setLayoutManager(linearLayoutManager);
-         */
-
-        /*Bundle extras = this.getArguments();
-        if (extras != null) {
-            userName = extras.getString("userName");
-        }*/
-
-        //Obtenemos los datos de los servidores del usuario
-        RecyclerView serverListRV = getActivity().findViewById(R.id.serverListRV);
+        View v = inflater.inflate(R.layout.fragment_server_list, container, false);
+        RecyclerView serverListRV = v.findViewById(R.id.serverListRV);
 
         serverList = new ArrayList<>();
 
@@ -120,6 +102,26 @@ public class ServerListFragment extends Fragment {
                     }
                 });
         WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
+        return v;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        /**RecyclerView serverListRV = getActivity().findViewById(R.id.serverListRV);
+        List<Server> serverList = new ArrayList<Server>();
+        serverListRV.setAdapter(new ServerListAdapter(serverList));
+        LinearLayoutManager linearLayoutManager= new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false);
+        serverListRV.setLayoutManager(linearLayoutManager);
+         */
+
+        /*Bundle extras = this.getArguments();
+        if (extras != null) {
+            userName = extras.getString("userName");
+        }*/
+
+        //Obtenemos los datos de los servidores del usuario
+
 
         Button addServer = getActivity().findViewById(R.id.addServer);
         addServer.setOnClickListener(new View.OnClickListener() {
@@ -131,9 +133,14 @@ public class ServerListFragment extends Fragment {
     }
 
     public void connectServer() {
-        DialogoAccessPassword d = new DialogoAccessPassword();
-        d.v = getView();
-        d.show(getActivity().getSupportFragmentManager(),null);
+        if (connection == null) {
+            DialogoAccessPassword d = new DialogoAccessPassword();
+            d.v = getView();
+            d.show(getActivity().getSupportFragmentManager(),null);
+        }
+        else {
+            Navigation.findNavController(getView()).navigate(R.id.action_serverListFragment_to_serverManagmentFragment);
+        }
     }
 
 }

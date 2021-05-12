@@ -4,17 +4,26 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import java.util.List;
 
 import ehu.das.myconnect.R;
 import ehu.das.myconnect.list.ServerListReducedAdapter;
+import ehu.das.myconnect.service.SSHCommandWorker;
+import ehu.das.myconnect.service.SSHConnectionWorker;
 
 import static ehu.das.myconnect.fragment.ServerListFragment.serverList;
 
@@ -33,8 +42,14 @@ public class ServerManagmentFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_server_managment, container, false);
+        View v = inflater.inflate(R.layout.fragment_server_managment, container, false);
+        RecyclerView serverListRV = v.findViewById(R.id.serverListRV);
+        serverListRV.setAdapter(new ServerListReducedAdapter(ServerListFragment.serverList, ServerListFragment.selectedServer));
+        LinearLayoutManager linearLayoutManager= new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false);
+        serverListRV.setLayoutManager(linearLayoutManager);
+        return v;
     }
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -51,6 +66,12 @@ public class ServerManagmentFragment extends Fragment {
         serverList.add(new Server("das4"));
         serverList.add(new Server("das5"));
         */
+        ImageButton iv = getActivity().findViewById(R.id.disconnectServer);
+        iv.setOnClickListener(v -> {
+            ServerListFragment.connection.disconnect();
+            ServerListFragment.selectedServer = null;
+            Navigation.findNavController(getView()).navigate(R.id.action_serverManagmentFragment_to_serverListFragment);
+        });
         serverListRV.setAdapter(new ServerListReducedAdapter(ServerListFragment.serverList, ServerListFragment.selectedServer));
         LinearLayoutManager linearLayoutManager= new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false);
         serverListRV.setLayoutManager(linearLayoutManager);

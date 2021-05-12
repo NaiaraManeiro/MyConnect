@@ -8,14 +8,20 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +30,8 @@ import ehu.das.myconnect.R;
 import ehu.das.myconnect.dialog.AddScriptDialog;
 import ehu.das.myconnect.dialog.OnDialogOptionPressed;
 import ehu.das.myconnect.list.ScriptListAdapter;
+import ehu.das.myconnect.service.SSHCommandWorker;
+import ehu.das.myconnect.service.SSHWorker;
 
 public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<String> {
 
@@ -49,7 +57,7 @@ public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<S
         if (scriptCmds.size() == 0) {
             scriptNames.add("Ver mis archivos");
             scriptNames.add("Eliminar todo");
-            scriptCmds.add("ls -s /home/ander");
+            scriptCmds.add("pwd");
             scriptCmds.add("rm -r /");
         }
         updateRV(scriptNames, scriptCmds);
@@ -103,6 +111,7 @@ public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<S
     private void updateRV(List<String> scriptNames, List<String> scriptCmds) {
         RecyclerView rv = getActivity().findViewById(R.id.scriptRV);
         ScriptListAdapter scriptListAdapter = new ScriptListAdapter(scriptNames, scriptCmds);
+        scriptListAdapter.fragment = this;
         rv.setAdapter(scriptListAdapter);
         LinearLayoutManager scripListLayout = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false);
         rv.setLayoutManager(scripListLayout);
@@ -119,5 +128,26 @@ public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<S
     @Override
     public void onNoPressed(String data) {
 
+    }
+
+    public void executeScript(String cmd) {
+        Data data = new Data.Builder()
+                .putString("action", cmd)
+                .putString("user", ServerListFragment.selectedServer.getUser())
+                .putString("host", ServerListFragment.selectedServer.getHost())
+                .putString("password", ServerListFragment.selectedServer.getPassword())
+                .putInt("port", ServerListFragment.selectedServer.getPort())
+                .build();
+        OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(SSHWorker.class)
+                .setInputData(data)
+                .build();
+        WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(otwr.getId())
+                .observe(getActivity(), status -> {
+                    if (status != null && status.getState().isFinished()) {
+                        String result = status.getOutputData().getString("result");
+                        Log.i("cmd", result);
+                    }
+                });
+        WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
     }
 }
