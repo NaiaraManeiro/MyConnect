@@ -53,6 +53,12 @@ public class SSHWorker  extends Worker {
         } else if (action.equals("editFile")) {
             String fileText = getInputData().getString("fileText");
             command = "echo '" +fileText+ "' > " + path;
+        } else if (action.equals("mkdir")) {
+            String folderName = getInputData().getString("name");
+            command = "mkdir " + path + "/" + folderName;
+        } else if (action.equals("touch")) {
+            String fileName = getInputData().getString("name");
+            command = "touch " + path + "/" + fileName;
         }
 
         if (!exception.contains("Auth fail") && !exception.contains("failed to")) {

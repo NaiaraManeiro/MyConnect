@@ -23,6 +23,8 @@ import java.util.List;
 
 import ehu.das.myconnect.R;
 import ehu.das.myconnect.dialog.OnClickRecycleView;
+import ehu.das.myconnect.dialog.RemoveDialog;
+import ehu.das.myconnect.dialog.createFolderFileDialog;
 import ehu.das.myconnect.list.FilesListAdapter;
 import ehu.das.myconnect.service.SSHWorker;
 
@@ -81,6 +83,25 @@ public class FilesFragment extends Fragment implements OnClickRecycleView {
                     .build();
             showData(data);
         }
+
+        //Para crear una nueva carpeta o archivo
+        ImageView add = getActivity().findViewById(R.id.addImage);
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TextView path = getActivity().findViewById(R.id.path);
+                createFolderFileDialog createFolderFileDialog = new createFolderFileDialog();
+                Bundle bundle = new Bundle();
+                createFolderFileDialog.view = getView();
+                bundle.putString("path", path.getText().toString());
+                bundle.putString("user", user);
+                bundle.putString("host", host);
+                bundle.putString("password", password);
+                bundle.putInt("port", port);
+                createFolderFileDialog.setArguments(bundle);
+                createFolderFileDialog.show(getActivity().getSupportFragmentManager(), "create");
+            }
+        });
 
         ImageView back = getActivity().findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {

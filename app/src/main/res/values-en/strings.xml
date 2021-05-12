@@ -28,4 +28,13 @@
     <string name="sshFailConnect">Waiting time for connection too long.</string>
     <string name="saveFile">Save file</string>
     <string name="fileUpdated">The file has been updated!</string>
+    <string name="create">Create</string>
+    <string name="createFolderFile">Create a folder or a file:</string>
+    <string name="name">Name</string>
+    <string name="folder">Folder</string>
+    <string name="archivo">File</string>
+    <string name="nameEmpty">The name can\'t be empty.</string>
+    <string name="selectOption">Don\'t forget to choose what you want to create!</string>
+    <string name="folderCreated">The folder has been created!</string>
+    <string name="fileCreated">The file has been created!</string>
 </resources>

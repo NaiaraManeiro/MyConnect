@@ -56,4 +56,13 @@
     <string name="sshFailConnect">Tiempo de espera para la conexión demasiado largo.</string>
     <string name="saveFile">Guardar archivo</string>
     <string name="fileUpdated">¡El archivo ha sido actualizado!</string>
+    <string name="create">Crear</string>
+    <string name="createFolderFile">Crea una carpeta o un archivo:</string>
+    <string name="name">Nombre</string>
+    <string name="folder">Carpeta</string>
+    <string name="archivo">Archivo</string>
+    <string name="nameEmpty">El nombre no puede estar vacío.</string>
+    <string name="selectOption">¡Qué no se te olvide especificar que quieres crear!</string>
+    <string name="folderCreated">La carpeta se ha creado!</string>
+    <string name="fileCreated">El archivo ha sido creado!</string>
 </resources>

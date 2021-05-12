@@ -2,15 +2,16 @@ package ehu.das.myconnect.dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.DialogFragment;
 import androidx.navigation.Navigation;
 import androidx.work.Data;
@@ -19,18 +20,16 @@ import androidx.work.WorkManager;
 
 import ehu.das.myconnect.R;
 import ehu.das.myconnect.service.SSHWorker;
-import ehu.das.myconnect.service.ServerWorker;
 
-public class RemoveDialog extends DialogFragment {
+public class createFolderFileDialog extends DialogFragment {
 
-    private String serverName;
-    private String where;
     private String path;
     private String user;
     private String host;
     private String password;
     private int port;
     public View view;
+    private String action = "";
 
     @NonNull
     @Override
@@ -40,12 +39,10 @@ public class RemoveDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View vw = inflater.inflate(R.layout.dialogo_eliminar, null);
+        View vw = inflater.inflate(R.layout.dialogo_new_folder_file, null);
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-            where = bundle.getString("where");
-            serverName = bundle.getString("serverName");
             user = bundle.getString("user");
             host = bundle.getString("host");
             password = bundle.getString("password");
@@ -53,40 +50,32 @@ public class RemoveDialog extends DialogFragment {
             path = bundle.getString("path");
         }
 
-        ImageView yes = vw.findViewById(R.id.imageSi);
-
-        //Eliminamos el servidor de la base de datos
-        yes.setOnClickListener(new View.OnClickListener() {
+        Button create = vw.findViewById(R.id.createButton);
+        create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (where.equals("server")) {
-                    Data data = new Data.Builder()
-                            .putString("action", "removeServer")
-                            .putString("serverName", serverName)
-                            .build();
+                EditText nameBox = vw.findViewById(R.id.newName);
+                String name = nameBox.getText().toString();
+                RadioGroup rg = vw.findViewById(R.id.options);
+                if (name.equals("")) {
+                    Toast.makeText(getContext(), getString(R.string.nameEmpty), Toast.LENGTH_SHORT).show();
+                } else if (rg.getCheckedRadioButtonId() != R.id.radioButtonFolder && rg.getCheckedRadioButtonId() != R.id.radioButtonFile) {
+                    Toast.makeText(getContext(), getString(R.string.selectOption), Toast.LENGTH_SHORT).show();
+                } else {
+                    if (rg.getCheckedRadioButtonId() == R.id.radioButtonFolder) {
+                        action = "mkdir";
+                    } else if (rg.getCheckedRadioButtonId() == R.id.radioButtonFile) {
+                        action = "touch";
+                    }
 
-                    OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(ServerWorker.class)
-                            .setInputData(data)
-                            .build();
-                    WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(otwr.getId())
-                            .observe(getActivity(), status -> {
-                                if (status != null && status.getState().isFinished()) {
-                                    String result = status.getOutputData().getString("result");
-                                    if (result.equals("Remove")) {
-                                        dismiss();
-                                        Navigation.findNavController(view).navigate(R.id.action_serverInfoFragment_to_serverListFragment);
-                                    }
-                                }
-                            });
-                    WorkManager.getInstance(getContext()).enqueue(otwr);
-                } else if (where.equals("file")) {
                     Data data = new Data.Builder()
-                            .putString("action", "rm")
+                            .putString("action", action)
                             .putString("user", user)
                             .putString("host", host)
                             .putString("password", password)
                             .putInt("port", port)
                             .putString("path", path)
+                            .putString("name", name)
                             .build();
 
                     OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(SSHWorker.class)
@@ -95,15 +84,22 @@ public class RemoveDialog extends DialogFragment {
                     WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(otwr.getId())
                             .observe(getActivity(), status -> {
                                 if (status != null && status.getState().isFinished()) {
+                                    if (action.equals("mkdir")) {
+                                        Toast.makeText(getContext(), getString(R.string.folderCreated), Toast.LENGTH_SHORT).show();
+                                    } else if (action.equals("touch")) {
+                                        Toast.makeText(getContext(), getString(R.string.fileCreated), Toast.LENGTH_SHORT).show();
+                                    }
                                     dismiss();
-                                    String newPath = path.substring(0, path.lastIndexOf("/"));
-                                    Bundle bundle = new Bundle();
-                                    bundle.putString("path", newPath);
+
+                                    //No funciona bien, no aparecen las carpetas, archivos ni el path
+                                    /*Bundle bundle = new Bundle();
                                     bundle.putString("user", user);
                                     bundle.putString("host", host);
                                     bundle.putString("password", password);
                                     bundle.putInt("port", port);
-                                    Navigation.findNavController(view).navigate(R.id.action_fileInfoFragment_to_filesFragment, bundle);
+                                    bundle.putString("path", path);
+
+                                    Navigation.findNavController(view).navigate(R.id.action_filesFragment_self, bundle);*/
                                 }
                             });
                     WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
@@ -111,8 +107,8 @@ public class RemoveDialog extends DialogFragment {
             }
         });
 
-        ImageView no = vw.findViewById(R.id.imageNo);
-        no.setOnClickListener(new View.OnClickListener() {
+        Button back = vw.findViewById(R.id.volverNewButton);
+        back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dismiss();

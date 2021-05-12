@@ -42,9 +42,10 @@
                 android:id="@+id/back"
                 android:layout_width="40dp"
                 android:layout_height="30dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
                 android:layout_marginTop="8dp"
+                android:background="@drawable/border"
                 android:src="@drawable/back"
                 app:layout_constraintBottom_toTopOf="@+id/path"
                 app:layout_constraintStart_toStartOf="parent"
@@ -53,9 +54,9 @@
 
             <TextView
                 android:id="@+id/path"
-                android:layout_width="200dp"
+                android:layout_width="280dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="25dp"
                 android:background="@drawable/up_down_right_border"
                 android:paddingLeft="4dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -69,7 +70,7 @@
                 android:id="@+id/textView3"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="24dp"
                 android:background="@drawable/border"
                 android:paddingLeft="4dp"
                 android:text="@string/path"
@@ -81,18 +82,33 @@
                 app:layout_constraintVertical_bias="0.589" />
 
             <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginTop="16dp"
+                android:id="@+id/uploadImage"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
                 android:background="@drawable/border"
                 android:src="@drawable/arrowup"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.683"
                 app:layout_constraintStart_toEndOf="@+id/path"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.574" />
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/addImage"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="230dp"
+                android:layout_marginLeft="230dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@drawable/border"
+                android:src="@drawable/add"
+                app:layout_constraintEnd_toStartOf="@+id/uploadImage"
+                app:layout_constraintStart_toEndOf="@+id/back"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
