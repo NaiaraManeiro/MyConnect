@@ -133,7 +133,6 @@ public class ServerListFragment extends Fragment {
     }
 
     public void connectServer() {
-
             DialogoAccessPassword d = new DialogoAccessPassword();
             d.v = getView();
             d.show(getActivity().getSupportFragmentManager(),null);

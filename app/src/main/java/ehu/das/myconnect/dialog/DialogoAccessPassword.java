@@ -60,6 +60,7 @@ public class DialogoAccessPassword extends DialogFragment {
                                     ServerListFragment.connection = null;
                                     //Toast.makeText(getActivity(), getResources().getString(R.string.authFail), Toast.LENGTH_LONG).show();
                                 } else {
+                                    ServerListFragment.selectedServer.setPassword(password);
                                     Navigation.findNavController(v).navigate(R.id.action_serverListFragment_to_serverManagmentFragment);
                                     //Toast.makeText(getActivity(), getResources().getString(R.string.authSuccessful), Toast.LENGTH_LONG).show();
                                 }

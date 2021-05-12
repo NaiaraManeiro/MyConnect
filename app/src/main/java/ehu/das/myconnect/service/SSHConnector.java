@@ -83,7 +83,7 @@ public class SSHConnector {
      */
     public final String executeCommand(String command)
             throws IllegalAccessException, JSchException, IOException {
-        if (this.session != null) {
+        if (this.session != null && this.session.isConnected()) {
 
             // Abrimos un canal SSH. Es como abrir una consola.
             ChannelExec channelExec = (ChannelExec) this.session.

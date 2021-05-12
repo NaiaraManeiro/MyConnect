@@ -1,10 +1,17 @@
 package ehu.das.myconnect.fragment;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -138,7 +145,7 @@ public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<S
 
     }
 
-    public void executeScript(String cmd) {
+    public void executeScript(String cmd, String scriptName) {
         Data data = new Data.Builder()
                 .putString("action", cmd)
                 .putString("user", ServerListFragment.selectedServer.getUser())
@@ -153,9 +160,33 @@ public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<S
                 .observe(getActivity(), status -> {
                     if (status != null && status.getState().isFinished()) {
                         String result = status.getOutputData().getString("result");
-                        Log.i("cmd", result);
+                        notifyResult(scriptName, result);
                     }
                 });
         WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
+    }
+
+    public void notifyResult(String scriptName, String result) {
+        NotificationManager elManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationCompat.Builder elBuilder = new NotificationCompat.Builder(getContext(), "01");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel elCanal = new NotificationChannel("01", "scripts",
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            elManager.createNotificationChannel(elCanal);
+            elCanal.setDescription("Scripts results");
+            elCanal.enableLights(true);
+            elCanal.setLightColor(Color.RED);
+            elCanal.setVibrationPattern(new long[]{0, 1000, 500, 1000});
+            elCanal.enableVibration(true);
+        }
+
+        PendingIntent intentEnNot = PendingIntent.getActivity(getContext(), 0, getActivity().getIntent(), 0);
+        elBuilder.setSmallIcon(R.drawable.add)
+                .setContentTitle("Script " + scriptName)
+                .setContentText(result)
+                .setVibrate(new long[]{0, 1000, 500, 1000})
+                .setAutoCancel(true)
+                .setContentIntent(intentEnNot);
+        elManager.notify(1, elBuilder.build());
     }
 }
