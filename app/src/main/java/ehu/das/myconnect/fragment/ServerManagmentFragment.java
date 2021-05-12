@@ -68,7 +68,6 @@ public class ServerManagmentFragment extends Fragment {
         */
         ImageButton iv = getActivity().findViewById(R.id.disconnectServer);
         iv.setOnClickListener(v -> {
-            ServerListFragment.connection.disconnect();
             ServerListFragment.selectedServer = null;
             Navigation.findNavController(getView()).navigate(R.id.action_serverManagmentFragment_to_serverListFragment);
         });

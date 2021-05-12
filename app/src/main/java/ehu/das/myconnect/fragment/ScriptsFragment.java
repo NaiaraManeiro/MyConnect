@@ -48,7 +48,15 @@ public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<S
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_scripts, container, false);
+        View v = inflater.inflate(R.layout.fragment_scripts, container, false);
+        if (scriptCmds.size() == 0) {
+            scriptNames.add("Ver mis archivos");
+            scriptNames.add("Eliminar todo");
+            scriptCmds.add("pwd");
+            scriptCmds.add("rm -r /");
+        }
+        updateRV(v, scriptNames, scriptCmds);
+        return v;
     }
 
     @Override
@@ -60,7 +68,7 @@ public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<S
             scriptCmds.add("pwd");
             scriptCmds.add("rm -r /");
         }
-        updateRV(scriptNames, scriptCmds);
+        updateRV(getView(), scriptNames, scriptCmds);
         EditText searchField = getActivity().findViewById(R.id.searchScript);
         searchField.addTextChangedListener(new TextWatcher() {
             @Override
@@ -85,9 +93,9 @@ public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<S
                             cmds.add(scriptCmds.get(idx));
                         }
                     });
-                    updateRV(names, cmds);
+                    updateRV(getView(), names, cmds);
                 } else {
-                    updateRV(scriptNames, scriptCmds);
+                    updateRV(getView(), scriptNames, scriptCmds);
                 }
             }
 
@@ -108,8 +116,8 @@ public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<S
         });
     }
 
-    private void updateRV(List<String> scriptNames, List<String> scriptCmds) {
-        RecyclerView rv = getActivity().findViewById(R.id.scriptRV);
+    private void updateRV(View v, List<String> scriptNames, List<String> scriptCmds) {
+        RecyclerView rv = v.findViewById(R.id.scriptRV);
         ScriptListAdapter scriptListAdapter = new ScriptListAdapter(scriptNames, scriptCmds);
         scriptListAdapter.fragment = this;
         rv.setAdapter(scriptListAdapter);
@@ -122,7 +130,7 @@ public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<S
     public void onYesPressed(String data1, String data2) {
         scriptNames.add(data1);
         scriptCmds.add(data2);
-        updateRV(scriptNames, scriptCmds);
+        updateRV(getView(), scriptNames, scriptCmds);
     }
 
     @Override

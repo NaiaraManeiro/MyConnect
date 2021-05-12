@@ -38,7 +38,7 @@ public class ServerListFragment extends Fragment {
     public static SSHConnector connection;
     private String nombreUsuario = "Naiara";
     public static List<Server> serverList;
-    public static Server selectedServer;
+    public static Server selectedServer = null;
 
     public ServerListFragment() {}
 
@@ -133,14 +133,10 @@ public class ServerListFragment extends Fragment {
     }
 
     public void connectServer() {
-        if (connection == null) {
+
             DialogoAccessPassword d = new DialogoAccessPassword();
             d.v = getView();
             d.show(getActivity().getSupportFragmentManager(),null);
-        }
-        else {
-            Navigation.findNavController(getView()).navigate(R.id.action_serverListFragment_to_serverManagmentFragment);
-        }
     }
 
 }
