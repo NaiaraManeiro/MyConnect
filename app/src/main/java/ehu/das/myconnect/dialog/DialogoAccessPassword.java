@@ -36,15 +36,18 @@ public class DialogoAccessPassword extends DialogFragment {
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
         alert.setTitle(getResources().getString(R.string.access_password));
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View addScriptLayout = inflater.inflate(R.layout.access_password_layout, null);
-        EditText passwordField = addScriptLayout.findViewById(R.id.passwordAccess);
+        View loginServer = inflater.inflate(R.layout.access_password_layout, null);
+        EditText passwordField = loginServer.findViewById(R.id.passwordAccess);
         alert.setPositiveButton("Access", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String password = passwordField.getText().toString();
                 SSHConnector sshConnector = new SSHConnector();
                 try {
-                    sshConnector.connect(ServerListFragment.selectedServer.getUser(), password, ServerListFragment.selectedServer.getHost(), ServerListFragment.selectedServer.getPort(), false);
+                    String e = sshConnector.connect("ander", password, ServerListFragment.selectedServer.getHost(), ServerListFragment.selectedServer.getPort(), false);
+                    if (!e.equals("")) {
+                        throw new IllegalAccessException();
+                    }
                     ServerListFragment.connection = sshConnector;
                     dismiss();
                     Navigation.findNavController(v).navigate(R.id.action_serverListFragment_to_serverManagmentFragment);
@@ -60,6 +63,7 @@ public class DialogoAccessPassword extends DialogFragment {
                 dismiss();
             }
         });
+        alert.setView(loginServer);
         return alert.create();
     }
 }
