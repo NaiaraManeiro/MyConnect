@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -27,12 +28,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ehu.das.myconnect.R;
+import ehu.das.myconnect.dialog.DialogoAccessPassword;
+import ehu.das.myconnect.dialog.DialogoContrasena;
 import ehu.das.myconnect.list.ServerListAdapter;
+import ehu.das.myconnect.service.SSHConnector;
 import ehu.das.myconnect.service.ServerWorker;
 
 
 public class ServerListFragment extends Fragment {
 
+    public static SSHConnector connection;
     private String nombreUsuario = "Naiara";
     public static List<Server> serverList;
     public static Server selectedServer;
@@ -104,6 +109,8 @@ public class ServerListFragment extends Fragment {
                                 }
 
                                 if (serverList.size() == jsonArrayHosts.length()) {
+                                    ServerListAdapter serverListAdapter = new ServerListAdapter(serverList);
+                                    serverListAdapter.fragment = this;
                                     serverListRV.setAdapter(new ServerListAdapter(serverList));
                                     GridLayoutManager gridLayoutManager= new GridLayoutManager(getContext(), 3, LinearLayoutManager.HORIZONTAL,false);
                                     serverListRV.setLayoutManager(gridLayoutManager);
@@ -123,6 +130,12 @@ public class ServerListFragment extends Fragment {
                 Navigation.findNavController(v).navigate(R.id.action_serverListFragment_to_addServerFragment);
             }
         });
+    }
+
+    public void connectServer() {
+        DialogoAccessPassword d = new DialogoAccessPassword();
+        d.v = getView();
+        d.show(getActivity().getSupportFragmentManager(),null);
     }
 
 }

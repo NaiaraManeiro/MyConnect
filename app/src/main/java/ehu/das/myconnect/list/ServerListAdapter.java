@@ -12,11 +12,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import ehu.das.myconnect.R;
+import ehu.das.myconnect.dialog.DialogoContrasena;
 import ehu.das.myconnect.fragment.Server;
 import ehu.das.myconnect.fragment.ServerListFragment;
 
 public class ServerListAdapter extends RecyclerView.Adapter<ServerListElementViewHolder> {
 
+    public ServerListFragment fragment;
     private List<Server> servers;
 
     public ServerListAdapter(List<Server> servers) {
@@ -45,9 +47,7 @@ public class ServerListAdapter extends RecyclerView.Adapter<ServerListElementVie
 
         holder.itemView.setOnClickListener(v -> {
             ServerListFragment.selectedServer = servers.get(position);
-            Bundle bundle = new Bundle();
-            bundle.putString("serverName", holder.nombreServidor.getText().toString()); //Para saber cual es el server seleccionado
-            Navigation.findNavController(v).navigate(R.id.action_serverListFragment_to_serverManagmentFragment, bundle);
+            fragment.connectServer();
         });
     }
 

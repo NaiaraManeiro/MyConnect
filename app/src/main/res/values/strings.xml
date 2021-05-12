@@ -54,4 +54,6 @@
     <string name="meteContraseña">Inserte la contraseña:</string>
     <string name="aceptar">Aceptar</string>
     <string name="sshFailConnect">Tiempo de espera para la conexión demasiado largo.</string>
+    <string name="access_password">Access with password</string>
+    <string name="authSuccessful">Authentication successful</string>
 </resources>

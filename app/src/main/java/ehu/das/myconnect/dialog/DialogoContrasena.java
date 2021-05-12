@@ -50,8 +50,8 @@ public class DialogoContrasena extends DialogFragment {
             nombreServerViejo = bundle.getString("nombreServerViejo");
         }
 
-        Button acept = vista.findViewById(R.id.aceptContra);
-        acept.setOnClickListener(new View.OnClickListener() {
+        Button accept = vista.findViewById(R.id.aceptContra);
+        accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 EditText contraServidor = vista.findViewById(R.id.contraDialog);
