@@ -114,7 +114,7 @@ public class FilesFragment extends Fragment implements OnClickRecycleView {
         if (fileType.equals("folder")) {
             path.setText(completePath);
             Data data = new Data.Builder()
-                    .putString("action", "cd_ls")
+                    .putString("action", "ls")
                     .putString("user", user)
                     .putString("host", host)
                     .putString("password", password)

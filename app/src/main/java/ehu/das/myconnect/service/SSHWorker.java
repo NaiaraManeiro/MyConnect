@@ -16,6 +16,7 @@ public class SSHWorker  extends Worker {
     private String result = "";
     private String exception = "";
     private String command;
+    private String path;
 
     public SSHWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
@@ -33,6 +34,10 @@ public class SSHWorker  extends Worker {
             e.printStackTrace();
         }
 
+        if (!exception.contains("Auth fail") && !exception.contains("failed to") && !action.equals("pwd")) {
+            path = getInputData().getString("path");
+        }
+
         if (exception.contains("Auth fail")) {
             result = "authFail";
         } else if (exception.contains("failed to")) {
@@ -40,22 +45,19 @@ public class SSHWorker  extends Worker {
         } else if (action.equals("pwd")) {
             command = "pwd";
         } else if (action.equals("ls")) {
-            String path = getInputData().getString("path");
-            command = "ls -l "+path; //El path se añade solo para las pruebas en mi móvil
-        } else if (action.equals("cd_ls")) {
-            String path = getInputData().getString("path");
             command = "ls -l "+path;
         } else if (action.equals("cat")) {
-            String path = getInputData().getString("path");
             command = "cat "+path;
         } else if (action.equals("rm")) {
-            String path = getInputData().getString("path");
             command = "rm "+path;
+        } else if (action.equals("editFile")) {
+            String fileText = getInputData().getString("fileText");
+            command = "echo '" +fileText+ "' > " + path;
         }
 
         if (!exception.contains("Auth fail") && !exception.contains("failed to")) {
             try {
-                result = sshConnector.executeCommand(command); //El path se añade solo para las pruebas en mi móvil
+                result = sshConnector.executeCommand(command);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             } catch (JSchException e) {

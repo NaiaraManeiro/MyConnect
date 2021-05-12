@@ -45,7 +45,7 @@
     <string name="hostPattern">El host tiene que tener formato \'XXX.XXX.XXX.XXX\'.</string>
     <string name="eliminar">Eliminar</string>
     <string name="edit">Editar</string>
-    <string name="editData">Editar datos</string>
+    <string name="saveData">Guardar datos</string>
     <string name="nuevaContra">Nueva contraseña</string>
     <string name="eliminarServer">¿Quieres eliminar el servidor?</string>
     <string name="serverInfo">Datos del servidor:</string>
@@ -54,4 +54,6 @@
     <string name="meteContraseña">Inserte la contraseña:</string>
     <string name="aceptar">Aceptar</string>
     <string name="sshFailConnect">Tiempo de espera para la conexión demasiado largo.</string>
+    <string name="saveFile">Guardar archivo</string>
+    <string name="fileUpdated">¡El archivo ha sido actualizado!</string>
 </resources>
