@@ -63,9 +63,9 @@ public class createFolderFileDialog extends DialogFragment {
                     Toast.makeText(getContext(), getString(R.string.selectOption), Toast.LENGTH_SHORT).show();
                 } else {
                     if (rg.getCheckedRadioButtonId() == R.id.radioButtonFolder) {
-                        action = "mkdir";
+                        action = "mkdir " + path + "/" + name;
                     } else if (rg.getCheckedRadioButtonId() == R.id.radioButtonFile) {
-                        action = "touch";
+                        action = "touch " + path + "/" + name;
                     }
 
                     Data data = new Data.Builder()
@@ -74,8 +74,6 @@ public class createFolderFileDialog extends DialogFragment {
                             .putString("host", host)
                             .putString("password", password)
                             .putInt("port", port)
-                            .putString("path", path)
-                            .putString("name", name)
                             .build();
 
                     OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(SSHWorker.class)

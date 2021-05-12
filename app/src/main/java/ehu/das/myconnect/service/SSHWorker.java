@@ -15,7 +15,6 @@ public class SSHWorker  extends Worker {
 
     private String result = "";
     private String exception = "";
-    private String command;
     private String path;
 
     public SSHWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
@@ -25,7 +24,7 @@ public class SSHWorker  extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        String action = getInputData().getString("action");
+        String command = getInputData().getString("action");
 
         SSHConnector sshConnector = new SSHConnector();
         try {
@@ -34,31 +33,10 @@ public class SSHWorker  extends Worker {
             e.printStackTrace();
         }
 
-        if (!exception.contains("Auth fail") && !exception.contains("failed to") && !action.equals("pwd")) {
-            path = getInputData().getString("path");
-        }
-
         if (exception.contains("Auth fail")) {
             result = "authFail";
         } else if (exception.contains("failed to")) {
             result = "failConnect";
-        } else if (action.equals("pwd")) {
-            command = "pwd";
-        } else if (action.equals("ls")) {
-            command = "ls -l "+path;
-        } else if (action.equals("cat")) {
-            command = "cat "+path;
-        } else if (action.equals("rm")) {
-            command = "rm "+path;
-        } else if (action.equals("editFile")) {
-            String fileText = getInputData().getString("fileText");
-            command = "echo '" +fileText+ "' > " + path;
-        } else if (action.equals("mkdir")) {
-            String folderName = getInputData().getString("name");
-            command = "mkdir " + path + "/" + folderName;
-        } else if (action.equals("touch")) {
-            String fileName = getInputData().getString("name");
-            command = "touch " + path + "/" + fileName;
         }
 
         if (!exception.contains("Auth fail") && !exception.contains("failed to")) {

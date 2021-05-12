@@ -81,12 +81,11 @@ public class RemoveDialog extends DialogFragment {
                     WorkManager.getInstance(getContext()).enqueue(otwr);
                 } else if (where.equals("file")) {
                     Data data = new Data.Builder()
-                            .putString("action", "rm")
+                            .putString("action", "rm "+path)
                             .putString("user", user)
                             .putString("host", host)
                             .putString("password", password)
                             .putInt("port", port)
-                            .putString("path", path)
                             .build();
 
                     OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(SSHWorker.class)

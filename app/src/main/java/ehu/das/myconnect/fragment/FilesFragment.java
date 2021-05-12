@@ -74,12 +74,11 @@ public class FilesFragment extends Fragment implements OnClickRecycleView {
             TextView oldPath = getActivity().findViewById(R.id.path);
             oldPath.setText(path);
             Data data = new Data.Builder()
-                    .putString("action", "ls")
+                    .putString("action", "ls -l "+path)
                     .putString("user", user)
                     .putString("host", host)
                     .putString("password", password)
                     .putInt("port", port)
-                    .putString("path", path)
                     .build();
             showData(data);
         }
@@ -113,12 +112,11 @@ public class FilesFragment extends Fragment implements OnClickRecycleView {
                 String newPath = path.substring(0, path.lastIndexOf("/"));
                 oldPath.setText(newPath);
                 Data data = new Data.Builder()
-                        .putString("action", "ls")
+                        .putString("action", "ls -l "+newPath)
                         .putString("user", user)
                         .putString("host", host)
                         .putString("password", password)
                         .putInt("port", port)
-                        .putString("path", newPath)
                         .build();
                 showData(data);
             }
@@ -135,12 +133,11 @@ public class FilesFragment extends Fragment implements OnClickRecycleView {
         if (fileType.equals("folder")) {
             path.setText(completePath);
             Data data = new Data.Builder()
-                    .putString("action", "ls")
+                    .putString("action", "ls -l "+completePath)
                     .putString("user", user)
                     .putString("host", host)
                     .putString("password", password)
                     .putInt("port", port)
-                    .putString("path", completePath)
                     .build();
             //Cambiamos de carpeta y mostramos los archivos del nuevo path
             showData(data);
@@ -222,12 +219,11 @@ public class FilesFragment extends Fragment implements OnClickRecycleView {
                             path.setText("/storage/emulated/0");
 
                             Data data1 = new Data.Builder()
-                                    .putString("action", "ls")
+                                    .putString("action", "ls -l "+path.getText().toString())
                                     .putString("user", user)
                                     .putString("host", host)
                                     .putString("password", password)
                                     .putInt("port", port)
-                                    .putString("path", path.getText().toString())
                                     .build();
 
                             //Mostramos los archivos del path actual

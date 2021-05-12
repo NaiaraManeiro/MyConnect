@@ -80,12 +80,11 @@ public class FileInfoFragment extends Fragment {
 
         //Mostramos el texto del archivo
         Data data = new Data.Builder()
-                .putString("action", "cat")
+                .putString("action", "cat "+path)
                 .putString("user", user)
                 .putString("host", host)
                 .putString("password", password)
                 .putInt("port", port)
-                .putString("path", path)
                 .build();
         OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(SSHWorker.class)
                 .setInputData(data)
@@ -117,13 +116,11 @@ public class FileInfoFragment extends Fragment {
             public void onClick(View v) {
                 String fileText = file.getText().toString();
                 Data data = new Data.Builder()
-                        .putString("action", "editFile")
+                        .putString("action", "echo '" +fileText+ "' > " + path)
                         .putString("user", user)
                         .putString("host", host)
                         .putString("password", password)
                         .putInt("port", port)
-                        .putString("path", path)
-                        .putString("fileText", fileText)
                         .build();
                 OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(SSHWorker.class)
                         .setInputData(data)
