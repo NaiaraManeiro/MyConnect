@@ -35,7 +35,7 @@ public class ServerListReducedAdapter extends RecyclerView.Adapter<ServerListRed
     @Override
     public void onBindViewHolder(@NonNull ServerListReducedElementViewHolder holder, int position) {
         holder.nameShort.setText("S" + position);
-        holder.name.setText(servers.get(position).getNombre());
+        holder.name.setText(servers.get(position).getName());
         // holder.name.setText("ander");
         holder.serverCircle.setImageResource(R.drawable.circle);
         if (servers.get(position).equals(connectedServer)) {

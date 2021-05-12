@@ -6,13 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
 import ehu.das.myconnect.R;
-import ehu.das.myconnect.dialog.DialogoContrasena;
 import ehu.das.myconnect.fragment.Server;
 import ehu.das.myconnect.fragment.ServerListFragment;
 
@@ -36,12 +36,12 @@ public class ServerListAdapter extends RecyclerView.Adapter<ServerListElementVie
 
     @Override
     public void onBindViewHolder(@NonNull ServerListElementViewHolder holder, int position) {
-        holder.nombreServidor.setText(servers.get(position).getNombre());
-        holder.usuarioHost.setText(servers.get(position).getUsuario() + "@"+ servers.get(position).getHost());
-        holder.port.setText(""+servers.get(position).getPuerto()+"");
+        holder.serverName.setText(servers.get(position).getName());
+        holder.user.setText(servers.get(position).getUser() + "@"+ servers.get(position).getHost());
+        holder.port.setText(""+servers.get(position).getPort()+"");
         holder.itemView.setOnLongClickListener(v -> {
             Bundle bundle = new Bundle();
-            bundle.putString("serverName", holder.nombreServidor.getText().toString()); //Para saber cual es el server seleccionado
+            bundle.putString("serverName", holder.serverName.getText().toString()); //Para saber cual es el server seleccionado
             Navigation.findNavController(v).navigate(R.id.action_serverListFragment_to_serverInfoFragment, bundle);
             return false;
         });

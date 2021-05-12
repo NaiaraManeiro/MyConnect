@@ -28,7 +28,6 @@ import java.util.List;
 
 import ehu.das.myconnect.R;
 import ehu.das.myconnect.dialog.DialogoAccessPassword;
-import ehu.das.myconnect.dialog.DialogoContrasena;
 import ehu.das.myconnect.list.ServerListAdapter;
 import ehu.das.myconnect.service.SSHConnector;
 import ehu.das.myconnect.service.ServerWorker;
@@ -78,7 +77,7 @@ public class ServerListFragment extends Fragment {
 
         Data data = new Data.Builder()
                 .putString("action", "serverData")
-                .putString("userName", userName)
+                .putString("userName", nombreUsuario)
                 .build();
 
         OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(ServerWorker.class)
@@ -108,9 +107,9 @@ public class ServerListFragment extends Fragment {
                                 }
 
                                 if (serverList.size() == jsonArrayHosts.length()) {
-                                    ServerListAdapter serverListAdapter = new ServerListAdapter(serverList);
+                                    ServerListAdapter serverListAdapter = new ServerListAdapter(serverList, getActivity().getSupportFragmentManager());
                                     serverListAdapter.fragment = this;
-                                    serverListRV.setAdapter(new ServerListAdapter(serverList));
+                                    serverListRV.setAdapter(serverListAdapter);
                                     GridLayoutManager gridLayoutManager= new GridLayoutManager(getContext(), 3, LinearLayoutManager.HORIZONTAL,false);
                                     serverListRV.setLayoutManager(gridLayoutManager);
                                 }

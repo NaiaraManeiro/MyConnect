@@ -44,7 +44,7 @@ public class DialogoAccessPassword extends DialogFragment {
                 String password = passwordField.getText().toString();
                 SSHConnector sshConnector = new SSHConnector();
                 try {
-                    sshConnector.connect(ServerListFragment.selectedServer.getUsuario(), password, ServerListFragment.selectedServer.getHost(), ServerListFragment.selectedServer.getPuerto(), false);
+                    sshConnector.connect(ServerListFragment.selectedServer.getUser(), password, ServerListFragment.selectedServer.getHost(), ServerListFragment.selectedServer.getPort(), false);
                     ServerListFragment.connection = sshConnector;
                     dismiss();
                     Navigation.findNavController(v).navigate(R.id.action_serverListFragment_to_serverManagmentFragment);
