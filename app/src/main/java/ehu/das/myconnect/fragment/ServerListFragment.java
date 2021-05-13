@@ -54,7 +54,7 @@ public class ServerListFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_server_list, container, false);
         RecyclerView serverListRV = v.findViewById(R.id.serverListRV);
-
+        serverListRV.bringToFront();
         serverList = new ArrayList<>();
 
         Data data = new Data.Builder()
@@ -92,7 +92,7 @@ public class ServerListFragment extends Fragment {
                                     ServerListAdapter serverListAdapter = new ServerListAdapter(serverList, getActivity().getSupportFragmentManager());
                                     serverListAdapter.fragment = this;
                                     serverListRV.setAdapter(serverListAdapter);
-                                    GridLayoutManager gridLayoutManager= new GridLayoutManager(getContext(), 3, LinearLayoutManager.HORIZONTAL,false);
+                                    GridLayoutManager gridLayoutManager= new GridLayoutManager(getContext(), 2, LinearLayoutManager.VERTICAL,false);
                                     serverListRV.setLayoutManager(gridLayoutManager);
                                 }
                             } catch (JSONException e) {
@@ -121,7 +121,8 @@ public class ServerListFragment extends Fragment {
         }*/
 
         //Obtenemos los datos de los servidores del usuario
-
+        RecyclerView serverListRV = getActivity().findViewById(R.id.serverListRV);
+        serverListRV.bringToFront();
 
         Button addServer = getActivity().findViewById(R.id.addServer);
         addServer.setOnClickListener(new View.OnClickListener() {

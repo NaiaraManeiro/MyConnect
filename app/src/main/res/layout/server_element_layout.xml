@@ -2,44 +2,72 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cv"
-    android:layout_width="360dp"
-    android:layout_height="260dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     app:cardCornerRadius="8dp"
     app:cardElevation="5dp"
-    app:cardUseCompatPadding="true">
+    app:cardUseCompatPadding="true"
+    app:contentPadding="15dp"
+    app:contentPaddingBottom="22dp">
 
     <LinearLayout
-        android:layout_width="360dp"
-        android:layout_height="260dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/servidorNombre"
             style="@style/Texto"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:gravity="center" />
+            android:layout_height="match_parent"
+            android:gravity="left"
+            android:textColor="#050505"
+            android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/servidorUsuario"
-            style="@style/Texto"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:gravity="center" />
+            android:layout_height="match_parent"
+            android:layout_marginTop="3dp"
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/servidorHost"
-            style="@style/Texto"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:gravity="center" />
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="92dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="User:" />
 
-        <TextView
-            android:id="@+id/servidorPuerto"
-            style="@style/Texto"
+            <TextView
+                android:id="@+id/servidorUsuario"
+                style="@style/Texto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:gravity="center" />
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="92dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Host: " />
+
+            <TextView
+                android:id="@+id/servidorHost"
+                style="@style/Texto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:textSize="14sp" />
+        </LinearLayout>
 
     </LinearLayout>
 

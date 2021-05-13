@@ -17,7 +17,6 @@ public class ServerListElementViewHolder extends RecyclerView.ViewHolder {
     public TextView serverName;
     public TextView user;
     public TextView host;
-    public TextView port;
 
     public ServerListElementViewHolder(@NonNull View itemView, FragmentManager fragmentManager) {
         super(itemView);
@@ -25,7 +24,6 @@ public class ServerListElementViewHolder extends RecyclerView.ViewHolder {
         serverName = itemView.findViewById(R.id.servidorNombre);
         user = itemView.findViewById(R.id.servidorUsuario);
         host = itemView.findViewById(R.id.servidorHost);
-        port = itemView.findViewById(R.id.servidorPuerto);
 
         itemView.setOnLongClickListener(v -> {
             Bundle bundle = new Bundle();
@@ -41,7 +39,6 @@ public class ServerListElementViewHolder extends RecyclerView.ViewHolder {
             bundle.putString("action", "conectServer");
             bundle.putString("user", user.getText().toString());
             bundle.putString("host", host.getText().toString());
-            bundle.putInt("port", Integer.parseInt(port.getText().toString()));
             bundle.putString("serverName", serverName.getText().toString());
             passwordDialog.setArguments(bundle);
             passwordDialog.show(fragmentManager, "password");

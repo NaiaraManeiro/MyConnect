@@ -37,8 +37,8 @@ public class ServerListAdapter extends RecyclerView.Adapter<ServerListElementVie
     @Override
     public void onBindViewHolder(@NonNull ServerListElementViewHolder holder, int position) {
         holder.serverName.setText(servers.get(position).getName());
-        holder.user.setText(servers.get(position).getUser() + "@"+ servers.get(position).getHost());
-        holder.port.setText(""+servers.get(position).getPort()+"");
+        holder.user.setText(servers.get(position).getUser());
+        holder.host.setText(servers.get(position).getHost());
         holder.itemView.setOnLongClickListener(v -> {
             Bundle bundle = new Bundle();
             bundle.putString("serverName", holder.serverName.getText().toString()); //Para saber cual es el server seleccionado
