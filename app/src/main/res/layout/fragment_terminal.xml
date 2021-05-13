@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:scrollbars="horizontal|vertical"
     tools:context=".fragment.TerminalFragment">
 
     <ScrollView
@@ -24,7 +25,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/textView"
+                    android:id="@+id/userHost"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="ander@127.0.0.1" />
@@ -50,7 +51,7 @@
                     android:text="$" />
 
                 <EditText
-                    android:id="@+id/editTextTextPersonName2"
+                    android:id="@+id/cmdInput"
                     android:layout_width="233dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -61,7 +62,7 @@
                     android:textSize="12sp" />
 
                 <Button
-                    android:id="@+id/button"
+                    android:id="@+id/runCmdButton"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:background="@drawable/border"
@@ -89,11 +90,17 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/textView11"
+                        android:id="@+id/resultArea"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="5dp"
-                        android:background="@drawable/border" />
+                        android:background="@drawable/border"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:scrollbarAlwaysDrawHorizontalTrack="true"
+                        android:scrollbars="horizontal|vertical"
+                        android:scrollHorizontally="true"
+                        android:verticalScrollbarPosition="right" />
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>
 

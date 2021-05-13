@@ -58,7 +58,7 @@ public class SSHConnector {
                 config.put("PreferredAuthentications", "publickey,keyboard-interactive,password");
                 config.put("MAXAuthTries", "3");
                 this.session.setConfig(config);
-
+                this.session.setOutputStream(System.out);
                 this.session.connect();
                 return "";
             } catch (JSchException e) {
