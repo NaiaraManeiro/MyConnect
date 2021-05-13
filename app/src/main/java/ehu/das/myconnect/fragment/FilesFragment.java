@@ -23,8 +23,7 @@ import java.util.List;
 
 import ehu.das.myconnect.R;
 import ehu.das.myconnect.dialog.OnClickRecycleView;
-import ehu.das.myconnect.dialog.RemoveDialog;
-import ehu.das.myconnect.dialog.createFolderFileDialog;
+import ehu.das.myconnect.dialog.CreateFolderFileDialog;
 import ehu.das.myconnect.list.FilesListAdapter;
 import ehu.das.myconnect.service.SSHWorker;
 
@@ -89,7 +88,7 @@ public class FilesFragment extends Fragment implements OnClickRecycleView {
             @Override
             public void onClick(View v) {
                 TextView path = getActivity().findViewById(R.id.path);
-                createFolderFileDialog createFolderFileDialog = new createFolderFileDialog();
+                CreateFolderFileDialog createFolderFileDialog = new CreateFolderFileDialog();
                 Bundle bundle = new Bundle();
                 createFolderFileDialog.view = getView();
                 bundle.putString("path", path.getText().toString());
@@ -110,6 +109,9 @@ public class FilesFragment extends Fragment implements OnClickRecycleView {
                 TextView oldPath = getActivity().findViewById(R.id.path);
                 String path = oldPath.getText().toString();
                 String newPath = path.substring(0, path.lastIndexOf("/"));
+                if (newPath.equals("")) {
+                    newPath = "/";
+                }
                 oldPath.setText(newPath);
                 Data data = new Data.Builder()
                         .putString("action", "ls -l "+newPath)
@@ -214,8 +216,9 @@ public class FilesFragment extends Fragment implements OnClickRecycleView {
                         } else if (result.equals("failConnect")) {
                             Toast.makeText(getContext(), getString(R.string.sshFailConnect), Toast.LENGTH_LONG).show();
                         } else {
+                            String[] lines = result.split(",");
                             TextView path = getActivity().findViewById(R.id.path);
-                            //path.setText(result);
+                            //path.setText(lines[0]);
                             path.setText("/storage/emulated/0");
 
                             Data data1 = new Data.Builder()

@@ -3,6 +3,7 @@ package ehu.das.myconnect.dialog;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -21,7 +22,7 @@ import androidx.work.WorkManager;
 import ehu.das.myconnect.R;
 import ehu.das.myconnect.service.SSHWorker;
 
-public class createFolderFileDialog extends DialogFragment {
+public class CreateFolderFileDialog extends DialogFragment {
 
     private String path;
     private String user;
@@ -90,14 +91,15 @@ public class createFolderFileDialog extends DialogFragment {
                                     dismiss();
 
                                     //No funciona bien, no aparecen las carpetas, archivos ni el path
-                                    /*Bundle bundle = new Bundle();
+                                    Bundle bundle = new Bundle();
                                     bundle.putString("user", user);
                                     bundle.putString("host", host);
                                     bundle.putString("password", password);
                                     bundle.putInt("port", port);
                                     bundle.putString("path", path);
 
-                                    Navigation.findNavController(view).navigate(R.id.action_filesFragment_self, bundle);*/
+                                    //Navigation.findNavController(view).navigate(R.id.action_filesFragment_self, bundle);
+                                    getActivity().recreate();
                                 }
                             });
                     WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);

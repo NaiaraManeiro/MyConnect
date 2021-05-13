@@ -1,6 +1,7 @@
 package ehu.das.myconnect.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -115,6 +116,7 @@ public class FileInfoFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String fileText = file.getText().toString();
+                Log.i("mkdir","echo '" +fileText+ "' > " + path);
                 Data data = new Data.Builder()
                         .putString("action", "echo '" +fileText+ "' > " + path)
                         .putString("user", user)
