@@ -62,12 +62,14 @@ public class FileInfoFragment extends Fragment {
 
         Bundle extras = this.getArguments();
         if (extras != null) {
-            user = extras.getString("user");
-            host = extras.getString("host");
-            password = extras.getString("password");
-            port = extras.getInt("port");
             path = extras.getString("path");
         }
+
+        user = ServerListFragment.selectedServer.getUser();
+        host = ServerListFragment.selectedServer.getHost();
+        password = ServerListFragment.selectedServer.getPassword();
+        port = ServerListFragment.selectedServer.getPort();
+
 
         ((AppCompatActivity) getActivity()).setSupportActionBar(getActivity().findViewById(R.id.labarra));
 
@@ -82,10 +84,6 @@ public class FileInfoFragment extends Fragment {
         //Mostramos el texto del archivo
         Data data = new Data.Builder()
                 .putString("action", "cat "+path)
-                .putString("user", user)
-                .putString("host", host)
-                .putString("password", password)
-                .putInt("port", port)
                 .build();
         OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(SSHWorker.class)
                 .setInputData(data)
@@ -119,10 +117,6 @@ public class FileInfoFragment extends Fragment {
                 Log.i("mkdir","echo '" +fileText+ "' > " + path);
                 Data data = new Data.Builder()
                         .putString("action", "echo '" +fileText+ "' > " + path)
-                        .putString("user", user)
-                        .putString("host", host)
-                        .putString("password", password)
-                        .putInt("port", port)
                         .build();
                 OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(SSHWorker.class)
                         .setInputData(data)
@@ -166,17 +160,13 @@ public class FileInfoFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.eliminar) {
-            RemoveDialog dialogoEliminar = new RemoveDialog();
+            RemoveDialog removeDialog = new RemoveDialog();
             Bundle bundle = new Bundle();
-            dialogoEliminar.view = getView();
+            removeDialog.view = getView();
             bundle.putString("path", path);
             bundle.putString("where", "file");
-            bundle.putString("user", user);
-            bundle.putString("host", host);
-            bundle.putString("password", password);
-            bundle.putInt("port", port);
-            dialogoEliminar.setArguments(bundle);
-            dialogoEliminar.show(getActivity().getSupportFragmentManager(), "eliminar");
+            removeDialog.setArguments(bundle);
+            removeDialog.show(getActivity().getSupportFragmentManager(), "eliminar");
         } if (id == R.id.edit) {
             if (save.getVisibility() == View.VISIBLE) {
                 save.setVisibility(View.INVISIBLE);

@@ -8,29 +8,18 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.work.Data;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkManager;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Toast;
-
-import java.util.List;
 
 import ehu.das.myconnect.R;
 import ehu.das.myconnect.dialog.DialogoAccessPassword;
 import ehu.das.myconnect.dialog.LoadingDialog;
 import ehu.das.myconnect.dialog.OnDialogOptionPressed;
 import ehu.das.myconnect.list.ServerListReducedAdapter;
-import ehu.das.myconnect.service.SSHCommandWorker;
-import ehu.das.myconnect.service.SSHConnectionWorker;
-
-import static ehu.das.myconnect.fragment.ServerListFragment.serverList;
 
 public class ServerManagmentFragment extends Fragment implements OnDialogOptionPressed<String>, ILoading {
 

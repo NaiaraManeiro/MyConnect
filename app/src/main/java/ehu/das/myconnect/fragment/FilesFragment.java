@@ -57,14 +57,10 @@ public class FilesFragment extends Fragment implements OnClickRecycleView {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        Bundle extras = this.getArguments();
-        if (extras != null) {
-            user = extras.getString("user");
-            host = extras.getString("host");
-            password = extras.getString("password");
-            port = extras.getInt("port");
-            path = extras.getString("path");
-        }
+        user = ServerListFragment.selectedServer.getUser();
+        host = ServerListFragment.selectedServer.getHost();
+        password = ServerListFragment.selectedServer.getPassword();
+        port = ServerListFragment.selectedServer.getPort();
 
         if (path == null) {
             //Actualizamos el path
@@ -74,10 +70,6 @@ public class FilesFragment extends Fragment implements OnClickRecycleView {
             oldPath.setText(path);
             Data data = new Data.Builder()
                     .putString("action", "ls -l "+path)
-                    .putString("user", user)
-                    .putString("host", host)
-                    .putString("password", password)
-                    .putInt("port", port)
                     .build();
             showData(data);
         }
@@ -92,10 +84,6 @@ public class FilesFragment extends Fragment implements OnClickRecycleView {
                 Bundle bundle = new Bundle();
                 createFolderFileDialog.view = getView();
                 bundle.putString("path", path.getText().toString());
-                bundle.putString("user", user);
-                bundle.putString("host", host);
-                bundle.putString("password", password);
-                bundle.putInt("port", port);
                 createFolderFileDialog.setArguments(bundle);
                 createFolderFileDialog.show(getActivity().getSupportFragmentManager(), "create");
             }
@@ -115,10 +103,6 @@ public class FilesFragment extends Fragment implements OnClickRecycleView {
                 oldPath.setText(newPath);
                 Data data = new Data.Builder()
                         .putString("action", "ls -l "+newPath)
-                        .putString("user", user)
-                        .putString("host", host)
-                        .putString("password", password)
-                        .putInt("port", port)
                         .build();
                 showData(data);
             }
@@ -136,19 +120,11 @@ public class FilesFragment extends Fragment implements OnClickRecycleView {
             path.setText(completePath);
             Data data = new Data.Builder()
                     .putString("action", "ls -l "+completePath)
-                    .putString("user", user)
-                    .putString("host", host)
-                    .putString("password", password)
-                    .putInt("port", port)
                     .build();
             //Cambiamos de carpeta y mostramos los archivos del nuevo path
             showData(data);
         } if (fileType.equals("file")) {
             Bundle bundle = new Bundle();
-            bundle.putString("user", user);
-            bundle.putString("host", host);
-            bundle.putString("password", password);
-            bundle.putInt("port", port);
             bundle.putString("path", completePath);
 
             Navigation.findNavController(getView()).navigate(R.id.action_filesFragment_to_fileInfoFragment, bundle);
@@ -198,10 +174,6 @@ public class FilesFragment extends Fragment implements OnClickRecycleView {
     private void showPath(String action) {
         Data data = new Data.Builder()
                 .putString("action", action)
-                .putString("user", user)
-                .putString("host", host)
-                .putString("password", password)
-                .putInt("port", port)
                 .build();
 
         OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(SSHWorker.class)
@@ -218,15 +190,14 @@ public class FilesFragment extends Fragment implements OnClickRecycleView {
                         } else {
                             String[] lines = result.split(",");
                             TextView path = getActivity().findViewById(R.id.path);
-                            path.setText(lines[0]);
-                            //path.setText("/storage/emulated/0");
+                            if (ServerListFragment.selectedServer.getName().toLowerCase().contains("movil")) {
+                                path.setText("/storage/emulated/0");
+                            } else {
+                                path.setText(lines[0]);
+                            }
 
                             Data data1 = new Data.Builder()
                                     .putString("action", "ls -l "+path.getText().toString())
-                                    .putString("user", user)
-                                    .putString("host", host)
-                                    .putString("password", password)
-                                    .putInt("port", port)
                                     .build();
 
                             //Mostramos los archivos del path actual

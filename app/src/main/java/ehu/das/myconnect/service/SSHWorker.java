@@ -11,11 +11,12 @@ import com.jcraft.jsch.JSchException;
 
 import java.io.IOException;
 
+import ehu.das.myconnect.fragment.ServerListFragment;
+
 public class SSHWorker  extends Worker {
 
     private String result = "";
     private String exception = "";
-    private String path;
 
     public SSHWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
@@ -28,7 +29,7 @@ public class SSHWorker  extends Worker {
 
         SSHConnector sshConnector = new SSHConnector();
         try {
-            exception = sshConnector.connect(getInputData().getString("user"), getInputData().getString("password"), getInputData().getString("host"), getInputData().getInt("port",22), getInputData().getBoolean("keyPem", false));
+            exception = sshConnector.connect(ServerListFragment.selectedServer.getUser(), ServerListFragment.selectedServer.getPassword(), ServerListFragment.selectedServer.getHost(), ServerListFragment.selectedServer.getPort(), getInputData().getBoolean("keyPem", false));
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }

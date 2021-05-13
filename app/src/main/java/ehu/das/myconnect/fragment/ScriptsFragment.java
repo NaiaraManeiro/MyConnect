@@ -4,7 +4,6 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,14 +20,11 @@ import androidx.work.WorkManager;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +33,6 @@ import ehu.das.myconnect.R;
 import ehu.das.myconnect.dialog.AddScriptDialog;
 import ehu.das.myconnect.dialog.OnDialogOptionPressed;
 import ehu.das.myconnect.list.ScriptListAdapter;
-import ehu.das.myconnect.service.SSHCommandWorker;
 import ehu.das.myconnect.service.SSHWorker;
 
 public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<String> {

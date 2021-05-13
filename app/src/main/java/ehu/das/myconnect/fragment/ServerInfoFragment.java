@@ -13,9 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.navigation.Navigation;
 import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
@@ -27,7 +25,7 @@ import org.json.JSONObject;
 import java.util.regex.Pattern;
 
 import ehu.das.myconnect.R;
-import ehu.das.myconnect.dialog.PasswordDialog;
+import ehu.das.myconnect.dialog.DialogoAccessPassword;
 import ehu.das.myconnect.dialog.RemoveDialog;
 import ehu.das.myconnect.service.ServerWorker;
 
@@ -103,7 +101,7 @@ public class ServerInfoFragment extends Fragment {
                     Toast.makeText(getContext(), getString(R.string.servidorLargo), Toast.LENGTH_SHORT).show();
                 } else {
                     //Pedimos la contraseña para asegurar que se puede hacer ssh
-                    PasswordDialog passwordDialog = new PasswordDialog();
+                    DialogoAccessPassword dialogoAccessPassword = new DialogoAccessPassword();
                     Bundle bundle = new Bundle();
                     bundle.putString("oldServerName", serverName);
                     bundle.putString("serverName", name);
@@ -111,8 +109,8 @@ public class ServerInfoFragment extends Fragment {
                     bundle.putString("host", host);
                     bundle.putString("userName", userName);
                     bundle.putInt("port", port);
-                    passwordDialog.setArguments(bundle);
-                    passwordDialog.show(getActivity().getSupportFragmentManager(), "contrasena");
+                    dialogoAccessPassword.setArguments(bundle);
+                    dialogoAccessPassword.show(getActivity().getSupportFragmentManager(), "contrasena");
 
                     serverName = name;
                 }
