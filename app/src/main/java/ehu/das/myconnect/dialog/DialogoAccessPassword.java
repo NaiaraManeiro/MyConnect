@@ -21,8 +21,10 @@ import androidx.work.WorkManager;
 
 import ehu.das.myconnect.R;
 import ehu.das.myconnect.fragment.FilesFragment;
+import ehu.das.myconnect.fragment.Server;
 import ehu.das.myconnect.fragment.ServerListFragment;
 import ehu.das.myconnect.fragment.ServerManagmentFragment;
+import ehu.das.myconnect.list.ServerListReducedAdapter;
 import ehu.das.myconnect.service.SSHConnectionWorker;
 import ehu.das.myconnect.service.SSHConnector;
 import ehu.das.myconnect.service.ServerWorker;
@@ -33,6 +35,7 @@ public class DialogoAccessPassword extends DialogFragment {
     public OnDialogOptionPressed<String> scriptAddListener;
     public boolean recreate = false;
     public ServerManagmentFragment serverManagmentFragment;
+    public int position;
 
     @NonNull
     @Override
@@ -47,6 +50,10 @@ public class DialogoAccessPassword extends DialogFragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String password = passwordField.getText().toString();
+                Server old = ServerListFragment.selectedServer;
+                if (recreate) {
+                    ServerListFragment.selectedServer = ServerListFragment.serverList.get(position);
+                }
                 Data data = new Data.Builder()
                         .putString("user", ServerListFragment.selectedServer.getUser())
                         .putString("host", ServerListFragment.selectedServer.getHost())
@@ -62,6 +69,7 @@ public class DialogoAccessPassword extends DialogFragment {
                                 if (!status.getOutputData().getString("result").equals("")) {
                                     ServerListFragment.connection = null;
                                     scriptAddListener.onYesPressed("fail","");
+                                    ServerListFragment.selectedServer = old;
                                     dismiss();
                                 } else {
                                     scriptAddListener.onYesPressed("succesful","");
@@ -69,6 +77,8 @@ public class DialogoAccessPassword extends DialogFragment {
                                     if (!recreate) {
                                         Navigation.findNavController(v).navigate(R.id.action_serverListFragment_to_serverManagmentFragment);
                                     } else {
+                                        recreate = false;
+                                        ServerListFragment.selectedServer = ServerListFragment.serverList.get(position);
                                         serverManagmentFragment.recreateFragment();
                                     }
                                     //Toast.makeText(getActivity(), getResources().getString(R.string.authSuccessful), Toast.LENGTH_LONG).show();

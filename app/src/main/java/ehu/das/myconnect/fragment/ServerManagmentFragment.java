@@ -94,11 +94,12 @@ public class ServerManagmentFragment extends Fragment implements OnDialogOptionP
 
     }
 
-    public void changeServer() {
+    public void changeServer(int position) {
         DialogoAccessPassword d = new DialogoAccessPassword();
         d.scriptAddListener = this;
         d.recreate = true;
         d.serverManagmentFragment = this;
+        d.position = position;
         d.show(getActivity().getSupportFragmentManager(),"");
     }
 

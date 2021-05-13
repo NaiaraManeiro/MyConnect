@@ -49,7 +49,7 @@ public class ServerListReducedAdapter extends RecyclerView.Adapter<ServerListRed
         }
         holder.itemView.setOnClickListener(v ->
         {
-            fragment.changeServer();
+            fragment.changeServer(position);
         });
     }
 
