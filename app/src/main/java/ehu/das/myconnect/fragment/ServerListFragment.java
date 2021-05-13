@@ -113,7 +113,7 @@ public class ServerListFragment extends Fragment implements OnDialogOptionPresse
         /**RecyclerView serverListRV = getActivity().findViewById(R.id.serverListRV);
         List<Server> serverList = new ArrayList<Server>();
         serverListRV.setAdapter(new ServerListAdapter(serverList));
-        LinearLayoutManager linearLayoutManager= new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false);
+        LinearLayoutManager linearLayoutManager= new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false);scriptAddListener
         serverListRV.setLayoutManager(linearLayoutManager);
          */
 
