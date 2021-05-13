@@ -20,6 +20,7 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import ehu.das.myconnect.R;
+import ehu.das.myconnect.fragment.ServerListFragment;
 import ehu.das.myconnect.service.SSHWorker;
 
 public class CreateFolderFileDialog extends DialogFragment {
@@ -44,12 +45,13 @@ public class CreateFolderFileDialog extends DialogFragment {
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-            user = bundle.getString("user");
-            host = bundle.getString("host");
-            password = bundle.getString("password");
-            port = bundle.getInt("port");
             path = bundle.getString("path");
         }
+
+        user = ServerListFragment.selectedServer.getUser();
+        host = ServerListFragment.selectedServer.getHost();
+        password = ServerListFragment.selectedServer.getPassword();
+        port = ServerListFragment.selectedServer.getPort();
 
         Button create = vw.findViewById(R.id.createButton);
         create.setOnClickListener(new View.OnClickListener() {

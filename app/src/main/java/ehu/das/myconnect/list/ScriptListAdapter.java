@@ -7,15 +7,11 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.work.Data;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkManager;
 
 import java.util.List;
 
 import ehu.das.myconnect.R;
 import ehu.das.myconnect.fragment.ScriptsFragment;
-import ehu.das.myconnect.service.SSHCommandWorker;
 
 public class ScriptListAdapter extends RecyclerView.Adapter<ScriptElementViewHolder> {
 
