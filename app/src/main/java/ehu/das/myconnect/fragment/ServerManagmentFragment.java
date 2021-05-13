@@ -17,17 +17,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.util.List;
 
 import ehu.das.myconnect.R;
+import ehu.das.myconnect.dialog.DialogoAccessPassword;
+import ehu.das.myconnect.dialog.OnDialogOptionPressed;
 import ehu.das.myconnect.list.ServerListReducedAdapter;
 import ehu.das.myconnect.service.SSHCommandWorker;
 import ehu.das.myconnect.service.SSHConnectionWorker;
 
 import static ehu.das.myconnect.fragment.ServerListFragment.serverList;
 
-public class ServerManagmentFragment extends Fragment {
+public class ServerManagmentFragment extends Fragment implements OnDialogOptionPressed<String> {
 
     public ServerManagmentFragment() {
         // Required empty public constructor
@@ -44,7 +47,7 @@ public class ServerManagmentFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_server_managment, container, false);
         RecyclerView serverListRV = v.findViewById(R.id.serverListRV);
-        serverListRV.setAdapter(new ServerListReducedAdapter(ServerListFragment.serverList, ServerListFragment.selectedServer));
+        serverListRV.setAdapter(new ServerListReducedAdapter(ServerListFragment.serverList, ServerListFragment.selectedServer, this));
         LinearLayoutManager linearLayoutManager= new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false);
         serverListRV.setLayoutManager(linearLayoutManager);
         return v;
@@ -71,8 +74,35 @@ public class ServerManagmentFragment extends Fragment {
             ServerListFragment.selectedServer = null;
             Navigation.findNavController(getView()).navigate(R.id.action_serverManagmentFragment_to_serverListFragment);
         });
-        serverListRV.setAdapter(new ServerListReducedAdapter(ServerListFragment.serverList, ServerListFragment.selectedServer));
+        ServerListReducedAdapter serverListReducedAdapter = new ServerListReducedAdapter(ServerListFragment.serverList, ServerListFragment.selectedServer, this);
+        serverListRV.setAdapter(serverListReducedAdapter);
         LinearLayoutManager linearLayoutManager= new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false);
         serverListRV.setLayoutManager(linearLayoutManager);
+    }
+
+    @Override
+    public void onYesPressed(String data1, String data2) {
+        if (data1.equals("fail")) {
+            Toast.makeText(getContext(), getResources().getString(R.string.authFail), Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getContext(), getResources().getString(R.string.authSuccessful), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onNoPressed(String data) {
+
+    }
+
+    public void changeServer() {
+        DialogoAccessPassword d = new DialogoAccessPassword();
+        d.scriptAddListener = this;
+        d.recreate = true;
+        d.serverManagmentFragment = this;
+        d.show(getActivity().getSupportFragmentManager(),"");
+    }
+
+    public void recreateFragment() {
+        getActivity().recreate();
     }
 }

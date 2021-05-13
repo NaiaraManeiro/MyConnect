@@ -22,6 +22,7 @@ import androidx.work.WorkManager;
 import ehu.das.myconnect.R;
 import ehu.das.myconnect.fragment.FilesFragment;
 import ehu.das.myconnect.fragment.ServerListFragment;
+import ehu.das.myconnect.fragment.ServerManagmentFragment;
 import ehu.das.myconnect.service.SSHConnectionWorker;
 import ehu.das.myconnect.service.SSHConnector;
 import ehu.das.myconnect.service.ServerWorker;
@@ -30,6 +31,8 @@ public class DialogoAccessPassword extends DialogFragment {
 
     public View v;
     public OnDialogOptionPressed<String> scriptAddListener;
+    public boolean recreate = false;
+    public ServerManagmentFragment serverManagmentFragment;
 
     @NonNull
     @Override
@@ -63,7 +66,11 @@ public class DialogoAccessPassword extends DialogFragment {
                                 } else {
                                     scriptAddListener.onYesPressed("succesful","");
                                     ServerListFragment.selectedServer.setPassword(password);
-                                    Navigation.findNavController(v).navigate(R.id.action_serverListFragment_to_serverManagmentFragment);
+                                    if (!recreate) {
+                                        Navigation.findNavController(v).navigate(R.id.action_serverListFragment_to_serverManagmentFragment);
+                                    } else {
+                                        serverManagmentFragment.recreateFragment();
+                                    }
                                     //Toast.makeText(getActivity(), getResources().getString(R.string.authSuccessful), Toast.LENGTH_LONG).show();
                                 }
                             }
