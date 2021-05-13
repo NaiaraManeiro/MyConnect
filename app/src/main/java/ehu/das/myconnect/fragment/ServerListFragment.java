@@ -1,5 +1,6 @@
 package ehu.das.myconnect.fragment;
 
+import android.app.Dialog;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -28,12 +29,13 @@ import java.util.List;
 
 import ehu.das.myconnect.R;
 import ehu.das.myconnect.dialog.DialogoAccessPassword;
+import ehu.das.myconnect.dialog.OnDialogOptionPressed;
 import ehu.das.myconnect.list.ServerListAdapter;
 import ehu.das.myconnect.service.SSHConnector;
 import ehu.das.myconnect.service.ServerWorker;
 
 
-public class ServerListFragment extends Fragment {
+public class ServerListFragment extends Fragment implements OnDialogOptionPressed<String> {
 
     public static SSHConnector connection;
     private String nombreUsuario = "Naiara";
@@ -135,8 +137,22 @@ public class ServerListFragment extends Fragment {
 
     public void connectServer() {
             DialogoAccessPassword d = new DialogoAccessPassword();
+            d.scriptAddListener = this;
             d.v = getView();
             d.show(getActivity().getSupportFragmentManager(),null);
     }
 
+    @Override
+    public void onYesPressed(String data1, String data2) {
+        if (data1.equals("fail")) {
+            Toast.makeText(getContext(), getResources().getString(R.string.authFail), Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getContext(), getResources().getString(R.string.authSuccessful), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onNoPressed(String data) {
+
+    }
 }

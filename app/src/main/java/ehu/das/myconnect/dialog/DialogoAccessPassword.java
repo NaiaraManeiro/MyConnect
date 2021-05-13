@@ -29,6 +29,7 @@ import ehu.das.myconnect.service.ServerWorker;
 public class DialogoAccessPassword extends DialogFragment {
 
     public View v;
+    public OnDialogOptionPressed<String> scriptAddListener;
 
     @NonNull
     @Override
@@ -55,11 +56,12 @@ public class DialogoAccessPassword extends DialogFragment {
                 WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(otwr.getId())
                         .observe(getActivity(), status -> {
                             if (status != null && status.getState().isFinished()) {
-                                dismiss();
                                 if (!status.getOutputData().getString("result").equals("")) {
                                     ServerListFragment.connection = null;
-                                    //Toast.makeText(getActivity(), getResources().getString(R.string.authFail), Toast.LENGTH_LONG).show();
+                                    scriptAddListener.onYesPressed("fail","");
+                                    dismiss();
                                 } else {
+                                    scriptAddListener.onYesPressed("succesful","");
                                     ServerListFragment.selectedServer.setPassword(password);
                                     Navigation.findNavController(v).navigate(R.id.action_serverListFragment_to_serverManagmentFragment);
                                     //Toast.makeText(getActivity(), getResources().getString(R.string.authSuccessful), Toast.LENGTH_LONG).show();
