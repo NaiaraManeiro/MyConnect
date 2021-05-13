@@ -45,6 +45,9 @@
         <action
             android:id="@+id/action_filesFragment_to_fileInfoFragment"
             app:destination="@id/fileInfoFragment" />
+        <action
+            android:id="@+id/action_filesFragment_self"
+            app:destination="@id/filesFragment" />
     </fragment>
     <fragment
         android:id="@+id/serverInfoFragment"

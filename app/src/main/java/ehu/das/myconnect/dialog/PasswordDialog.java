@@ -76,9 +76,9 @@ public class PasswordDialog extends DialogFragment {
                                 if (status != null && status.getState().isFinished()) {
                                     String result = status.getOutputData().getString("result");
                                     if (result.equals("authFail")) {
-                                        Toast.makeText(getContext(), getString(R.string.authFail), Toast.LENGTH_LONG).show();
+                                        //Toast.makeText(getContext(), getString(R.string.authFail), Toast.LENGTH_LONG).show();
                                     } else if (result.equals("failConnect")) {
-                                        Toast.makeText(getContext(), getString(R.string.sshFailConnect), Toast.LENGTH_LONG).show();
+                                        //Toast.makeText(getContext(), getString(R.string.sshFailConnect), Toast.LENGTH_LONG).show();
                                     } else {
                                         dismiss();
                                         Bundle bundle = new Bundle();
