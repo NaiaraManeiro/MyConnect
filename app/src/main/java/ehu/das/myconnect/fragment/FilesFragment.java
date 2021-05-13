@@ -218,8 +218,8 @@ public class FilesFragment extends Fragment implements OnClickRecycleView {
                         } else {
                             String[] lines = result.split(",");
                             TextView path = getActivity().findViewById(R.id.path);
-                            //path.setText(lines[0]);
-                            path.setText("/storage/emulated/0");
+                            path.setText(lines[0]);
+                            //path.setText("/storage/emulated/0");
 
                             Data data1 = new Data.Builder()
                                     .putString("action", "ls -l "+path.getText().toString())

@@ -29,18 +29,20 @@ import java.util.List;
 
 import ehu.das.myconnect.R;
 import ehu.das.myconnect.dialog.DialogoAccessPassword;
+import ehu.das.myconnect.dialog.LoadingDialog;
 import ehu.das.myconnect.dialog.OnDialogOptionPressed;
 import ehu.das.myconnect.list.ServerListAdapter;
 import ehu.das.myconnect.service.SSHConnector;
 import ehu.das.myconnect.service.ServerWorker;
 
 
-public class ServerListFragment extends Fragment implements OnDialogOptionPressed<String> {
+public class ServerListFragment extends Fragment implements OnDialogOptionPressed<String>, ILoading {
 
     public static SSHConnector connection;
     private String nombreUsuario = "Naiara";
     public static List<Server> serverList;
     public static Server selectedServer = null;
+    public LoadingDialog loadingDialog;
 
     public ServerListFragment() {}
 
@@ -54,6 +56,7 @@ public class ServerListFragment extends Fragment implements OnDialogOptionPresse
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+     //   startLoading();
         View v = inflater.inflate(R.layout.fragment_server_list, container, false);
         RecyclerView serverListRV = v.findViewById(R.id.serverListRV);
         serverListRV.bringToFront();
@@ -139,6 +142,8 @@ public class ServerListFragment extends Fragment implements OnDialogOptionPresse
             DialogoAccessPassword d = new DialogoAccessPassword();
             d.scriptAddListener = this;
             d.v = getView();
+            d.serverListFragment = this;
+            d.loadingListener = this;
             d.show(getActivity().getSupportFragmentManager(),null);
     }
 
@@ -154,5 +159,14 @@ public class ServerListFragment extends Fragment implements OnDialogOptionPresse
     @Override
     public void onNoPressed(String data) {
 
+    }
+    public void startLoading() {
+        loadingDialog = new LoadingDialog();
+        loadingDialog.setCancelable(false);
+        loadingDialog.show(getActivity().getSupportFragmentManager(), "loading");
+    }
+
+    public void stopLoading() {
+        loadingDialog.dismiss();
     }
 }

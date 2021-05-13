@@ -1,5 +1,6 @@
 package ehu.das.myconnect.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -23,6 +24,7 @@ import java.util.List;
 
 import ehu.das.myconnect.R;
 import ehu.das.myconnect.dialog.DialogoAccessPassword;
+import ehu.das.myconnect.dialog.LoadingDialog;
 import ehu.das.myconnect.dialog.OnDialogOptionPressed;
 import ehu.das.myconnect.list.ServerListReducedAdapter;
 import ehu.das.myconnect.service.SSHCommandWorker;
@@ -30,7 +32,9 @@ import ehu.das.myconnect.service.SSHConnectionWorker;
 
 import static ehu.das.myconnect.fragment.ServerListFragment.serverList;
 
-public class ServerManagmentFragment extends Fragment implements OnDialogOptionPressed<String> {
+public class ServerManagmentFragment extends Fragment implements OnDialogOptionPressed<String>, ILoading {
+
+    public LoadingDialog loadingDialog;
 
     public ServerManagmentFragment() {
         // Required empty public constructor
@@ -57,6 +61,11 @@ public class ServerManagmentFragment extends Fragment implements OnDialogOptionP
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+/*        ImageButton disconnectButton = getActivity().findViewById(R.id.disconnectServer);
+        disconnectButton.setColorFilter(Color.WHITE);
+        ImageButton configButton = getActivity().findViewById(R.id.disconnectServer);
+        configButton.setColorFilter(Color.WHITE);
+        RecyclerView serverListRV = getActivity().findViewById(R.id.serverListRV);*/
         RecyclerView serverListRV = getActivity().findViewById(R.id.serverListRV);
         /**
         List<Server> serverList = new ArrayList<>();
@@ -98,12 +107,24 @@ public class ServerManagmentFragment extends Fragment implements OnDialogOptionP
         DialogoAccessPassword d = new DialogoAccessPassword();
         d.scriptAddListener = this;
         d.recreate = true;
-        d.serverManagmentFragment = this;
+        d.loadingListener = this;
         d.position = position;
         d.show(getActivity().getSupportFragmentManager(),"");
     }
 
     public void recreateFragment() {
         getActivity().recreate();
+    }
+
+    @Override
+    public void startLoading() {
+        loadingDialog = new LoadingDialog();
+        loadingDialog.setCancelable(false);
+        loadingDialog.show(getActivity().getSupportFragmentManager(), "loading");
+    }
+
+    @Override
+    public void stopLoading() {
+        loadingDialog.dismiss();
     }
 }

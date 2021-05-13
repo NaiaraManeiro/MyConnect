@@ -21,6 +21,7 @@ import androidx.work.WorkManager;
 
 import ehu.das.myconnect.R;
 import ehu.das.myconnect.fragment.FilesFragment;
+import ehu.das.myconnect.fragment.ILoading;
 import ehu.das.myconnect.fragment.Server;
 import ehu.das.myconnect.fragment.ServerListFragment;
 import ehu.das.myconnect.fragment.ServerManagmentFragment;
@@ -36,6 +37,8 @@ public class DialogoAccessPassword extends DialogFragment {
     public boolean recreate = false;
     public ServerManagmentFragment serverManagmentFragment;
     public int position;
+    public ServerListFragment serverListFragment;
+    public ILoading loadingListener;
 
     @NonNull
     @Override
@@ -49,6 +52,8 @@ public class DialogoAccessPassword extends DialogFragment {
         alert.setPositiveButton("Access", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                dismiss();
+                loadingListener.startLoading();
                 String password = passwordField.getText().toString();
                 Server old = ServerListFragment.selectedServer;
                 if (recreate) {
@@ -83,6 +88,7 @@ public class DialogoAccessPassword extends DialogFragment {
                                     }
                                     //Toast.makeText(getActivity(), getResources().getString(R.string.authSuccessful), Toast.LENGTH_LONG).show();
                                 }
+                                loadingListener.stopLoading();
                             }
                         });
                 WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
