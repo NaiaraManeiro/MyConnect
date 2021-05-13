@@ -2,6 +2,7 @@ package ehu.das.myconnect.service;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.work.Data;
@@ -23,7 +24,9 @@ public class SSHConnectionWorker extends Worker {
         SSHConnector sshConnector = new SSHConnector();
         String exception = "";
         try {
+            Log.i("ssh", "usuario: " + getInputData().getString("user"));
             exception = sshConnector.connect(getInputData().getString("user"), getInputData().getString("password"), getInputData().getString("host"), getInputData().getInt("port",22), getInputData().getBoolean("keyPem", false));
+            Log.i("ssh", "exception: " + exception);
             if (!exception.equals("")) {
                 exception = "fail";
             }

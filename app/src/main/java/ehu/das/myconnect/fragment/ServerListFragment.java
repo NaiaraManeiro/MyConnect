@@ -145,9 +145,9 @@ public class ServerListFragment extends Fragment implements OnDialogOptionPresse
     @Override
     public void onYesPressed(String data1, String data2) {
         if (data1.equals("fail")) {
-            Toast.makeText(getContext(), getResources().getString(R.string.authFail), Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), getResources().getString(R.string.authFail), Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(getContext(), getResources().getString(R.string.authSuccessful), Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), getResources().getString(R.string.authSuccessful), Toast.LENGTH_SHORT).show();
         }
     }
 
