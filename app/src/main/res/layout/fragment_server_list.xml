@@ -64,6 +64,14 @@
                     android:textSize="36sp"
                     android:textStyle="bold" />
 
+                <TextView
+                    android:id="@+id/textView24"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Servers"
+                    android:textColor="#FFFFFF" />
+
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
