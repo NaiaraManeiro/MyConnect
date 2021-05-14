@@ -17,6 +17,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -124,12 +126,15 @@ public class ServerListFragment extends Fragment implements OnDialogOptionPresse
         if (extras != null) {
             userName = extras.getString("userName");
         }*/
-
+        ImageView logout = getActivity().findViewById(R.id.logout);
+        logout.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.action_serverListFragment_to_loginFragment);
+        });
         //Obtenemos los datos de los servidores del usuario
         RecyclerView serverListRV = getActivity().findViewById(R.id.serverListRV);
         serverListRV.bringToFront();
 
-        Button addServer = getActivity().findViewById(R.id.addServer);
+        ImageView addServer = getActivity().findViewById(R.id.addServer);
         addServer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
