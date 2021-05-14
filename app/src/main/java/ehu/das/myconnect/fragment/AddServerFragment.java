@@ -25,9 +25,6 @@ import android.widget.Toast;
 
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.regex.Pattern;
 
 import ehu.das.myconnect.R;
@@ -36,9 +33,9 @@ import ehu.das.myconnect.service.ServerWorker;
 
 public class AddServerFragment extends Fragment {
 
-    private String nombreUsuario = "Naiara";
+    private final String userName = "Naiara";
     private Switch keyPemSwitch;
-    private int PICKFILE_RESULT_CODE = 12;
+    private final int PICKFILE_RESULT_CODE = 12;
     private String key;
 
     public AddServerFragment() {}
@@ -61,10 +58,10 @@ public class AddServerFragment extends Fragment {
 
         /*Bundle extras = this.getArguments();
         if (extras != null) {
-            nombreUsuario = extras.getString("nombreUsuario");
+            userName = extras.getString("userName");
         }*/
 
-        EditText contrasenaCaja = getActivity().findViewById(R.id.contrasena);
+        EditText passwordBox = getActivity().findViewById(R.id.contrasena);
         keyPemSwitch = getActivity().findViewById(R.id.keyPem);
         Button keyPemButton = getActivity().findViewById(R.id.keyPemButton);
         keyPemButton.setEnabled(false);
@@ -74,10 +71,10 @@ public class AddServerFragment extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     keyPemButton.setEnabled(true);
-                    contrasenaCaja.setEnabled(false);
+                    passwordBox.setEnabled(false);
                 } else {
                     keyPemButton.setEnabled(false);
-                    contrasenaCaja.setEnabled(true);
+                    passwordBox.setEnabled(true);
                 }
             }
         });
@@ -92,62 +89,62 @@ public class AddServerFragment extends Fragment {
             }
         });
 
-        EditText usuarioCaja = getActivity().findViewById(R.id.usuario);
-        EditText hostCaja = getActivity().findViewById(R.id.host);
-        EditText puertoCaja = getActivity().findViewById(R.id.puerto);
-        EditText servidorCaja = getActivity().findViewById(R.id.nombreServidor);
+        EditText userBox = getActivity().findViewById(R.id.usuario);
+        EditText hostBox = getActivity().findViewById(R.id.host);
+        EditText portBox = getActivity().findViewById(R.id.puerto);
+        EditText serverBox = getActivity().findViewById(R.id.nombreServidor);
 
-        Button anadir = getActivity().findViewById(R.id.anadirServidor);
-        anadir.setOnClickListener(new View.OnClickListener() {
+        Button add = getActivity().findViewById(R.id.anadirServidor);
+        add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String usuario = usuarioCaja.getText().toString();
-                String host = hostCaja.getText().toString();
-                int puerto = Integer.parseInt(puertoCaja.getText().toString());
-                String contrasena = contrasenaCaja.getText().toString();
-                String servidor = servidorCaja.getText().toString();
+                String user = userBox.getText().toString();
+                String host = hostBox.getText().toString();
+                int port = Integer.parseInt(portBox.getText().toString());
+                String password = passwordBox.getText().toString();
+                String server = serverBox.getText().toString();
 
                 //Validamos los datos
-                if (usuario.equals("")) {
+                if (user.equals("")) {
                     Toast.makeText(getContext(), getString(R.string.usuarioVacio), Toast.LENGTH_SHORT).show();
                 } else if (!Pattern.compile("^([0-9]{1,3})\\.([0-9]{1,3})\\.([0-9]{1,3})\\.([0-9]{1,3})$").matcher(host).matches()) {
                     Toast.makeText(getContext(), getString(R.string.hostPattern), Toast.LENGTH_SHORT).show();
-                    hostCaja.setText("");
-                } else if (contrasena.equals("") && !keyPemSwitch.isChecked()) {
+                    hostBox.setText("");
+                } else if (password.equals("") && !keyPemSwitch.isChecked()) {
                     Toast.makeText(getContext(), getString(R.string.contraVacia), Toast.LENGTH_SHORT).show();
-                } else if (servidor.equals("")) {
+                } else if (server.equals("")) {
                     Toast.makeText(getContext(), getString(R.string.servidorVacio), Toast.LENGTH_SHORT).show();
-                } else if (servidor.length() > 20) {
+                } else if (server.length() > 20) {
                     Toast.makeText(getContext(), getString(R.string.servidorLargo), Toast.LENGTH_SHORT).show();
                 } else {
                     Boolean keyPem = keyPemSwitch.isChecked();
 
                     if (keyPem) {
-                        contrasena = key;
+                        password = key;
                     }
 
                     //Añadimos los datos a la bd en caso de que se pueda realizar el ssh
-                    Data datos = new Data.Builder()
-                            .putString("funcion", "addServer")
-                            .putString("usuario", usuario)
+                    Data data = new Data.Builder()
+                            .putString("action", "addServer")
+                            .putString("user", user)
                             .putString("host", host)
-                            .putString("contrasena", contrasena)
-                            .putInt("puerto", puerto)
-                            .putString("nombreServidor", servidor)
-                            .putString("nombreUsuario", nombreUsuario)
+                            .putString("password", password)
+                            .putInt("port", port)
+                            .putString("serverName", server)
+                            .putString("userName", userName)
                             .putBoolean("keyPem", keyPem)
                             .build();
 
                     OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(ServerWorker.class)
-                            .setInputData(datos)
+                            .setInputData(data)
                             .build();
                     WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(otwr.getId())
                             .observe(getActivity(), status -> {
                                 if (status != null && status.getState().isFinished()) {
-                                    String result = status.getOutputData().getString("resultado");
+                                    String result = status.getOutputData().getString("result");
                                     if (result.equals("Error")) {
                                         Toast.makeText(getContext(), getString(R.string.servidorExistente), Toast.LENGTH_SHORT).show();
-                                        servidorCaja.setText("");
+                                        serverBox.setText("");
                                     } else if (result.equals("authFail")) {
                                         Toast.makeText(getContext(), getString(R.string.authFail), Toast.LENGTH_LONG).show();
                                     } else if (result.equals("failConnect")) {
@@ -163,8 +160,8 @@ public class AddServerFragment extends Fragment {
             }
         });
 
-        Button volver = getActivity().findViewById(R.id.volverAdd);
-        volver.setOnClickListener(new View.OnClickListener() {
+        Button back = getActivity().findViewById(R.id.volverAdd);
+        back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Navigation.findNavController(v).popBackStack();

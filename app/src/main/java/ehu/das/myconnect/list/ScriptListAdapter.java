@@ -1,6 +1,6 @@
 package ehu.das.myconnect.list;
 
-import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +11,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import ehu.das.myconnect.R;
-import ehu.das.myconnect.Server;
+import ehu.das.myconnect.fragment.ScriptsFragment;
 
 public class ScriptListAdapter extends RecyclerView.Adapter<ScriptElementViewHolder> {
 
+    public ScriptsFragment fragment;
     private List<String> scriptNames;
     private List<String> scriptCmds;
 
@@ -35,10 +36,16 @@ public class ScriptListAdapter extends RecyclerView.Adapter<ScriptElementViewHol
     public void onBindViewHolder(@NonNull ScriptElementViewHolder holder, int position) {
         holder.scriptName.setText(scriptNames.get(position));
         holder.scriptCmd.setText(scriptCmds.get(position));
+        holder.run.setOnClickListener(v -> {
+            Log.i("ls", "running");
+            fragment.executeScript(scriptCmds.get(position), scriptNames.get(position));
+        });
     }
 
     @Override
     public int getItemCount() {
         return scriptNames.size();
     }
+
+
 }

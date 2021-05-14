@@ -13,9 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.navigation.Navigation;
 import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
@@ -27,19 +25,19 @@ import org.json.JSONObject;
 import java.util.regex.Pattern;
 
 import ehu.das.myconnect.R;
-import ehu.das.myconnect.dialog.DialogoContrasena;
-import ehu.das.myconnect.dialog.DialogoEliminar;
+import ehu.das.myconnect.dialog.DialogoAccessPassword;
+import ehu.das.myconnect.dialog.RemoveDialog;
 import ehu.das.myconnect.service.ServerWorker;
 
 public class ServerInfoFragment extends Fragment {
 
-    private Button editar;
-    private String nombreServer;
-    private String nombreUsuario;
-    private EditText nombreServidor;
-    private EditText usuarioServidor;
-    private EditText hostServidor;
-    private EditText puertoServidor;
+    private Button edit;
+    private String serverName;
+    private String userName;
+    private EditText serveNameBox;
+    private EditText serverUserBox;
+    private EditText serverHostBox;
+    private EditText serverPortBox;
 
     public ServerInfoFragment() {}
 
@@ -50,8 +48,8 @@ public class ServerInfoFragment extends Fragment {
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            nombreServer = bundle.getString("serverName");
-            nombreUsuario = bundle.getString("nombreUsuario");
+            serverName = bundle.getString("serverName");
+            userName = bundle.getString("userName");
         }
     }
 
@@ -67,63 +65,60 @@ public class ServerInfoFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        nombreServidor = getActivity().findViewById(R.id.nombreServidorInfo);
-        nombreServidor.setEnabled(false);
-        usuarioServidor = getActivity().findViewById(R.id.usuarioInfo);
-        usuarioServidor.setEnabled(false);
-        hostServidor = getActivity().findViewById(R.id.hostInfo);
-        hostServidor.setEnabled(false);
-        puertoServidor = getActivity().findViewById(R.id.puertoInfo);
-        puertoServidor.setEnabled(false);
+        serveNameBox = getActivity().findViewById(R.id.nombreServidorInfo);
+        serveNameBox.setEnabled(false);
+        serverUserBox = getActivity().findViewById(R.id.usuarioInfo);
+        serverUserBox.setEnabled(false);
+        serverHostBox = getActivity().findViewById(R.id.hostInfo);
+        serverHostBox.setEnabled(false);
+        serverPortBox = getActivity().findViewById(R.id.puertoInfo);
+        serverPortBox.setEnabled(false);
 
         //Obtenemos los datos del servidor
         obtenerDatosServidor();
 
         ((AppCompatActivity) getActivity()).setSupportActionBar(getActivity().findViewById(R.id.labarra));
-        editar = getActivity().findViewById(R.id.editarServidorInfo);
-        editar.setVisibility(View.INVISIBLE);
+        edit = getActivity().findViewById(R.id.editarServidorInfo);
+        edit.setVisibility(View.INVISIBLE);
 
-        editar.setOnClickListener(new View.OnClickListener() {
+        edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String nombre = nombreServidor.getText().toString();
-                String usuario = usuarioServidor.getText().toString();
-                String host = hostServidor.getText().toString();
-                int puerto = Integer.parseInt(puertoServidor.getText().toString());
+                String name = serveNameBox.getText().toString();
+                String user = serverUserBox.getText().toString();
+                String host = serverHostBox.getText().toString();
+                int port = Integer.parseInt(serverPortBox.getText().toString());
 
                 //Validamos los datos
-                if (usuario.equals("")) {
+                if (user.equals("")) {
                     Toast.makeText(getContext(), getString(R.string.usuarioVacio), Toast.LENGTH_SHORT).show();
                 } else if (!Pattern.compile("^([0-9]{1,3})\\.([0-9]{1,3})\\.([0-9]{1,3})\\.([0-9]{1,3})$").matcher(host).matches()) {
                     Toast.makeText(getContext(), getString(R.string.hostPattern), Toast.LENGTH_SHORT).show();
-                    hostServidor.setText("");
-                } else if (nombre.equals("")) {
+                    serverHostBox.setText("");
+                } else if (name.equals("")) {
                     Toast.makeText(getContext(), getString(R.string.servidorVacio), Toast.LENGTH_SHORT).show();
-                } else if (nombre.length() > 20) {
+                } else if (name.length() > 20) {
                     Toast.makeText(getContext(), getString(R.string.servidorLargo), Toast.LENGTH_SHORT).show();
                 } else {
                     //Pedimos la contraseña para asegurar que se puede hacer ssh
-                    FragmentManager fm = getActivity().getSupportFragmentManager();
-                    DialogFragment dialogoContrasena = new DialogoContrasena();
+                    DialogoAccessPassword dialogoAccessPassword = new DialogoAccessPassword();
                     Bundle bundle = new Bundle();
-                    bundle.putString("nombreServerViejo", nombreServer);
-                    bundle.putString("nombreServer", nombre);
-                    bundle.putString("usuario", usuario);
+                    bundle.putString("oldServerName", serverName);
+                    bundle.putString("serverName", name);
+                    bundle.putString("user", user);
                     bundle.putString("host", host);
-                    bundle.putString("nombreUsuario", nombreUsuario);
-                    bundle.putInt("puerto", puerto);
-                    dialogoContrasena.setArguments(bundle);
-                    dialogoContrasena.show(fm, "contrasena");
+                    bundle.putString("userName", userName);
+                    bundle.putInt("port", port);
+                    dialogoAccessPassword.setArguments(bundle);
+                    dialogoAccessPassword.show(getActivity().getSupportFragmentManager(), "contrasena");
 
-                    fm.executePendingTransactions();
-
-                    nombreServer = nombre;
+                    serverName = name;
                 }
             }
         });
 
-        Button volver = getActivity().findViewById(R.id.volverInfo);
-        volver.setOnClickListener(new View.OnClickListener() {
+        Button back = getActivity().findViewById(R.id.volverInfo);
+        back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Navigation.findNavController(v).popBackStack();
@@ -142,54 +137,55 @@ public class ServerInfoFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.eliminar) {
-            DialogoEliminar dialogoEliminar = new DialogoEliminar();
+            RemoveDialog dialogoEliminar = new RemoveDialog();
             Bundle bundle = new Bundle();
             dialogoEliminar.view = getView();
-            bundle.putString("nombreServer", nombreServer);
+            bundle.putString("serverName", serverName);
+            bundle.putString("where", "server");
             dialogoEliminar.setArguments(bundle);
             dialogoEliminar.show(getActivity().getSupportFragmentManager(), "eliminar");
         } if (id == R.id.edit) {
-            if (editar.getVisibility() == View.VISIBLE) {
-                editar.setVisibility(View.INVISIBLE);
-                nombreServidor.setEnabled(false);
-                usuarioServidor.setEnabled(false);
-                hostServidor.setEnabled(false);
-                puertoServidor.setEnabled(false);
+            if (edit.getVisibility() == View.VISIBLE) {
+                edit.setVisibility(View.INVISIBLE);
+                serveNameBox.setEnabled(false);
+                serverUserBox.setEnabled(false);
+                serverHostBox.setEnabled(false);
+                serverPortBox.setEnabled(false);
             } else {
-                editar.setVisibility(View.VISIBLE);
-                nombreServidor.setEnabled(true);
-                usuarioServidor.setEnabled(true);
-                hostServidor.setEnabled(true);
-                puertoServidor.setEnabled(true);
+                edit.setVisibility(View.VISIBLE);
+                serveNameBox.setEnabled(true);
+                serverUserBox.setEnabled(true);
+                serverHostBox.setEnabled(true);
+                serverPortBox.setEnabled(true);
             }
         }
         return super.onOptionsItemSelected(item);
     }
 
     private void obtenerDatosServidor() {
-        Data datos = new Data.Builder()
-                .putString("funcion", "infoServer")
-                .putString("nombreServidor", nombreServer)
+        Data data = new Data.Builder()
+                .putString("action", "infoServer")
+                .putString("serverName", serverName)
                 .build();
 
         OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(ServerWorker.class)
-                .setInputData(datos)
+                .setInputData(data)
                 .build();
         WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(otwr.getId())
                 .observe(getActivity(), status -> {
                     if (status != null && status.getState().isFinished()) {
-                        String result = status.getOutputData().getString("resultado");
+                        String result = status.getOutputData().getString("result");
                         if (!result.equals("")) {
                             try {
                                 JSONObject jsonObject = new JSONObject(result);
-                                String usuario = jsonObject.get("usuario").toString();
+                                String user = jsonObject.get("user").toString();
                                 String host = jsonObject.get("host").toString();
-                                String puerto = jsonObject.get("puerto").toString();
+                                String port = jsonObject.get("port").toString();
 
-                                nombreServidor.setText(nombreServer);
-                                usuarioServidor.setText(usuario);
-                                hostServidor.setText(host);
-                                puertoServidor.setText(puerto);
+                                serveNameBox.setText(serverName);
+                                serverUserBox.setText(user);
+                                serverHostBox.setText(host);
+                                serverPortBox.setText(port);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

@@ -17,7 +17,7 @@ public class SSHConnector {
     /**
      * Constante que representa un enter.
      */
-    private static final String ENTER_KEY = "n";
+    private static final String ENTER_KEY = ",";
     /**
      * Sesión SSH establecida.
      */
@@ -41,6 +41,7 @@ public class SSHConnector {
         if (this.session == null || !this.session.isConnected()) {
             JSch jsch = new JSch();
             try {
+                jsch.setKnownHosts("~/.ssh/known_hosts");
                 if (keyPem) {
                     jsch.addIdentity(password);
                 }
@@ -52,8 +53,12 @@ public class SSHConnector {
                 }
 
                 // Parametro para no validar key de conexion.
-                this.session.setConfig("StrictHostKeyChecking", "no");
-
+                java.util.Properties config = new java.util.Properties();
+                config.put("StrictHostKeyChecking", "no");
+                config.put("PreferredAuthentications", "publickey,keyboard-interactive,password");
+                config.put("MAXAuthTries", "3");
+                this.session.setConfig(config);
+                this.session.setOutputStream(System.out);
                 this.session.connect();
                 return "";
             } catch (JSchException e) {

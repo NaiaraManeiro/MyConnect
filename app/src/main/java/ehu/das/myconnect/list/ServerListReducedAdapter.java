@@ -11,17 +11,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import ehu.das.myconnect.R;
-import ehu.das.myconnect.Server;
+import ehu.das.myconnect.dialog.DialogoAccessPassword;
+import ehu.das.myconnect.fragment.Server;
+import ehu.das.myconnect.fragment.ServerManagmentFragment;
 
 public class ServerListReducedAdapter extends RecyclerView.Adapter<ServerListReducedElementViewHolder> {
 
     private List<Server> servers;
     private Server connectedServer;
+    public ServerManagmentFragment fragment;
 
-    public ServerListReducedAdapter(List<Server> servers, Server connectedServer) {
+    public ServerListReducedAdapter(List<Server> servers, Server connectedServer, ServerManagmentFragment fragment) {
         this.servers = servers;
         this.connectedServer = connectedServer;
+        this.fragment = fragment;
     }
+
 
     @NonNull
     @Override
@@ -42,6 +47,10 @@ public class ServerListReducedAdapter extends RecyclerView.Adapter<ServerListRed
         } else {
             holder.serverCircle.setColorFilter(Color.RED);
         }
+        holder.itemView.setOnClickListener(v ->
+        {
+            fragment.changeServer(position);
+        });
     }
 
     @Override

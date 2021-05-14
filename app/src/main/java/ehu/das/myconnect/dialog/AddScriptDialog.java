@@ -41,6 +41,7 @@ public class AddScriptDialog extends DialogFragment {
                 dismiss();
             }
         });
+        alertDialog.setView(addScriptLayout);
         return alertDialog.create();
     }
 }
