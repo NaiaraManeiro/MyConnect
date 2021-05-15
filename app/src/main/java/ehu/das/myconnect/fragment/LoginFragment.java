@@ -1,4 +1,4 @@
-package ehu.das.myconnect.dialog;
+package ehu.das.myconnect.fragment;
 
 import android.os.Bundle;
 
@@ -33,9 +33,16 @@ public class LoginFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Button login = getActivity().findViewById(R.id.login);
+        Button login = getActivity().findViewById(R.id.login_login);
         login.setOnClickListener(v -> {
             Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_serverListFragment);
+        });
+        Button register = getActivity().findViewById(R.id.signup_login);
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_registerFragment);
+            }
         });
     }
 }

@@ -74,7 +74,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Login"
+                    android:text="Register"
                     android:textColor="#FFFFFF"
                     android:textSize="14sp"
                     android:textStyle="normal" />
@@ -87,12 +87,15 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:padding="40dp">
+            android:paddingLeft="40dp"
+            android:paddingTop="40dp"
+            android:paddingRight="40dp"
+            android:paddingBottom="40dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="0dp"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -108,7 +111,7 @@
                     android:layout_height="50dp"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:hint="username or email"
+                    android:hint="username"
                     android:inputType="textPersonName"
                     android:shadowColor="#000000"
                     android:textColor="#000000"
@@ -118,11 +121,61 @@
             <TextView
                 android:id="@+id/textView18"
                 android:layout_width="match_parent"
-                android:layout_height="30dp" />
+                android:layout_height="0dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_weight="0"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imageView6"
+                    android:layout_width="114dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:src="@drawable/email" />
+
+                <EditText
+                    android:id="@+id/editTextTextPersonName2"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="email"
+                    android:inputType="textPersonName" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="51dp"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imageView4"
+                    android:layout_width="114dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:src="@drawable/account"
+                    tools:srcCompat="@drawable/password" />
+
+                <EditText
+                    android:id="@+id/editTextTextPersonName3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="password"
+                    android:inputType="textPersonName" />
+
+             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp">
 
                 <ImageView
                     android:id="@+id/imageView2"
@@ -137,7 +190,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:hint="password"
+                    android:hint="repeat password"
                     android:inputType="textPassword"
                     android:shadowColor="#000000"
                     android:textColor="#000000"
@@ -145,22 +198,12 @@
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/textView21"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="right"
-                android:text="Forgot your password?"
-                android:textColor="#000000"
-                android:textSize="14sp" />
-
             <Button
-                android:id="@+id/login_login"
+                android:id="@+id/signup_register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
-                android:text="LOGIN"
+                android:layout_marginTop="15dp"
+                android:text="signup"
                 android:textColor="#000000"
                 android:textSize="18sp"
                 app:backgroundTint="#FFFFFF"
@@ -204,10 +247,10 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/signup_login"
+                android:id="@+id/login_register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="signup"
+                android:text="LOGIN"
                 android:textColor="#000000"
                 android:textSize="18sp"
                 app:backgroundTint="#FFFFFF"
