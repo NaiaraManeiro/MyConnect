@@ -14,6 +14,7 @@ import androidx.work.WorkManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,17 +23,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ehu.das.myconnect.R;
+import ehu.das.myconnect.dialog.LoadingDialog;
 import ehu.das.myconnect.dialog.OnClickRecycleView;
 import ehu.das.myconnect.dialog.CreateFolderFileDialog;
+import ehu.das.myconnect.dialog.OnDialogDismiss;
 import ehu.das.myconnect.list.FilesListAdapter;
 import ehu.das.myconnect.service.SSHWorker;
 
-public class FilesFragment extends Fragment implements OnClickRecycleView {
+public class FilesFragment extends Fragment implements OnClickRecycleView, OnDialogDismiss<String> {
 
-    private String user;
-    private String host;
-    private String password;
-    private int port;
     private List<String> fileTypes;
     private List<String> fileNames;
     private String path;
@@ -57,10 +56,10 @@ public class FilesFragment extends Fragment implements OnClickRecycleView {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        user = ServerListFragment.selectedServer.getUser();
-        host = ServerListFragment.selectedServer.getHost();
-        password = ServerListFragment.selectedServer.getPassword();
-        port = ServerListFragment.selectedServer.getPort();
+        Bundle extras = this.getArguments();
+        if (extras != null) {
+            path = extras.getString("path");
+        }
 
         if (path == null) {
             //Actualizamos el path
@@ -76,16 +75,54 @@ public class FilesFragment extends Fragment implements OnClickRecycleView {
 
         //Para crear una nueva carpeta o archivo
         ImageView add = getActivity().findViewById(R.id.addImage);
+        OnDialogDismiss<String> fragment = this;
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 TextView path = getActivity().findViewById(R.id.path);
                 CreateFolderFileDialog createFolderFileDialog = new CreateFolderFileDialog();
+                createFolderFileDialog.onDialogDismiss = fragment;
                 Bundle bundle = new Bundle();
                 createFolderFileDialog.view = getView();
                 bundle.putString("path", path.getText().toString());
                 createFolderFileDialog.setArguments(bundle);
                 createFolderFileDialog.show(getActivity().getSupportFragmentManager(), "create");
+            }
+        });
+
+        //Para moverse al path escrito
+        ImageView go = getActivity().findViewById(R.id.go);
+        go.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String pathViejo = path;
+                EditText pathText = getActivity().findViewById(R.id.path);
+                String pathNuevo = pathText.getText().toString();
+
+                //Primero comprobamos si el path existe
+                Data data = new Data.Builder()
+                        .putString("action", "[ -d "+ pathNuevo +" ] && echo 'existe'")
+                        .build();
+                OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(SSHWorker.class)
+                        .setInputData(data)
+                        .build();
+                WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(otwr.getId())
+                        .observe(getActivity(), status -> {
+                            if (status != null && status.getState().isFinished()) {
+                                String result = status.getOutputData().getString("result");
+                                if (!result.equals("existe")) {
+                                    Toast.makeText(getContext(), getString(R.string.wrongPath), Toast.LENGTH_SHORT).show();
+                                    TextView oldPath = getActivity().findViewById(R.id.path);
+                                    oldPath.setText(pathViejo);
+                                } else {
+                                    Data data1 = new Data.Builder()
+                                            .putString("action", "ls -l "+ path)
+                                            .build();
+                                    showData(data1);
+                                }
+                            }
+                        });
+                WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
             }
         });
 
@@ -159,7 +196,7 @@ public class FilesFragment extends Fragment implements OnClickRecycleView {
                                 }
                             }
 
-                            if (lines.length - 1 == fileNames.size()) {
+                            if (lines.length - 1 == fileNames.size() || lines.length == fileNames.size()) {
                                 FilesListAdapter fla = new FilesListAdapter(fileNames, fileTypes, this);
                                 rv.setAdapter(fla);
                                 GridLayoutManager layout = new GridLayoutManager(getActivity(), 4, GridLayoutManager.VERTICAL, false);
@@ -206,5 +243,15 @@ public class FilesFragment extends Fragment implements OnClickRecycleView {
                     }
                 });
         WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
+    }
+
+    @Override
+    public void onDismiss(String path) {
+        Data data = new Data.Builder()
+                .putString("action", "ls -l "+path)
+                .build();
+
+        //Mostramos los archivos del path actual
+        showData(data);
     }
 }
