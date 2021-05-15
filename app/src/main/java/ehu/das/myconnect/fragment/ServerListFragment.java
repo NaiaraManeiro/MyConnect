@@ -22,6 +22,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -128,6 +130,7 @@ public class ServerListFragment extends Fragment implements OnDialogOptionPresse
         }*/
         ImageView logout = getActivity().findViewById(R.id.logout);
         logout.setOnClickListener(v -> {
+            FirebaseAuth.getInstance().signOut();
             Navigation.findNavController(v).navigate(R.id.action_serverListFragment_to_loginFragment);
         });
         //Obtenemos los datos de los servidores del usuario

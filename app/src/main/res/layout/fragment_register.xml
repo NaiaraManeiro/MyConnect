@@ -106,7 +106,7 @@
                     android:src="@drawable/account" />
 
                 <EditText
-                    android:id="@+id/editTextTextPersonName"
+                    android:id="@+id/registerUser"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_weight="1"
@@ -138,7 +138,7 @@
                     android:src="@drawable/email" />
 
                 <EditText
-                    android:id="@+id/editTextTextPersonName2"
+                    android:id="@+id/registerEmail"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_weight="1"
@@ -162,7 +162,7 @@
                     tools:srcCompat="@drawable/password" />
 
                 <EditText
-                    android:id="@+id/editTextTextPersonName3"
+                    android:id="@+id/registerPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -185,7 +185,7 @@
                     android:src="@drawable/password" />
 
                 <EditText
-                    android:id="@+id/editTextTextPassword"
+                    android:id="@+id/registerRepeatPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
