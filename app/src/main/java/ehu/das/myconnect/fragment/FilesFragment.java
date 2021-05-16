@@ -164,7 +164,7 @@ public class FilesFragment extends Fragment implements OnClickRecycleView, OnDia
             Bundle bundle = new Bundle();
             bundle.putString("path", completePath);
 
-            Navigation.findNavController(getView()).navigate(R.id.action_filesFragment_to_fileInfoFragment, bundle);
+            Navigation.findNavController(getView()).navigate(R.id.action_serverManagmentFragment_to_fileInfoFragment, bundle);
         }
     }
 

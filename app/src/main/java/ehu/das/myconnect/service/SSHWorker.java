@@ -43,6 +43,10 @@ public class SSHWorker  extends Worker {
         if (!exception.contains("Auth fail") && !exception.contains("failed to")) {
             try {
                 result = sshConnector.executeCommand(command);
+                if (command.contains("cat") && result.length() > 10240) {
+                    result += "error,";
+                    result = result.substring(0, Math.min(result.length(), 10239));
+                }
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             } catch (JSchException e) {

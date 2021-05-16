@@ -38,4 +38,6 @@
     <string name="folderCreated">The folder has been created!</string>
     <string name="fileCreated">The file has been created!</string>
     <string name="wrongPath">The writen path doesn\'t exist.</string>
+    <string name="bigFile">The file is too big, download it to see complete,</string>
+    <string name="saveDownload">Choose where to download the file:</string>
 </resources>

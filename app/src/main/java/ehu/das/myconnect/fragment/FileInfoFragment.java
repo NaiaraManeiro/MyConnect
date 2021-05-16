@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -27,16 +28,13 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 
 import ehu.das.myconnect.R;
+import ehu.das.myconnect.dialog.DialogoDescargas;
 import ehu.das.myconnect.dialog.RemoveDialog;
 import ehu.das.myconnect.list.FilesListAdapter;
 import ehu.das.myconnect.service.SSHWorker;
 
 public class FileInfoFragment extends Fragment {
 
-    private String user;
-    private String host;
-    private String password;
-    private int port;
     private String path;
     private Button save;
     private EditText file;
@@ -65,12 +63,6 @@ public class FileInfoFragment extends Fragment {
             path = extras.getString("path");
         }
 
-        user = ServerListFragment.selectedServer.getUser();
-        host = ServerListFragment.selectedServer.getHost();
-        password = ServerListFragment.selectedServer.getPassword();
-        port = ServerListFragment.selectedServer.getPort();
-
-
         ((AppCompatActivity) getActivity()).setSupportActionBar(getActivity().findViewById(R.id.labarra));
 
         save = getActivity().findViewById(R.id.saveFileButton);
@@ -98,11 +90,24 @@ public class FileInfoFragment extends Fragment {
                             Toast.makeText(getContext(), getString(R.string.sshFailConnect), Toast.LENGTH_LONG).show();
                         } else {
                             String[] lines = result.split(",");
+                            if (lines[0].equals("error")) {
+                                Toast.makeText(getContext(), getString(R.string.bigFile), Toast.LENGTH_LONG).show();
+                            }
                             String text = "";
                             for (String line : lines) {
                                 text += line + "\n";
                             }
                             file.setText(text);
+
+                            if (lines[0].equals("error")) {
+                                DialogoDescargas dialogoDescargas = new DialogoDescargas();
+                                Bundle b = new Bundle();
+                                b.putString("path", path);
+                                dialogoDescargas.setArguments(b);
+                                dialogoDescargas.show(getSupportFragmentManager(), "verIngrediente");
+                            }
+
+
                         }
                     }
                 });

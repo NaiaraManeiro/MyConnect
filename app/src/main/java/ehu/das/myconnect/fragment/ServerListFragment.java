@@ -39,7 +39,7 @@ import ehu.das.myconnect.service.ServerWorker;
 public class ServerListFragment extends Fragment implements OnDialogOptionPressed<String>, ILoading {
 
     public static SSHConnector connection;
-    private String nombreUsuario = "Naiara";
+    private String userName = "Naiara";
     public static List<Server> serverList;
     public static Server selectedServer = null;
     public LoadingDialog loadingDialog;
@@ -64,7 +64,7 @@ public class ServerListFragment extends Fragment implements OnDialogOptionPresse
 
         Data data = new Data.Builder()
                 .putString("action", "serverData")
-                .putString("userName", nombreUsuario)
+                .putString("userName", userName)
                 .build();
 
         OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(ServerWorker.class)

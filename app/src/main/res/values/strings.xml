@@ -68,4 +68,6 @@
     <string name="access_password">Access with password</string>
     <string name="authSuccessful">Authentication successful</string>
     <string name="wrongPath">No existe el path que has escrito.</string>
+    <string name="bigFile">El archivo es muy grande, si quiere verlo todo, descarguelo.</string>
+    <string name="saveDownload">Selecciona donde guardar la descarga:</string>
 </resources>

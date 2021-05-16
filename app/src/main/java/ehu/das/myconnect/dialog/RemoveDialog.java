@@ -102,7 +102,7 @@ public class RemoveDialog extends DialogFragment {
                                     bundle.putString("host", host);
                                     bundle.putString("password", password);
                                     bundle.putInt("port", port);
-                                    Navigation.findNavController(view).navigate(R.id.action_fileInfoFragment_to_filesFragment, bundle);
+                                    Navigation.findNavController(view).navigate(R.id.action_fileInfoFragment_to_serverManagmentFragment, bundle);
                                 }
                             });
                     WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
