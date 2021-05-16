@@ -24,6 +24,8 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.io.File;
 import java.util.regex.Pattern;
 
@@ -33,7 +35,6 @@ import ehu.das.myconnect.service.ServerWorker;
 
 public class AddServerFragment extends Fragment {
 
-    private final String userName = "Naiara";
     private Switch keyPemSwitch;
     private final int PICKFILE_RESULT_CODE = 12;
     private String key;
@@ -60,7 +61,6 @@ public class AddServerFragment extends Fragment {
         if (extras != null) {
             userName = extras.getString("userName");
         }*/
-
         EditText passwordBox = getActivity().findViewById(R.id.contrasena);
         keyPemSwitch = getActivity().findViewById(R.id.keyPem);
         Button keyPemButton = getActivity().findViewById(R.id.keyPemButton);
@@ -131,7 +131,7 @@ public class AddServerFragment extends Fragment {
                             .putString("password", password)
                             .putInt("port", port)
                             .putString("serverName", server)
-                            .putString("userName", userName)
+                            .putString("userName", LoginFragment.username)
                             .putBoolean("keyPem", keyPem)
                             .build();
 

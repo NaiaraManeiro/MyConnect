@@ -6,6 +6,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,6 +27,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import ehu.das.myconnect.R;
 import ehu.das.myconnect.dialog.LoadingDialog;
+import ehu.das.myconnect.service.ServerWorker;
 
 import static android.content.ContentValues.TAG;
 
@@ -31,12 +35,14 @@ import static android.content.ContentValues.TAG;
 public class LoginFragment extends Fragment {
 
     public static FirebaseUser user = null;
-    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private LoadingDialog loadingDialog;
+    public static String username = "";
+
     @Override
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         updateUI(currentUser);
     }
 
@@ -44,7 +50,7 @@ public class LoginFragment extends Fragment {
         if (currentUser != null) {
             user = currentUser;
             try {
-                Navigation.findNavController(getView()).navigate(R.id.action_loginFragment_to_serverListFragment);
+                getUsername(currentUser.getEmail());
             } catch (IllegalArgumentException e) {
 
             }
@@ -68,32 +74,51 @@ public class LoginFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         Button login = getActivity().findViewById(R.id.login_login);
         login.setOnClickListener(v -> {
-            EditText emailField = getActivity().findViewById(R.id.emailLogin);
+            loadingDialog = new LoadingDialog();
+            loadingDialog.show(getActivity().getSupportFragmentManager(), "loading");
+            EditText emailUserField = getActivity().findViewById(R.id.emailLogin);
             EditText passwordField = getActivity().findViewById(R.id.passwordLogin);
-            if (!emailField.getText().toString().contains("@") || !(emailField.getText().toString().length() > 0) || !emailField.getText().toString().contains(".")) {
-                Toast.makeText(getContext(), "Insert a valid email", Toast.LENGTH_SHORT).show();
+            if (!(emailUserField.getText().toString().length() > 0)) {
+                Toast.makeText(getContext(), "Insert an email or a username", Toast.LENGTH_SHORT).show();
+                loadingDialog.dismiss();
             } else if (passwordField.getText().toString().length() < 8) {
                 Toast.makeText(getContext(), "Password must have more than 8 characters", Toast.LENGTH_SHORT).show();
-            } else {
-                mAuth.signInWithEmailAndPassword(emailField.getText().toString(), passwordField.getText().toString())
-                        .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    // Sign in success, update UI with the signed-in user's information
-                                    Log.d(TAG, "signInWithEmail:success");
-                                    user = mAuth.getCurrentUser();
-                                    Navigation.findNavController(getActivity().getCurrentFocus()).navigate(R.id.action_loginFragment_to_serverListFragment);
-                                } else {
-                                    // If sign in fails, display a message to the user.
-                                    Log.w(TAG, "signInWithEmail:failure", task.getException());
-                                    Toast.makeText(getContext(), "Authentication failed.",
-                                            Toast.LENGTH_SHORT).show();
-                                    updateUI(null);
+                loadingDialog.dismiss();
+            } else if (!emailUserField.getText().toString().contains("@") || !emailUserField.getText().toString().contains(".")) {
+                    Data data = new Data.Builder()
+                            .putString("action", "login")
+                            .putString("script", "login.php")
+                            .putString("user", emailUserField.getText().toString())
+                            .putString("password", passwordField.getText().toString())
+                            .build();
+                    OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(ServerWorker.class)
+                            .setInputData(data)
+                            .build();
+                    WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(otwr.getId())
+                            .observe(getActivity(), status -> {
+                                if (status != null && status.getState().isFinished()) {
+                                    String result = status.getOutputData().getString("result");
+                                    Log.i("login", "Results:" +  result);
+                                    if (result.equals("0")) {
+                                        Toast.makeText(getContext(), "Invalid credentials", Toast.LENGTH_SHORT).show();
+                                        loadingDialog.dismiss();
+                                    }
+                                    else if (result.equals("1") || result.trim().equals("")) {
+                                        Toast.makeText(getContext(), "Internal server error, try later", Toast.LENGTH_SHORT).show();
+                                        loadingDialog.dismiss();
+                                    }
+                                    else {
+                                        Log.i("login", "Results2:" +  result);
+                                        signInFirebase(result, passwordField.getText().toString());
+                                    }
                                 }
-                            }
-                        });
-            }
+                            });
+                    WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
+                }
+                else {
+                    signInFirebase(emailUserField.getText().toString(), passwordField.getText().toString());
+                }
+
         });
         Button register = getActivity().findViewById(R.id.signup_login);
         register.setOnClickListener(new View.OnClickListener() {
@@ -125,5 +150,51 @@ public class LoginFragment extends Fragment {
             }
             });
 
+    }
+
+    public void signInFirebase(String email, String password) {
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithEmail:success");
+                            user = FirebaseAuth.getInstance().getCurrentUser();
+                            getUsername(email);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInWithEmail:failure", task.getException());
+                            Toast.makeText(getContext(), "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                            updateUI(null);
+                            loadingDialog.dismiss();
+                        }
+                    }
+                });
+    }
+
+    private void getUsername(String email) {
+        Data data = new Data.Builder()
+                .putString("action", "user")
+                .putString("script", "user.php")
+                .putString("email", email)
+                .build();
+        OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(ServerWorker.class)
+                .setInputData(data)
+                .build();
+        WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(otwr.getId())
+                .observe(getActivity(), status -> {
+                    if (status != null && status.getState().isFinished()) {
+                        String result = status.getOutputData().getString("result");
+                        Log.i("login2", result);
+                        username = result;
+                        if (loadingDialog != null) {
+                            loadingDialog.dismiss();
+                        }
+                        Navigation.findNavController(getView()).navigate(R.id.action_loginFragment_to_serverListFragment);
+                    }
+                });
+        WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
     }
 }
