@@ -48,11 +48,13 @@ public class LoginFragment extends Fragment {
 
     private void updateUI(FirebaseUser currentUser) {
         if (currentUser != null) {
+            loadingDialog = new LoadingDialog();
+            loadingDialog.show(getActivity().getSupportFragmentManager(), "loading");
             user = currentUser;
             try {
                 getUsername(currentUser.getEmail());
             } catch (IllegalArgumentException e) {
-
+                loadingDialog.dismiss();
             }
         }
     }

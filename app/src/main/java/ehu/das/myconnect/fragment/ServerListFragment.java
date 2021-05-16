@@ -27,6 +27,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -127,6 +128,8 @@ public class ServerListFragment extends Fragment implements OnDialogOptionPresse
         if (extras != null) {
             userName = extras.getString("userName");
         }*/
+        TextView username = getActivity().findViewById(R.id.usernameTV);
+        username.setText(LoginFragment.username);
         ImageView logout = getActivity().findViewById(R.id.logout);
         logout.setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();

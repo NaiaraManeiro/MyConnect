@@ -36,10 +36,13 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/textView13"
+                        android:id="@+id/usernameTV"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1" />
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:textColor="#FFFFFF" />
 
                     <ImageView
                         android:id="@+id/addServer"
@@ -65,7 +68,7 @@
                     android:id="@+id/textView14"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="-2dp"
+                    android:layout_marginTop="10dp"
                     android:fontFamily="sans-serif-smallcaps"
                     android:gravity="center"
                     android:text="MyConnect"
@@ -90,6 +93,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="-40dp"
             android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:translationZ="90dp" />
 
     </LinearLayout>
