@@ -1,19 +1,25 @@
 package ehu.das.myconnect.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import ehu.das.myconnect.R;
 import ehu.das.myconnect.dialog.LoadingDialog;
@@ -50,7 +56,11 @@ public class TerminalFragment extends Fragment implements PasswordListener {
         Button runButton = getActivity().findViewById(R.id.runCmdButton);
         TextView tv = getActivity().findViewById(R.id.resultArea);
         runButton.setOnClickListener(v -> {
-            tv.setText(tv.getText().toString() + "\n" + textView.getText().toString() + "$ " + cmdInput.getText().toString());
+            if (tv.getText().equals("")) {
+                tv.append(Html.fromHtml("<b>" + textView.getText().toString() + "</b>$ " + cmdInput.getText().toString()));
+            } else {
+                tv.append(Html.fromHtml("<b>" + "\n" + textView.getText().toString() + "</b>$ " + cmdInput.getText().toString()));
+            }
             String cmd = cmdInput.getText().toString();
             runButton.setEnabled(false);
             if (cmdInput.getText().toString().trim().equals("cls")) {
@@ -73,11 +83,26 @@ public class TerminalFragment extends Fragment implements PasswordListener {
         execCmd("echo " + password + " | " + cmdInput.getText().toString().replace("sudo", "sudo -S "));
     }
 
+    @SuppressLint("NewApi")
     public void execCmd(String cmd) {
-        Button runButton = getActivity().findViewById(R.id.runCmdButton);
+        TextView terminalPath = getActivity().findViewById(R.id.terminalPath);
+        String path = terminalPath.getText().toString().substring(1);
+        if (cmd.contains("ls")) {
+            cmd = cmd.replace("ls", "ls " + path);
+        }
+        if (cmd.contains("cd")) {
+            String[] cmds = cmd.trim().split(" ");
+            ArrayList<String> cmd_arraylist = new ArrayList<>(Arrays.asList(cmds));
+            int idx = cmd_arraylist.indexOf("cd");
+            if (cmds.length > 1 && !cmds[idx + 1].substring(0,1).equals("/")) {
+                cmds[idx + 1] = path + "/" + cmds[idx + 1];
+                cmd = String.join(" ", cmds);
+            }
+            cmd += " & pwd";
+        }
         TextView tv = getActivity().findViewById(R.id.resultArea);
         Data data = new Data.Builder()
-                .putString("action", cmd)
+                .putString("action", "cd " + path + " & " + cmd)
                 .putString("user", ServerListFragment.selectedServer.getUser())
                 .putString("host", ServerListFragment.selectedServer.getHost())
                 .putString("password", ServerListFragment.selectedServer.getPassword())
@@ -86,24 +111,33 @@ public class TerminalFragment extends Fragment implements PasswordListener {
         OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(SSHWorker.class)
                 .setInputData(data)
                 .build();
+        String finalCmd = cmd;
         WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(otwr.getId())
                 .observe(getActivity(), status -> {
                     if (status != null && status.getState().isFinished()) {
                         String success = status.getOutputData().getString("success");
                         String error = status.getOutputData().getString("fail");
-                        if (error.contains("[sudo] password")) {
-                            tv.setText(tv.getText().toString() + "\n" + error);
-                            tv.setText(tv.getText().toString() + "\n" + success);
-                        } else if (error.trim().equals("")) {
-                            tv.setText(tv.getText().toString() + "\n" + success);
-                        } else {
-                            tv.setText(tv.getText().toString() + "\n" + error);
+                        System.out.println(success);
+                        if (finalCmd.contains("cd")) {
+                            String[] lines = success.split("\n");
+                            terminalPath.append(":" + lines[lines.length-1]);
                         }
-
-                        runButton.setEnabled(true);
+                        else {
+                            if (error.contains("[sudo] password")) {
+                                tv.append("\n" + error);
+                                tv.append("\n" + success);
+                            } else if (error.trim().equals("")) {
+                                tv.append("\n" + success);
+                            } else {
+                                tv.append("\n" + error);
+                            }
+                        }
+                        NestedScrollView nestedScrollView = getActivity().findViewById(R.id.nestedScroll);
+                        nestedScrollView.fullScroll(View.FOCUS_DOWN);
                     }
                 });
         WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
 
     }
+
 }

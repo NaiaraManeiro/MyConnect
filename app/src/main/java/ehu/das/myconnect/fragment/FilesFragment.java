@@ -192,16 +192,18 @@ public class FilesFragment extends Fragment implements OnClickRecycleView {
                             TextView path = getActivity().findViewById(R.id.path);
                             if (ServerListFragment.selectedServer.getName().toLowerCase().contains("movil")) {
                                 path.setText("/storage/emulated/0");
-                            } else {
+                            } else if (path != null){
                                 path.setText(lines[0]);
                             }
 
-                            Data data1 = new Data.Builder()
+                            /*Data data1 = new Data.Builder()
                                     .putString("action", "ls -l "+path.getText().toString())
                                     .build();
 
                             //Mostramos los archivos del path actual
                             showData(data1);
+
+                             */
                         }
                     }
                 });
