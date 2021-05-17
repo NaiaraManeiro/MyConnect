@@ -98,6 +98,12 @@ public class ServerWorker extends Worker {
                         parametrosJSON.put("password", getInputData().getString("password"));
                     } else if (action.equals("user")) {
                         parametrosJSON.put("email", getInputData().getString("email"));
+                    } else if (action.equals("scripts")) {
+                        parametrosJSON.put("user", getInputData().getString("user"));
+                    } else if (action.equals("addScript")) {
+                        parametrosJSON.put("user", getInputData().getString("user"));
+                        parametrosJSON.put("name", getInputData().getString("name"));
+                        parametrosJSON.put("cmd", getInputData().getString("cmd"));
                     }
                     urlConnection.setRequestProperty("Content-Type","application/json");
                     PrintWriter out = new PrintWriter(urlConnection.getOutputStream());

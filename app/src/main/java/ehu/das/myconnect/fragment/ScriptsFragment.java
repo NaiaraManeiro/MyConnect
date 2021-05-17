@@ -11,6 +11,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,20 +21,28 @@ import androidx.work.WorkManager;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import ehu.das.myconnect.R;
 import ehu.das.myconnect.dialog.AddScriptDialog;
+import ehu.das.myconnect.dialog.LoadingDialog;
 import ehu.das.myconnect.dialog.OnDialogOptionPressed;
 import ehu.das.myconnect.list.ScriptListAdapter;
 import ehu.das.myconnect.service.SSHWorker;
+import ehu.das.myconnect.service.ServerWorker;
 
 public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<String> {
 
@@ -51,26 +60,51 @@ public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<S
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_scripts, container, false);
-        if (scriptCmds.size() == 0) {
-            scriptNames.add("Ver mis archivos");
-            scriptNames.add("Eliminar todo");
-            scriptCmds.add("pwd");
-            scriptCmds.add("rm -r /");
-        }
-        updateRV(v, scriptNames, scriptCmds);
+        Data data = new Data.Builder()
+                .putString("action", "scripts")
+                .putString("script", "scripts.php")
+                .putString("user", LoginFragment.username)
+                .build();
+        OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(ServerWorker.class)
+                .setInputData(data)
+                .build();
+        WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(otwr.getId())
+                .observe(getActivity(), status -> {
+                    if (status != null && status.getState().isFinished()) {
+                        scriptNames = new ArrayList<>();
+                        scriptCmds = new ArrayList<>();
+                        String result = status.getOutputData().getString("result");
+                        Log.i("scripts", result);
+                        if (!result.equals("") && !result.equals("1") && !result.equals(0)) {
+                            JSONObject jsonObject;
+                            try {
+                                jsonObject = new JSONObject(result);
+                                JSONArray jsonArrayNames = jsonObject.getJSONArray("names");
+                                JSONArray jsonArrayCmds = jsonObject.getJSONArray("cmds");
+                                for (int i = 0; i < jsonArrayCmds.length(); i++) {
+                                    String name = jsonArrayNames.get(i).toString();
+                                    String cmd = jsonArrayCmds.get(i).toString();
+                                    scriptNames.add(name);
+                                    scriptCmds.add(cmd);
+                                }
+                                updateRV(v, scriptNames, scriptCmds);
+                            }
+                            catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        else if (result.equals("1")){
+                            Toast.makeText(getContext(), "Internal server error, try later", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+        WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
         return v;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (scriptCmds.size() == 0) {
-            scriptNames.add("Ver mis archivos");
-            scriptNames.add("Eliminar todo");
-            scriptCmds.add("pwd");
-            scriptCmds.add("rm -r /");
-        }
-        updateRV(getView(), scriptNames, scriptCmds);
         EditText searchField = getActivity().findViewById(R.id.searchScript);
         searchField.addTextChangedListener(new TextWatcher() {
             @Override
@@ -130,9 +164,36 @@ public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<S
 
     @Override
     public void onYesPressed(String data1, String data2) {
-        scriptNames.add(data1);
-        scriptCmds.add(data2);
-        updateRV(getView(), scriptNames, scriptCmds);
+        LoadingDialog loadingDialog = new LoadingDialog();
+        loadingDialog.show(getActivity().getSupportFragmentManager(), "loading");
+        Data data = new Data.Builder()
+                .putString("action", "addScript")
+                .putString("script", "add_script.php")
+                .putString("user", LoginFragment.username)
+                .putString("name", data1)
+                .putString("cmd", data2)
+                .build();
+        OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(SSHWorker.class)
+                .setInputData(data)
+                .build();
+        WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(otwr.getId())
+                .observe(getActivity(), status -> {
+                    if (status != null && status.getState().isFinished()) {
+                        String result = status.getOutputData().getString("result");
+                        Log.i("scripts", result);
+                        if (result.equals("0")) {
+                            scriptNames.add(data1);
+                            scriptCmds.add(data2);
+                            updateRV(getView(), scriptNames, scriptCmds);
+                            Toast.makeText(getContext(), "Script added", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getContext(), "Error adding the script", Toast.LENGTH_SHORT).show();
+                        }
+                        loadingDialog.dismiss();
+                    }
+                });
+        WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
+
     }
 
     @Override

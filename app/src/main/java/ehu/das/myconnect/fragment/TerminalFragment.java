@@ -59,7 +59,8 @@ public class TerminalFragment extends Fragment implements PasswordListener {
             if (tv.getText().equals("")) {
                 tv.append(Html.fromHtml("<b>" + textView.getText().toString() + "</b>$ " + cmdInput.getText().toString()));
             } else {
-                tv.append(Html.fromHtml("<b>" + "\n" + textView.getText().toString() + "</b>$ " + cmdInput.getText().toString()));
+                tv.append("\n");
+                tv.append( Html.fromHtml("<b>" + textView.getText().toString() + "</b>$ " + cmdInput.getText().toString()));
             }
             String cmd = cmdInput.getText().toString();
             runButton.setEnabled(false);
@@ -73,7 +74,6 @@ public class TerminalFragment extends Fragment implements PasswordListener {
             } else {
                 execCmd(cmd);
             }
-            runButton.setEnabled(true);
         });
     }
 
@@ -85,6 +85,7 @@ public class TerminalFragment extends Fragment implements PasswordListener {
 
     @SuppressLint("NewApi")
     public void execCmd(String cmd) {
+        Button runButton = getActivity().findViewById(R.id.runCmdButton);
         TextView terminalPath = getActivity().findViewById(R.id.terminalPath);
         String path = terminalPath.getText().toString().substring(1);
         if (cmd.contains("ls")) {
@@ -120,7 +121,7 @@ public class TerminalFragment extends Fragment implements PasswordListener {
                         System.out.println(success);
                         if (finalCmd.contains("cd")) {
                             String[] lines = success.split("\n");
-                            terminalPath.append(":" + lines[lines.length-1]);
+                            terminalPath.setText(":" + lines[lines.length-1]);
                         }
                         else {
                             if (error.contains("[sudo] password")) {
@@ -134,6 +135,7 @@ public class TerminalFragment extends Fragment implements PasswordListener {
                         }
                         NestedScrollView nestedScrollView = getActivity().findViewById(R.id.nestedScroll);
                         nestedScrollView.fullScroll(View.FOCUS_DOWN);
+                        runButton.setEnabled(true);
                     }
                 });
         WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
