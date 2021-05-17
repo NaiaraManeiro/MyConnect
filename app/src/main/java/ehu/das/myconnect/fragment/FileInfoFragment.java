@@ -15,22 +15,16 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
+import java.util.Arrays;
 
 import ehu.das.myconnect.R;
-import ehu.das.myconnect.dialog.DialogoDescargas;
 import ehu.das.myconnect.dialog.RemoveDialog;
-import ehu.das.myconnect.list.FilesListAdapter;
 import ehu.das.myconnect.service.SSHWorker;
 
 public class FileInfoFragment extends Fragment {
@@ -76,6 +70,7 @@ public class FileInfoFragment extends Fragment {
         //Mostramos el texto del archivo
         Data data = new Data.Builder()
                 .putString("action", "cat "+path)
+                .putString("path", path)
                 .build();
         OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(SSHWorker.class)
                 .setInputData(data)
@@ -92,23 +87,15 @@ public class FileInfoFragment extends Fragment {
                             String[] lines = result.split(",");
                             if (lines[0].equals("error")) {
                                 Toast.makeText(getContext(), getString(R.string.bigFile), Toast.LENGTH_LONG).show();
+                                lines = Arrays.copyOfRange(lines, 1, lines.length);
                             }
                             String text = "";
                             for (String line : lines) {
                                 text += line + "\n";
                             }
                             file.setText(text);
-
-                            if (lines[0].equals("error")) {
-                                DialogoDescargas dialogoDescargas = new DialogoDescargas();
-                                Bundle b = new Bundle();
-                                b.putString("path", path);
-                                dialogoDescargas.setArguments(b);
-                                dialogoDescargas.show(getSupportFragmentManager(), "verIngrediente");
-                            }
-
-
                         }
+
                     }
                 });
 

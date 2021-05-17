@@ -1,6 +1,5 @@
 package ehu.das.myconnect.fragment;
 
-import android.app.Dialog;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -17,7 +16,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -39,7 +37,7 @@ import ehu.das.myconnect.service.ServerWorker;
 public class ServerListFragment extends Fragment implements OnDialogOptionPressed<String>, ILoading {
 
     public static SSHConnector connection;
-    private String userName = "Naiara";
+    private String userName = "anderct105";
     public static List<Server> serverList;
     public static Server selectedServer = null;
     public LoadingDialog loadingDialog;

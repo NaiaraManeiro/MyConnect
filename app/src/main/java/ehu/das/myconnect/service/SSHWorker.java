@@ -44,8 +44,9 @@ public class SSHWorker  extends Worker {
             try {
                 result = sshConnector.executeCommand(command);
                 if (command.contains("cat") && result.length() > 10240) {
-                    result += "error,";
-                    result = result.substring(0, Math.min(result.length(), 10239));
+                    result = "";
+                    result = result + "error,";
+                    result = result + sshConnector.executeCommand("head -20 "+getInputData().getString("path"));
                 }
             } catch (IllegalAccessException e) {
                 e.printStackTrace();

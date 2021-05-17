@@ -9,8 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="356dp"
         android:layout_height="230dp"
-        android:layout_weight="1"
-        android:background="@drawable/dialog">
+        android:layout_weight="1">
 
         <TextView
             android:id="@+id/textViewDescargas"
@@ -24,7 +23,6 @@
 
         <Button
             android:id="@+id/buttonVolverDescargas"
-            style="@style/Botones"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
