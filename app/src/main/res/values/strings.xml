@@ -67,4 +67,5 @@
     <string name="fileCreated">El archivo ha sido creado!</string>
     <string name="access_password">Access with password</string>
     <string name="authSuccessful">Authentication successful</string>
+    <string name="sudo_password">Enter sudo password</string>
 </resources>

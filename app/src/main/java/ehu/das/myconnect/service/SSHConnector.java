@@ -1,13 +1,13 @@
-package ehu.das.myconnect.service;
+             package ehu.das.myconnect.service;
 
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
-import java.io.BufferedReader;
+
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 
 /**
  * Clase encargada de establecer conexión y ejecutar comandos SSH.
@@ -86,35 +86,62 @@ public class SSHConnector {
      *                                luego de la ejecución del comando
      *                                SSH.
      */
-    public final String executeCommand(String command)
+    public final String[] executeCommand(String command)
             throws IllegalAccessException, JSchException, IOException {
         if (this.session != null && this.session.isConnected()) {
 
             // Abrimos un canal SSH. Es como abrir una consola.
-            ChannelExec channelExec = (ChannelExec) this.session.
+            ChannelExec channel = (ChannelExec) this.session.
                     openChannel("exec");
-
+            // https://stackoverflow.com/questions/6902386/how-to-read-jsch-command-output
+/**
             InputStream in = channelExec.getInputStream();
 
             // Ejecutamos el comando.
             channelExec.setCommand(command);
+            final ByteArrayOutputStream error = new ByteArrayOutputStream();
+            channelExec.setErrStream(error);
+            final ByteArrayOutputStream success = new ByteArrayOutputStream();
+            channelExec.setErrStream(error);
+            channelExec.setOutputStream(success);
             channelExec.connect();
-
-            // Obtenemos el texto impreso en la consola.
-            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-            StringBuilder builder = new StringBuilder();
-            String linea;
-
-            while ((linea = reader.readLine()) != null) {
-                builder.append(linea);
-                builder.append(ENTER_KEY);
-            }
-
-            // Cerramos el canal SSH.
+            try{Thread.sleep(200);}catch(Exception ee){}
+            String successStr = new String(success.toByteArray());
+            String errorStr = new String(error.toByteArray());
             channelExec.disconnect();
-
-            // Retornamos el texto impreso en la consola.
-            return builder.toString();
+            String[] result = {successStr.trim(), errorStr.trim()};
+            // Retornamos el texto impreso en la consola.**/
+            InputStream in = channel.getInputStream();
+            InputStream err = channel.getExtInputStream();
+            StringBuilder outputBuffer = new StringBuilder();
+            StringBuilder errorBuffer = new StringBuilder();
+            channel.setCommand(command);
+            channel.connect(5000);
+            byte[] tmp = new byte[1024];
+            while (true) {
+                while (in.available() > 0) {
+                    int i = in.read(tmp, 0, 1024);
+                    if (i < 0) break;
+                    outputBuffer.append(new String(tmp, 0, i));
+                }
+                while (err.available() > 0) {
+                    int i = err.read(tmp, 0, 1024);
+                    if (i < 0) break;
+                    errorBuffer.append(new String(tmp, 0, i));
+                }
+                if (channel.isClosed()) {
+                    if ((in.available() > 0) || (err.available() > 0)) continue;
+                    System.out.println("exit-status: " + channel.getExitStatus());
+                    break;
+                }
+                try {
+                    Thread.sleep(500);
+                } catch (Exception ee) {
+                }
+            }
+            System.out.println("output: " + outputBuffer.toString());
+            System.out.println("error: " + errorBuffer.toString());
+            return new String[] {outputBuffer.toString().trim(), errorBuffer.toString().trim()};
         } else {
             throw new IllegalAccessException("No existe sesion SSH iniciada.");
         }

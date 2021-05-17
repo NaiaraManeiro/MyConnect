@@ -39,10 +39,10 @@ public class SSHWorker  extends Worker {
         } else if (exception.contains("failed to")) {
             result = "failConnect";
         }
-
+        String[] results = new String[0];
         if (!exception.contains("Auth fail") && !exception.contains("failed to")) {
             try {
-                result = sshConnector.executeCommand(command);
+                results = sshConnector.executeCommand(command);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             } catch (JSchException e) {
@@ -53,7 +53,9 @@ public class SSHWorker  extends Worker {
         }
 
         Data resultados = new Data.Builder()
-                .putString("result", result)
+                .putString("success", results[0])
+                .putString("fail", results[1])
+                .putString("result", results[0])
                 .build();
 
         return Result.success(resultados);

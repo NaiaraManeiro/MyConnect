@@ -155,13 +155,20 @@ public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<S
                 .observe(getActivity(), status -> {
                     if (status != null && status.getState().isFinished()) {
                         String result = status.getOutputData().getString("result");
-                        notifyResult(scriptName, result);
+                        String success = status.getOutputData().getString("result");
+                        String failed = status.getOutputData().getString("result");
+                        if (failed.trim().equals("")) {
+                            notifyResult(scriptName, result, true);
+                        }
+                        else {
+                            notifyResult(scriptName, result, false);
+                        }
                     }
                 });
         WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
     }
 
-    public void notifyResult(String scriptName, String result) {
+    public void notifyResult(String scriptName, String result, boolean failed) {
         NotificationManager elManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder elBuilder = new NotificationCompat.Builder(getContext(), "01");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -177,11 +184,16 @@ public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<S
 
         PendingIntent intentEnNot = PendingIntent.getActivity(getContext(), 0, getActivity().getIntent(), 0);
         elBuilder.setSmallIcon(R.drawable.add)
-                .setContentTitle("Script " + scriptName)
                 .setContentText(result)
                 .setVibrate(new long[]{0, 1000, 500, 1000})
                 .setAutoCancel(true)
                 .setContentIntent(intentEnNot);
+        if (failed) {
+            elBuilder.setContentTitle(scriptName + " failed");
+        }
+        else {
+            elBuilder.setContentTitle(scriptName + " succeeded");
+        }
         elManager.notify(1, elBuilder.build());
     }
 }
