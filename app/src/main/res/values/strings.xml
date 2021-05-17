@@ -70,4 +70,8 @@
     <string name="wrongPath">No existe el path que has escrito.</string>
     <string name="bigFile">El archivo es muy grande, si quiere verlo todo, descargelo.</string>
     <string name="saveDownload">Selecciona donde guardar la descarga:</string>
+    <string name="download">Descargar</string>
+    <string name="fileDownload">Archivo descargado</string>
+    <string name="download_1">El archivo</string>
+    <string name="download_2">ha sido descargado.</string>
 </resources>

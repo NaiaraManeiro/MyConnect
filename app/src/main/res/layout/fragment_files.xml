@@ -82,7 +82,7 @@
                 app:layout_constraintVertical_bias="0.589" />
 
             <ImageView
-                android:id="@+id/uploadImage"
+                android:id="@+id/uploadFile"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_marginTop="8dp"
@@ -106,7 +106,7 @@
                 android:layout_marginRight="16dp"
                 android:background="@drawable/border"
                 android:src="@drawable/add"
-                app:layout_constraintEnd_toStartOf="@+id/uploadImage"
+                app:layout_constraintEnd_toStartOf="@+id/uploadFile"
                 app:layout_constraintStart_toEndOf="@+id/back"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -119,7 +119,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/path"
-                app:layout_constraintTop_toBottomOf="@+id/uploadImage" />
+                app:layout_constraintTop_toBottomOf="@+id/uploadFile" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

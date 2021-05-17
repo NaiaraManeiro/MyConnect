@@ -1,6 +1,14 @@
 package ehu.das.myconnect.fragment;
 
+import android.app.Activity;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -15,12 +23,17 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.Arrays;
 
 import ehu.das.myconnect.R;
@@ -32,6 +45,8 @@ public class FileInfoFragment extends Fragment {
     private String path;
     private Button save;
     private EditText file;
+    private static final int COD_NUEVO_FICHERO = 40;
+    private String fileName;
 
     public FileInfoFragment() {}
 
@@ -66,6 +81,8 @@ public class FileInfoFragment extends Fragment {
 
         TextView filePath = getActivity().findViewById(R.id.filePath);
         filePath.setText(path);
+
+        fileName = path.substring(path.lastIndexOf("/")+1);
 
         //Mostramos el texto del archivo
         Data data = new Data.Builder()
@@ -106,7 +123,6 @@ public class FileInfoFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String fileText = file.getText().toString();
-                Log.i("mkdir","echo '" +fileText+ "' > " + path);
                 Data data = new Data.Builder()
                         .putString("action", "echo '" +fileText+ "' > " + path)
                         .build();
@@ -167,7 +183,51 @@ public class FileInfoFragment extends Fragment {
                 save.setVisibility(View.VISIBLE);
                 file.setEnabled(true);
             }
+        } if (id == R.id.download) {
+            Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("text/plain");
+            intent.putExtra(Intent.EXTRA_TITLE, fileName);
+            startActivityForResult(intent, COD_NUEVO_FICHERO);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //Para la descarga de la receta en el telefono
+        if (requestCode == COD_NUEVO_FICHERO && resultCode == Activity.RESULT_OK) {
+            Uri uri;
+            if (data != null) {
+                uri = data.getData();
+
+                String username = ServerListFragment.selectedServer.getUser();
+                String host = ServerListFragment.selectedServer.getHost();
+
+                Data data1 = new Data.Builder()
+                        .putString("action", "scp " + username + "@" + host + ":" + path + " " + uri)
+                        .build();
+                OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(SSHWorker.class)
+                        .setInputData(data1)
+                        .build();
+
+                WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
+            }
+
+            NotificationManager elManager = (NotificationManager)getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationCompat.Builder elBuilder = new NotificationCompat.Builder(getActivity(), "IdCanal");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                NotificationChannel elCanal = new NotificationChannel("IdCanal", "NombreCanal", NotificationManager.IMPORTANCE_DEFAULT);
+                elBuilder.setSmallIcon(R.drawable.descarga)
+                        .setContentTitle(getText(R.string.fileDownload))
+                        .setContentText(getString(R.string.download_1)+" '"+fileName+"' "+getString(R.string.download_2))
+                        .setVibrate(new long[]{0, 1000, 500, 1000})
+                        .setAutoCancel(true);
+                elCanal.enableLights(true);
+                elManager.createNotificationChannel(elCanal);
+            }
+
+            elManager.notify(1, elBuilder.build());
+        }
     }
 }

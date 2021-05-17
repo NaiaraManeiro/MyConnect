@@ -1,8 +1,13 @@
 package ehu.das.myconnect.fragment;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -19,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,10 +41,9 @@ public class FilesFragment extends Fragment implements OnClickRecycleView, OnDia
     private List<String> fileTypes;
     private List<String> fileNames;
     private String path;
+    private final int PICKFILE_RESULT_CODE = 12;
 
-    public FilesFragment() {
-        // Required empty public constructor
-    }
+    public FilesFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -144,6 +149,18 @@ public class FilesFragment extends Fragment implements OnClickRecycleView, OnDia
                 showData(data);
             }
         });
+
+        //Para subir un archivo de local al servidor
+        ImageView uploadFile = getActivity().findViewById(R.id.uploadFile);
+        uploadFile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
+                chooseFile.setType("*/*");
+                chooseFile = Intent.createChooser(chooseFile, "Choose a file");
+                startActivityForResult(chooseFile, PICKFILE_RESULT_CODE);
+            }
+        });
     }
 
     @Override
@@ -226,15 +243,17 @@ public class FilesFragment extends Fragment implements OnClickRecycleView, OnDia
                             Toast.makeText(getContext(), getString(R.string.sshFailConnect), Toast.LENGTH_LONG).show();
                         } else {
                             String[] lines = result.split(",");
-                            TextView path = getActivity().findViewById(R.id.path);
+                            TextView pathText = getActivity().findViewById(R.id.path);
                             if (ServerListFragment.selectedServer.getName().toLowerCase().contains("movil")) {
-                                path.setText("/storage/emulated/0");
+                                pathText.setText("/storage/emulated/0");
+                                path = "/storage/emulated/0";
                             } else {
-                                path.setText(lines[0]);
+                                pathText.setText(lines[0]);
+                                path = lines[0];
                             }
 
                             Data data1 = new Data.Builder()
-                                    .putString("action", "ls -l "+path.getText().toString())
+                                    .putString("action", "ls -l "+pathText.getText().toString())
                                     .build();
 
                             //Mostramos los archivos del path actual
@@ -248,10 +267,47 @@ public class FilesFragment extends Fragment implements OnClickRecycleView, OnDia
     @Override
     public void onDismiss(String path) {
         Data data = new Data.Builder()
-                .putString("action", "ls -l "+path)
+                .putString("action", "ls -l "+ path)
                 .build();
 
         //Mostramos los archivos del path actual
         showData(data);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //Para obtener el archivo pem
+        if (requestCode == PICKFILE_RESULT_CODE && resultCode == Activity.RESULT_OK) {
+            if (data != null) {
+                Uri uri = data.getData();
+
+                //File file = new File(String.valueOf(uri));
+
+                String username = ServerListFragment.selectedServer.getUser();
+                String host = ServerListFragment.selectedServer.getHost();
+
+                Data data1 = new Data.Builder()
+                        .putString("action", "scp " + uri + " " + username + "@" + host + ":" + path + "/")
+                        .build();
+                OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(SSHWorker.class)
+                        .setInputData(data1)
+                        .build();
+                WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(otwr.getId())
+                        .observe(getActivity(), status -> {
+                            if (status != null && status.getState().isFinished()) {
+                                Data data2 = new Data.Builder()
+                                        .putString("action", "ls -l "+ path)
+                                        .build();
+
+                                //Mostramos los archivos del path actual
+                                showData(data2);
+                            }
+                        });
+
+                WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
+            }
+
+        }
     }
 }

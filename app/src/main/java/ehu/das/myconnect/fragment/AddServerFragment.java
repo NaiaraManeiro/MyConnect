@@ -33,7 +33,7 @@ import ehu.das.myconnect.service.ServerWorker;
 
 public class AddServerFragment extends Fragment {
 
-    private final String userName = "Naiara";
+    private final String userName = "anderct105";
     private Switch keyPemSwitch;
     private final int PICKFILE_RESULT_CODE = 12;
     private String key;

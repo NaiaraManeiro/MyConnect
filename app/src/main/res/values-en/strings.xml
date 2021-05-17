@@ -40,4 +40,8 @@
     <string name="wrongPath">The writen path doesn\'t exist.</string>
     <string name="bigFile">The file is too big, download it to see complete,</string>
     <string name="saveDownload">Choose where to download the file:</string>
+    <string name="download">Download</string>
+    <string name="fileDownload">File dowloaded</string>
+    <string name="download_1">The file</string>
+    <string name="download_2">has been downloaded.</string>
 </resources>

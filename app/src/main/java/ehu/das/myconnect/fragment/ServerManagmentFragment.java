@@ -1,6 +1,5 @@
 package ehu.das.myconnect.fragment;
 
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
