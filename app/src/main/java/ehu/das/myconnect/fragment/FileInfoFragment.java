@@ -8,9 +8,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.ParcelFileDescriptor;
-import android.util.Log;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,11 +30,6 @@ import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.util.Arrays;
 
 import ehu.das.myconnect.R;
@@ -86,13 +79,14 @@ public class FileInfoFragment extends Fragment {
 
         TextView filePath = getActivity().findViewById(R.id.filePath);
         filePath.setText(path);
+        filePath.setMovementMethod(new ScrollingMovementMethod());
 
         fileName = path.substring(path.lastIndexOf("/")+1);
 
         if (!image) {
             //Mostramos el texto del archivo
             Data data = new Data.Builder()
-                    .putString("action", "cat "+path)
+                    .putString("action", "cat " + path)
                     .putString("path", path)
                     .build();
             OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(SSHWorker.class)
@@ -118,11 +112,12 @@ public class FileInfoFragment extends Fragment {
                                 }
                                 file.setText(text);
                             }
-
                         }
                     });
 
             WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
+        } else {
+            file.setText(R.string.imageFile);
         }
 
         //Cuando se quieren guardar los cambios realizados en el archivo
@@ -184,12 +179,14 @@ public class FileInfoFragment extends Fragment {
             removeDialog.setArguments(bundle);
             removeDialog.show(getActivity().getSupportFragmentManager(), "eliminar");
         } if (id == R.id.edit) {
-            if (save.getVisibility() == View.VISIBLE) {
-                save.setVisibility(View.INVISIBLE);
-                file.setEnabled(false);
-            } else {
-                save.setVisibility(View.VISIBLE);
-                file.setEnabled(true);
+            if (!image) {
+                if (save.getVisibility() == View.VISIBLE) {
+                    save.setVisibility(View.INVISIBLE);
+                    file.setEnabled(false);
+                } else {
+                    save.setVisibility(View.VISIBLE);
+                    file.setEnabled(true);
+                }
             }
         } if (id == R.id.download) {
             Intent i = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);

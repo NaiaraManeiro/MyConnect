@@ -50,4 +50,5 @@
     <string name="copyTo">Copy to...</string>
     <string name="completePath">Please, write the absolute path.</string>
     <string name="noPath">The path doesn\'t exist.</string>
+    <string name="imageFile">The image data can\'t be shown.</string>
 </resources>

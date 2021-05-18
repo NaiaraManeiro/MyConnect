@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -52,6 +53,7 @@ public class ActionsFolderFileDialog extends DialogFragment {
 
         TextView filePath = actionsLayout.findViewById(R.id.filePath);
         filePath.setText(completePath);
+        filePath.setMovementMethod(new ScrollingMovementMethod());
         Button action = actionsLayout.findViewById(R.id.actionButton);
         action.setEnabled(false);
         EditText pathToAction = actionsLayout.findViewById(R.id.pathToAction);
