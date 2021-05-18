@@ -27,7 +27,7 @@ public class MenuFragment extends Fragment {
 
     private ViewPager mPager;
     private ViewPagerAdapter pagerAdapter;
-    private int[] tabs = {R.id.filesFragment, R.id.terminalTab, R.id.terminalTab, R.id.terminalTab};
+    private int[] tabs = {R.id.filesFragment, R.id.terminalTab, R.id.terminalTab};
     private ArrayList<Integer> tabsLayout;
     public MenuFragment() {
         // Required empty public constructor
@@ -55,7 +55,6 @@ public class MenuFragment extends Fragment {
         pagerAdapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
         pagerAdapter.addFragment(new FilesFragment(),"rutinas");
         pagerAdapter.addFragment(new ScriptsFragment(),"scripts");
-        pagerAdapter.addFragment(new TerminalFragment(),"monitoreo");
         pagerAdapter.addFragment(new TerminalFragment(),"terminal");
         mPager.setAdapter(pagerAdapter);
         mPager.setCurrentItem(0);
@@ -63,12 +62,10 @@ public class MenuFragment extends Fragment {
         TabLayout tabslay = getActivity().findViewById(R.id.menuTabs);
         tabslay.getTabAt(0).setId(R.id.filesTab);
         tabslay.getTabAt(1).setId(R.id.scriptsTab);
-        tabslay.getTabAt(2).setId(R.id.monitoringTab);
-        tabslay.getTabAt(3).setId(R.id.terminalTab);
+        tabslay.getTabAt(2).setId(R.id.terminalTab);
         tabsLayout = new ArrayList<>();
         tabsLayout.add(R.id.filesTab);
         tabsLayout.add(R.id.scriptsTab);
-        tabsLayout.add(R.id.monitoringTab);
         tabsLayout.add(R.id.terminalTab);
         tabslay.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override

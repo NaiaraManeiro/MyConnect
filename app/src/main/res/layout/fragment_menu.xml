@@ -33,12 +33,6 @@
                 android:text="@string/scripts" />
 
             <com.google.android.material.tabs.TabItem
-                android:id="@+id/monitoringTab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/monitoring" />
-
-            <com.google.android.material.tabs.TabItem
                 android:id="@+id/terminalTab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

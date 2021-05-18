@@ -64,6 +64,8 @@ public class ServerListFragment extends Fragment implements OnDialogOptionPresse
         View v = inflater.inflate(R.layout.fragment_server_list, container, false);
         RecyclerView serverListRV = v.findViewById(R.id.serverListRV);
         serverListRV.bringToFront();
+        loadingDialog = new LoadingDialog();
+        loadingDialog.show(getActivity().getSupportFragmentManager(), "loading");
         serverList = new ArrayList<>();
 
         Data data = new Data.Builder()
@@ -78,7 +80,6 @@ public class ServerListFragment extends Fragment implements OnDialogOptionPresse
                 .observe(getActivity(), status -> {
                     if (status != null && status.getState().isFinished()) {
                         String result = status.getOutputData().getString("result");
-
                         if (!result.equals("")) {
                             JSONObject jsonObject;
                             try {
@@ -87,7 +88,6 @@ public class ServerListFragment extends Fragment implements OnDialogOptionPresse
                                 JSONArray jsonArrayUsers = jsonObject.getJSONArray("users");
                                 JSONArray jsonArrayHosts = jsonObject.getJSONArray("hosts");
                                 JSONArray jsonArrayPorts = jsonObject.getJSONArray("ports");
-
                                 for (int i = 0; i < jsonArrayServers.length(); i++) {
                                     String serverName = jsonArrayServers.get(i).toString();
                                     String user = jsonArrayUsers.get(i).toString();
@@ -96,7 +96,6 @@ public class ServerListFragment extends Fragment implements OnDialogOptionPresse
                                     Server server = new Server(serverName,user,host,port);
                                     serverList.add(server);
                                 }
-
                                 if (serverList.size() == jsonArrayHosts.length()) {
                                     ServerListAdapter serverListAdapter = new ServerListAdapter(serverList, getActivity().getSupportFragmentManager());
                                     serverListAdapter.fragment = this;
@@ -108,6 +107,7 @@ public class ServerListFragment extends Fragment implements OnDialogOptionPresse
                                 e.printStackTrace();
                             }
                         }
+                        loadingDialog.dismiss();
                     }
                 });
         WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
