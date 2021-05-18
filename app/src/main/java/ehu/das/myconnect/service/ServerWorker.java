@@ -68,9 +68,7 @@ public class ServerWorker extends Worker {
             } else {
                 if (!action.equals("conectServer")) {
                     JSONObject parametrosJSON = new JSONObject();
-
                     parametrosJSON.put("action", action);
-
                     if (action.equals("addServer")) {
                         parametrosJSON.put("user", getInputData().getString("user"));
                         parametrosJSON.put("host", getInputData().getString("host"));
@@ -101,6 +99,11 @@ public class ServerWorker extends Worker {
                     } else if (action.equals("scripts")) {
                         parametrosJSON.put("user", getInputData().getString("user"));
                     } else if (action.equals("addScript")) {
+                        parametrosJSON.put("user", getInputData().getString("user"));
+                        parametrosJSON.put("name", getInputData().getString("name"));
+                        parametrosJSON.put("cmd", getInputData().getString("cmd"));
+                    } else if (action.equals("deleteScript")) {
+                        Log.i("script", "elimino");
                         parametrosJSON.put("user", getInputData().getString("user"));
                         parametrosJSON.put("name", getInputData().getString("name"));
                         parametrosJSON.put("cmd", getInputData().getString("cmd"));

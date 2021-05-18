@@ -37,8 +37,11 @@ public class ScriptListAdapter extends RecyclerView.Adapter<ScriptElementViewHol
         holder.scriptName.setText(scriptNames.get(position));
         holder.scriptCmd.setText(scriptCmds.get(position));
         holder.run.setOnClickListener(v -> {
-            Log.i("ls", "running");
             fragment.executeScript(scriptCmds.get(position), scriptNames.get(position));
+        });
+        holder.itemView.setOnLongClickListener(v -> {
+            fragment.deleteScript(scriptNames.get(position), scriptCmds.get(position));
+            return false;
         });
     }
 

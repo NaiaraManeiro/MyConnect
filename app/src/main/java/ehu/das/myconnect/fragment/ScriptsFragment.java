@@ -40,15 +40,18 @@ import ehu.das.myconnect.R;
 import ehu.das.myconnect.dialog.AddScriptDialog;
 import ehu.das.myconnect.dialog.LoadingDialog;
 import ehu.das.myconnect.dialog.OnDialogOptionPressed;
+import ehu.das.myconnect.dialog.PasswordListener;
+import ehu.das.myconnect.dialog.SudoPasswordDialog;
 import ehu.das.myconnect.list.ScriptListAdapter;
 import ehu.das.myconnect.service.SSHWorker;
 import ehu.das.myconnect.service.ServerWorker;
 
-public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<String> {
+public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<String>, PasswordListener {
 
     private List<String> scriptNames = new ArrayList<>();
     private List<String> scriptCmds = new ArrayList<>();
-
+    private String scriptName;
+    private String cmd;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -173,14 +176,13 @@ public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<S
                 .putString("name", data1)
                 .putString("cmd", data2)
                 .build();
-        OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(SSHWorker.class)
+        OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(ServerWorker.class)
                 .setInputData(data)
                 .build();
         WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(otwr.getId())
                 .observe(getActivity(), status -> {
                     if (status != null && status.getState().isFinished()) {
                         String result = status.getOutputData().getString("result");
-                        Log.i("scripts", result);
                         if (result.equals("0")) {
                             scriptNames.add(data1);
                             scriptCmds.add(data2);
@@ -202,6 +204,19 @@ public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<S
     }
 
     public void executeScript(String cmd, String scriptName) {
+        this.scriptName = scriptName;
+        this.cmd = cmd;
+        if (cmd.contains("sudo")) {
+            SudoPasswordDialog sudoPasswordDialog = new SudoPasswordDialog();
+            sudoPasswordDialog.listener = this;
+            sudoPasswordDialog.show(getActivity().getSupportFragmentManager(), "loading");
+        }
+        else {
+            execCmd(cmd);
+        }
+    }
+
+    public void execCmd(String cmd) {
         Data data = new Data.Builder()
                 .putString("action", cmd)
                 .putString("user", ServerListFragment.selectedServer.getUser())
@@ -257,4 +272,42 @@ public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<S
         }
         elManager.notify(1, elBuilder.build());
     }
+
+    public void deleteScript(String name, String cmd) {
+        LoadingDialog loadingDialog = new LoadingDialog();
+        loadingDialog.show(getActivity().getSupportFragmentManager(), "loading");
+        Data data = new Data.Builder()
+                .putString("action", "deleteScript")
+                .putString("script", "delete_script.php")
+                .putString("user", LoginFragment.username)
+                .putString("name", name)
+                .putString("cmd", cmd)
+                .build();
+        OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(ServerWorker.class)
+                .setInputData(data)
+                .build();
+        WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(otwr.getId())
+                .observe(getActivity(), status -> {
+                    if (status != null && status.getState().isFinished()) {
+                        String result = status.getOutputData().getString("result");
+                        Log.i("script", "Resultadosss:" + result);
+                        if (result.equals("0")) {
+                            scriptNames.remove(name);
+                            scriptCmds.remove(cmd);
+                            updateRV(getView(), scriptNames, scriptCmds);
+                            Toast.makeText(getContext(), "Script deleted", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getContext(), "Error deleting script", Toast.LENGTH_SHORT).show();
+                        }
+                        loadingDialog.dismiss();
+                    }
+                });
+        WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
+    }
+
+    @Override
+    public void passPassword(String password) {
+        execCmd("echo " + password + " | " + this.cmd.replace("sudo", "sudo -S "));
+    }
+
 }
