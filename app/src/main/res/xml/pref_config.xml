@@ -3,12 +3,12 @@
 
     <SwitchPreference
         android:defaultValue="true"
-        android:key="switch_preference_1"
+        android:key="notify_script"
         android:title="@string/notify_script" />
     <ListPreference
         android:defaultValue="true"
         android:entries="@array/languages"
         android:entryValues="@array/languages"
-        android:key="list_preference_1"
+        android:key="language"
         android:title="@string/languages" />
 </PreferenceScreen>

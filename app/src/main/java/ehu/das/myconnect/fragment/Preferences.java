@@ -24,8 +24,7 @@ public class Preferences extends PreferenceFragmentCompat implements SharedPrefe
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         // https://stackoverflow.com/questions/531427/how-do-i-display-the-current-value-of-an-android-preference-in-the-preference-su
         // Si se cambia el idioma reiniciar la aplicación con el idioma cambiado
-        Log.i("Preferencias", "Se ha cambiado a " + key);
-        if (key.equals("list_preference_1")) {
+        if (key.equals("language")) {
             String idioma = "";
             if (sharedPreferences.getString(key, "español").equals("Spanish") || sharedPreferences.getString(key, "Español").equals("Español")) {
                 idioma = "es";
@@ -46,5 +45,16 @@ public class Preferences extends PreferenceFragmentCompat implements SharedPrefe
             Intent i = getActivity().getIntent();
             startActivity(i);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getPreferenceManager().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+    }
+    @Override
+    public void onPause() {
+        super.onPause();
+        getPreferenceManager().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
     }
 }

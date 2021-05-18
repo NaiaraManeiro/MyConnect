@@ -4,6 +4,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.Data;
@@ -233,11 +235,13 @@ public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<S
                         String result = status.getOutputData().getString("result");
                         String success = status.getOutputData().getString("result");
                         String failed = status.getOutputData().getString("result");
-                        if (failed.trim().equals("")) {
-                            notifyResult(scriptName, result, true);
-                        }
-                        else {
-                            notifyResult(scriptName, result, false);
+                        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+                        if (prefs.getBoolean("notify_script", true)) {
+                            if (failed.trim().equals("") && !success.trim().equals("")) {
+                                notifyResult(scriptName, result, true);
+                            } else {
+                                notifyResult(scriptName, result, false);
+                            }
                         }
                     }
                 });

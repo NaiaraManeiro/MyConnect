@@ -116,7 +116,7 @@ public class SSHConnector {
             StringBuilder outputBuffer = new StringBuilder();
             StringBuilder errorBuffer = new StringBuilder();
             channel.setCommand(command);
-            channel.connect(5000);
+            channel.connect();
             byte[] tmp = new byte[1024];
             while (true) {
                 while (in.available() > 0) {

@@ -50,9 +50,8 @@ public class MenuFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         mPager = getActivity().findViewById(R.id.viewPager);
-        pagerAdapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
+        pagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
         pagerAdapter.addFragment(new FilesFragment(),"rutinas");
         pagerAdapter.addFragment(new ScriptsFragment(),"scripts");
         pagerAdapter.addFragment(new TerminalFragment(),"terminal");
