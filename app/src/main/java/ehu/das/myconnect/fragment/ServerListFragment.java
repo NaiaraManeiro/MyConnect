@@ -1,6 +1,7 @@
 package ehu.das.myconnect.fragment;
 
 import android.app.Dialog;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -65,9 +66,9 @@ public class ServerListFragment extends Fragment implements OnDialogOptionPresse
         RecyclerView serverListRV = v.findViewById(R.id.serverListRV);
         serverListRV.bringToFront();
         loadingDialog = new LoadingDialog();
+        loadingDialog.setCancelable(false);
         loadingDialog.show(getActivity().getSupportFragmentManager(), "loading");
         serverList = new ArrayList<>();
-
         Data data = new Data.Builder()
                 .putString("action", "serverData")
                 .putString("userName", LoginFragment.username)
@@ -135,6 +136,7 @@ public class ServerListFragment extends Fragment implements OnDialogOptionPresse
             FirebaseAuth.getInstance().signOut();
             Navigation.findNavController(v).navigate(R.id.action_serverListFragment_to_loginFragment);
         });
+        logout.setColorFilter(Color.WHITE);
         //Obtenemos los datos de los servidores del usuario
         RecyclerView serverListRV = getActivity().findViewById(R.id.serverListRV);
         serverListRV.bringToFront();
@@ -146,6 +148,7 @@ public class ServerListFragment extends Fragment implements OnDialogOptionPresse
                 Navigation.findNavController(v).navigate(R.id.action_serverListFragment_to_addServerFragment);
             }
         });
+        addServer.setColorFilter(Color.WHITE);
     }
 
     public void connectServer() {

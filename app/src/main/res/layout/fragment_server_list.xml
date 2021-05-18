@@ -19,11 +19,18 @@
             android:layout_marginTop="-20dp"
             android:layout_marginEnd="-10dp"
             android:layout_marginRight="-10dp"
+            android:layout_weight="0"
             android:background="#3F51B5"
             app:cardBackgroundColor="#3F51B5"
             app:cardCornerRadius="50dp"
-            app:cardUseCompatPadding="false"
-            app:contentPadding="20dp">
+            app:cardUseCompatPadding="false">
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/conecta4" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -33,7 +40,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:padding="20dp">
 
                     <TextView
                         android:id="@+id/usernameTV"
@@ -69,7 +77,7 @@
                     android:id="@+id/textView14"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="-5dp"
                     android:fontFamily="sans-serif-smallcaps"
                     android:gravity="center"
                     android:text="MyConnect"
