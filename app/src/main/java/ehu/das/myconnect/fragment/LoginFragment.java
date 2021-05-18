@@ -1,5 +1,6 @@
 package ehu.das.myconnect.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -74,6 +76,11 @@ public class LoginFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        ImageView conf = getActivity().findViewById(R.id.confLogin);
+        conf.setColorFilter(Color.WHITE);
+        conf.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_preferences);
+        });
         Button login = getActivity().findViewById(R.id.login_login);
         login.setOnClickListener(v -> {
             loadingDialog = new LoadingDialog();
@@ -81,10 +88,10 @@ public class LoginFragment extends Fragment {
             EditText emailUserField = getActivity().findViewById(R.id.emailLogin);
             EditText passwordField = getActivity().findViewById(R.id.passwordLogin);
             if (!(emailUserField.getText().toString().length() > 0)) {
-                Toast.makeText(getContext(), "Insert an email or a username", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getResources().getString(R.string.insert_email_username), Toast.LENGTH_SHORT).show();
                 loadingDialog.dismiss();
             } else if (passwordField.getText().toString().length() < 8) {
-                Toast.makeText(getContext(), "Password must have more than 8 characters", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getResources().getString(R.string.password_validity), Toast.LENGTH_SHORT).show();
                 loadingDialog.dismiss();
             } else if (!emailUserField.getText().toString().contains("@") || !emailUserField.getText().toString().contains(".")) {
                     Data data = new Data.Builder()
@@ -102,11 +109,11 @@ public class LoginFragment extends Fragment {
                                     String result = status.getOutputData().getString("result");
                                     Log.i("login", "Results:" +  result);
                                     if (result.equals("0")) {
-                                        Toast.makeText(getContext(), "Invalid credentials", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getContext(), getResources().getString(R.string.invalid_credentials), Toast.LENGTH_SHORT).show();
                                         loadingDialog.dismiss();
                                     }
                                     else if (result.equals("1") || result.trim().equals("")) {
-                                        Toast.makeText(getContext(), "Internal server error, try later", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getContext(), getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
                                         loadingDialog.dismiss();
                                     }
                                     else {
@@ -133,7 +140,7 @@ public class LoginFragment extends Fragment {
         reset.setOnClickListener(v -> {
             EditText emailField = getActivity().findViewById(R.id.emailLogin);
             if (emailField.getText().toString().length() == 0) {
-                Toast.makeText(getContext(), "Insert the email where you want to receive the reset email",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getResources().getString(R.string.reset_message),Toast.LENGTH_SHORT).show();
             } else {
                 LoadingDialog ld = new LoadingDialog();
                 ld.show(getActivity().getSupportFragmentManager(), "loading");
@@ -143,9 +150,9 @@ public class LoginFragment extends Fragment {
                             public void onComplete(@NonNull Task task) {
                                 ld.dismiss();
                                 if (task.isSuccessful()) {
-                                    Toast.makeText(getContext(), "Email sent!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(), getResources().getString(R.string.email_sent), Toast.LENGTH_SHORT).show();
                                 } else {
-                                    Toast.makeText(getContext(), "There was an error sending the email", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(), getResources().getString(R.string.error_sending_email), Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });

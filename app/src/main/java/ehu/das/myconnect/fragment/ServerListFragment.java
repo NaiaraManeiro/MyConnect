@@ -129,6 +129,11 @@ public class ServerListFragment extends Fragment implements OnDialogOptionPresse
         if (extras != null) {
             userName = extras.getString("userName");
         }*/
+        ImageView conf = getActivity().findViewById(R.id.confServerList);
+        conf.setColorFilter(Color.WHITE);
+        conf.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.action_serverListFragment_to_preferences);
+        });
         TextView username = getActivity().findViewById(R.id.usernameTV);
         username.setText(LoginFragment.username);
         ImageView logout = getActivity().findViewById(R.id.logout);

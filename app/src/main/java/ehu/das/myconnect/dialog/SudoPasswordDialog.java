@@ -34,14 +34,14 @@ public class SudoPasswordDialog extends DialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View loginServer = inflater.inflate(R.layout.sudo_password_layout, null);
         EditText passwordField = loginServer.findViewById(R.id.passwordAccess);
-        alert.setPositiveButton("Access", new DialogInterface.OnClickListener() {
+        alert.setPositiveButton(getResources().getString(R.string.access), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dismiss();
                 String password = passwordField.getText().toString();
                 listener.passPassword(password);
         }});
-        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        alert.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dismiss();

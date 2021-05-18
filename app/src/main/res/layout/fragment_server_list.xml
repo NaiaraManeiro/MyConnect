@@ -43,6 +43,14 @@
                     android:orientation="horizontal"
                     android:padding="20dp">
 
+                    <ImageView
+                        android:id="@+id/confServerList"
+                        android:layout_width="101dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/settings" />
+
                     <TextView
                         android:id="@+id/usernameTV"
                         android:layout_width="match_parent"
@@ -90,7 +98,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Servers"
+                    android:text="@string/servers"
                     android:textColor="#FFFFFF" />
 
             </LinearLayout>

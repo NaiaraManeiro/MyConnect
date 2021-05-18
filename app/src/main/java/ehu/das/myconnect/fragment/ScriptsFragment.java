@@ -12,7 +12,6 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
-import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -99,7 +98,7 @@ public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<S
                             }
                         }
                         else if (result.equals("1")){
-                            Toast.makeText(getContext(), "Internal server error, try later", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -189,9 +188,9 @@ public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<S
                             scriptNames.add(data1);
                             scriptCmds.add(data2);
                             updateRV(getView(), scriptNames, scriptCmds);
-                            Toast.makeText(getContext(), "Script added", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), getResources().getString(R.string.script_added), Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(getContext(), "Error adding the script", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(),  getResources().getString(R.string.error_script_added), Toast.LENGTH_SHORT).show();
                         }
                         loadingDialog.dismiss();
                     }
@@ -269,10 +268,10 @@ public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<S
                 .setAutoCancel(true)
                 .setContentIntent(intentEnNot);
         if (failed) {
-            elBuilder.setContentTitle(scriptName + " failed");
+            elBuilder.setContentTitle(scriptName + " " + getResources().getString(R.string.success));
         }
         else {
-            elBuilder.setContentTitle(scriptName + " succeeded");
+            elBuilder.setContentTitle(scriptName + " " + getResources().getString(R.string.fail));
         }
         elManager.notify(1, elBuilder.build());
     }
@@ -294,14 +293,13 @@ public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<S
                 .observe(getActivity(), status -> {
                     if (status != null && status.getState().isFinished()) {
                         String result = status.getOutputData().getString("result");
-                        Log.i("script", "Resultadosss:" + result);
                         if (result.equals("0")) {
                             scriptNames.remove(name);
                             scriptCmds.remove(cmd);
                             updateRV(getView(), scriptNames, scriptCmds);
-                            Toast.makeText(getContext(), "Script deleted", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(),  getResources().getString(R.string.script_deleted), Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(getContext(), "Error deleting script", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(),  getResources().getString(R.string.error_script_deleted), Toast.LENGTH_SHORT).show();
                         }
                         loadingDialog.dismiss();
                     }

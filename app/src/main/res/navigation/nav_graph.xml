@@ -30,6 +30,9 @@
         <action
             android:id="@+id/action_serverListFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_serverListFragment_to_preferences"
+            app:destination="@id/preferences" />
     </fragment>
     <fragment
         android:id="@+id/serverManagmentFragment"
@@ -90,6 +93,9 @@
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
             app:destination="@id/registerFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_preferences"
+            app:destination="@id/preferences" />
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
@@ -98,6 +104,9 @@
         <action
             android:id="@+id/action_registerFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_registerFragment_to_preferences"
+            app:destination="@id/preferences" />
     </fragment>
     <fragment
         android:id="@+id/preferences"

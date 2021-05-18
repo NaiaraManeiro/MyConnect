@@ -149,7 +149,11 @@
                             android:layout_width="233dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Key .pem" />
+                            android:backgroundTint="@color/white"
+                            android:text="Key .pem"
+                            android:textColor="#000000"
+                            app:strokeColor="#000000"
+                            app:strokeWidth="2dp" />
                     </LinearLayout>
                 </FrameLayout>
 
@@ -178,7 +182,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="0"
-                        android:text="Volver" />
+                        android:backgroundTint="#FFFFFF"
+                        android:text="Volver"
+                        android:textColor="#000000"
+                        app:strokeColor="#000000"
+                        app:strokeWidth="2dp" />
 
                     <TextView
                         android:id="@+id/textView17"
@@ -190,7 +198,11 @@
                         android:id="@+id/anadirServidor"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/addServidor" />
+                        android:backgroundTint="#FFFFFF"
+                        android:text="@string/addServidor"
+                        android:textColor="#000000"
+                        app:strokeColor="#000000"
+                        app:strokeWidth="2dp" />
                 </LinearLayout>
 
             </LinearLayout>

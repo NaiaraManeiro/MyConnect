@@ -49,7 +49,7 @@ public class DialogoAccessPassword extends DialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View loginServer = inflater.inflate(R.layout.access_password_layout, null);
         EditText passwordField = loginServer.findViewById(R.id.passwordAccess);
-        alert.setPositiveButton("Access", new DialogInterface.OnClickListener() {
+        alert.setPositiveButton(getResources().getString(R.string.access), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dismiss();
@@ -94,7 +94,7 @@ public class DialogoAccessPassword extends DialogFragment {
                 WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
             }
         });
-        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        alert.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dismiss();

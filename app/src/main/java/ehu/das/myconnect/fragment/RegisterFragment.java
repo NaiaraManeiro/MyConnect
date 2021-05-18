@@ -1,5 +1,6 @@
 package ehu.das.myconnect.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -54,6 +56,11 @@ public class RegisterFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        ImageView conf = getActivity().findViewById(R.id.confSignup);
+        conf.setColorFilter(Color.WHITE);
+        conf.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.action_registerFragment_to_preferences);
+        });
         Button login = getActivity().findViewById(R.id.login_register);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,6 +79,11 @@ public class RegisterFragment extends Fragment {
 
     private void register() {
         LoadingDialog loadingDialog = new LoadingDialog();
+        ImageView conf = getActivity().findViewById(R.id.confSignup);
+        conf.setColorFilter(Color.WHITE);
+        conf.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.action_serverListFragment_to_preferences);
+        });
         loadingDialog.show(getActivity().getSupportFragmentManager(), "loading");
         EditText userField = getActivity().findViewById(R.id.registerUser);
         EditText emailField = getActivity().findViewById(R.id.registerEmail);
@@ -81,11 +93,11 @@ public class RegisterFragment extends Fragment {
             Toast.makeText(getContext(), "Insert a username", Toast.LENGTH_SHORT).show();
         }
         if (!emailField.getText().toString().contains("@") || !(emailField.getText().toString().length() > 0) || !emailField.getText().toString().contains(".")) {
-            Toast.makeText(getContext(), "Insert a valid email", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getResources().getString(R.string.email_validity), Toast.LENGTH_SHORT).show();
         } else if (passwordField.getText().toString().length() < 8) {
-            Toast.makeText(getContext(), "Password must have more than 8 characters", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getResources().getString(R.string.password_validity), Toast.LENGTH_SHORT).show();
         } else if (!passwordField.getText().toString().equals(repeatPasswordField.getText().toString())) {
-            Toast.makeText(getContext(), "Passwords don't match", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getResources().getString(R.string.password_dont_match), Toast.LENGTH_SHORT).show();
         } else {
             Data data = new Data.Builder()
                     .putString("action", "register")
@@ -103,10 +115,10 @@ public class RegisterFragment extends Fragment {
                             String result = status.getOutputData().getString("result");
                             Log.i("register", result);
                             if (result.equals("0")) {
-                                Toast.makeText(getContext(), "Username already exists", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), getResources().getString(R.string.user_exists), Toast.LENGTH_SHORT).show();
                             }
                             else if (result.equals("1")) {
-                                Toast.makeText(getContext(), "Email already exists", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), getResources().getString(R.string.email_exists), Toast.LENGTH_SHORT).show();
                             }
                             else if (result.equals("2")) {
                                 FirebaseAuth.getInstance().createUserWithEmailAndPassword(emailField.getText().toString(), passwordField.getText().toString())
@@ -131,7 +143,7 @@ public class RegisterFragment extends Fragment {
                                         });
                             }
                             else if (result.equals("3")) {
-                                Toast.makeText(getContext(), "Internal server error, try later", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
                             }
                             loadingDialog.dismiss();
                         }

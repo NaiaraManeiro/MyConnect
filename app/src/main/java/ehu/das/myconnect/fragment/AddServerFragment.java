@@ -84,7 +84,7 @@ public class AddServerFragment extends Fragment {
             public void onClick(View v) {
                 Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
                 chooseFile.setType("*/*");
-                chooseFile = Intent.createChooser(chooseFile, "Choose a file");
+                chooseFile = Intent.createChooser(chooseFile, getResources().getString(R.string.choose_file));
                 startActivityForResult(chooseFile, PICKFILE_RESULT_CODE);
             }
         });
