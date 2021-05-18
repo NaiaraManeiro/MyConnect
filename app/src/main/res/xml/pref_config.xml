@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="switch_preference_1"
+        android:title="@string/notify_script" />
+    <ListPreference
+        android:defaultValue="true"
+        android:entries="@array/languages"
+        android:entryValues="@array/languages"
+        android:key="list_preference_1"
+        android:title="@string/languages" />
+</PreferenceScreen>

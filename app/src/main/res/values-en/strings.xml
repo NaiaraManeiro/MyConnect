@@ -37,4 +37,5 @@
     <string name="selectOption">Don\'t forget to choose what you want to create!</string>
     <string name="folderCreated">The folder has been created!</string>
     <string name="fileCreated">The file has been created!</string>
+    <string name="username_or_email">username or email</string>
 </resources>

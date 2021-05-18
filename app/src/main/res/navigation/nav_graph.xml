@@ -39,6 +39,9 @@
         <action
             android:id="@+id/action_serverManagmentFragment_to_serverListFragment"
             app:destination="@id/serverListFragment" />
+        <action
+            android:id="@+id/action_serverManagmentFragment_to_preferences"
+            app:destination="@id/preferences" />
     </fragment>
     <fragment
         android:id="@+id/filesFragment"
@@ -96,4 +99,8 @@
             android:id="@+id/action_registerFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/preferences"
+        android:name="ehu.das.myconnect.fragment.Preferences"
+        android:label="Preferences" />
 </navigation>

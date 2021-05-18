@@ -108,7 +108,7 @@
                     android:layout_height="50dp"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:hint="username or email"
+                    android:hint="@string/username_or_email"
                     android:inputType="textPersonName"
                     android:shadowColor="#000000"
                     android:textColor="#000000"
