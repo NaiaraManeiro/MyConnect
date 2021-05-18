@@ -30,6 +30,7 @@ import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 import ehu.das.myconnect.R;
@@ -214,33 +215,39 @@ public class FileInfoFragment extends Fragment {
                 String username = ServerListFragment.selectedServer.getUser();
                 String host = ServerListFragment.selectedServer.getHost();
 
-                Data data1 = new Data.Builder()
-                        .putString("action", "scp " + username + "@" + host + ":" + path + " " + uri)
-                        .build();
-                OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(SSHWorker.class)
-                        .setInputData(data1)
-                        .build();
-                WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(otwr.getId())
-                        .observe(getActivity(), status -> {
-                            if (status != null && status.getState().isFinished()) {
-                                NotificationManager elManager = (NotificationManager)getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
-                                NotificationCompat.Builder elBuilder = new NotificationCompat.Builder(getActivity(), "IdCanal");
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                    NotificationChannel elCanal = new NotificationChannel("IdCanal", "NombreCanal", NotificationManager.IMPORTANCE_DEFAULT);
-                                    elBuilder.setSmallIcon(R.drawable.descarga)
-                                            .setContentTitle(getText(R.string.fileDownload))
-                                            .setContentText(getString(R.string.download_1)+" '"+fileName+"' "+getString(R.string.download_2))
-                                            .setVibrate(new long[]{0, 1000, 500, 1000})
-                                            .setAutoCancel(true);
-                                    elCanal.enableLights(true);
-                                    elManager.createNotificationChannel(elCanal);
-                                }
-
-                                elManager.notify(1, elBuilder.build());
-                            }
-                        });
-
-                WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
+                try {
+                    Process process = Runtime.getRuntime().exec("scp " + username + "@" + host + ":" + path + " " + uri);
+                    System.out.println(process);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+//                Data data1 = new Data.Builder()
+//                        .putString("action", "scp " + username + "@" + host + ":" + path + " " + uri)
+//                        .build();
+//                OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(SSHWorker.class)
+//                        .setInputData(data1)
+//                        .build();
+//                WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(otwr.getId())
+//                        .observe(getActivity(), status -> {
+//                            if (status != null && status.getState().isFinished()) {
+//                                NotificationManager elManager = (NotificationManager)getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+//                                NotificationCompat.Builder elBuilder = new NotificationCompat.Builder(getActivity(), "IdCanal");
+//                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                                    NotificationChannel elCanal = new NotificationChannel("IdCanal", "NombreCanal", NotificationManager.IMPORTANCE_DEFAULT);
+//                                    elBuilder.setSmallIcon(R.drawable.descarga)
+//                                            .setContentTitle(getText(R.string.fileDownload))
+//                                            .setContentText(getString(R.string.download_1)+" '"+fileName+"' "+getString(R.string.download_2))
+//                                            .setVibrate(new long[]{0, 1000, 500, 1000})
+//                                            .setAutoCancel(true);
+//                                    elCanal.enableLights(true);
+//                                    elManager.createNotificationChannel(elCanal);
+//                                }
+//
+//                                elManager.notify(1, elBuilder.build());
+//                            }
+//                        });
+//
+//                WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
             }
         }
     }

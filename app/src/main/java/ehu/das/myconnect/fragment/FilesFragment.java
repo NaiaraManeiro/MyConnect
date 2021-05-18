@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -308,13 +309,21 @@ public class FilesFragment extends Fragment implements OnClickRecycleView, OnDia
             if (data != null) {
                 Uri uri = data.getData();
 
-                File file = new File(String.valueOf(uri));
+                //File file = new File(String.valueOf(uri));
 
                 String username = ServerListFragment.selectedServer.getUser();
                 String host = ServerListFragment.selectedServer.getHost();
+                int port = ServerListFragment.selectedServer.getPort();
 
-                Data data1 = new Data.Builder()
-                        .putString("action", "scp " + file.getAbsolutePath() + " " + username + "@" + host + ":" + path + "/")
+                try {
+                    Process process = Runtime.getRuntime().exec("scp " + uri + " " + username + "@" + host + ":" + path + "/");
+                    System.out.println(process);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                /*Data data1 = new Data.Builder()
+                        .putString("action", "scp" + file.getAbsolutePath() + " " + username + "@" + host + ":" + path + "/")
                         .build();
                 OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(SSHWorker.class)
                         .setInputData(data1)
@@ -331,7 +340,7 @@ public class FilesFragment extends Fragment implements OnClickRecycleView, OnDia
                             }
                         });
 
-                WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
+                WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);*/
             }
 
         }

@@ -97,6 +97,7 @@ public class SSHConnector {
             InputStream in = channelExec.getInputStream();
 
             // Ejecutamos el comando.
+
             channelExec.setCommand(command);
             channelExec.connect();
 
