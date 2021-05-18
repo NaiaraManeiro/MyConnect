@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ehu.das.myconnect.R;
+import ehu.das.myconnect.dialog.ActionsFolderFileDialog;
 import ehu.das.myconnect.dialog.LoadingDialog;
 import ehu.das.myconnect.dialog.OnClickRecycleView;
 import ehu.das.myconnect.dialog.CreateFolderFileDialog;
@@ -42,6 +43,7 @@ public class FilesFragment extends Fragment implements OnClickRecycleView, OnDia
     private List<String> fileNames;
     private String path;
     private final int PICKFILE_RESULT_CODE = 12;
+    private OnDialogDismiss<String> fragment;
 
     public FilesFragment() {}
 
@@ -80,7 +82,7 @@ public class FilesFragment extends Fragment implements OnClickRecycleView, OnDia
 
         //Para crear una nueva carpeta o archivo
         ImageView add = getActivity().findViewById(R.id.addImage);
-        OnDialogDismiss<String> fragment = this;
+        fragment = this;
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,6 +122,7 @@ public class FilesFragment extends Fragment implements OnClickRecycleView, OnDia
                                     TextView oldPath = getActivity().findViewById(R.id.path);
                                     oldPath.setText(pathViejo);
                                 } else {
+                                    path = pathNuevo;
                                     Data data1 = new Data.Builder()
                                             .putString("action", "ls -l "+ path)
                                             .build();
@@ -137,12 +140,13 @@ public class FilesFragment extends Fragment implements OnClickRecycleView, OnDia
             public void onClick(View v) {
                 // Ejecutamos el comando cd .. y actualizamos el path
                 TextView oldPath = getActivity().findViewById(R.id.path);
-                String path = oldPath.getText().toString();
-                String newPath = path.substring(0, path.lastIndexOf("/"));
+                String pathText = oldPath.getText().toString();
+                String newPath = pathText.substring(0, pathText.lastIndexOf("/"));
                 if (newPath.equals("")) {
                     newPath = "/";
                 }
                 oldPath.setText(newPath);
+                path = newPath;
                 Data data = new Data.Builder()
                         .putString("action", "ls -l "+newPath)
                         .build();
@@ -167,22 +171,46 @@ public class FilesFragment extends Fragment implements OnClickRecycleView, OnDia
     public void onItemClick(int position) {
         String fileType = fileTypes.get(position);
         String name = fileNames.get(position);
-        TextView path = getActivity().findViewById(R.id.path);
-        String newPath = path.getText().toString();
+        TextView pathText = getActivity().findViewById(R.id.path);
+        String newPath = pathText.getText().toString();
         String completePath = newPath + "/"+ name;
         if (fileType.equals("folder")) {
-            path.setText(completePath);
+            path = completePath;
+            pathText.setText(completePath);
             Data data = new Data.Builder()
                     .putString("action", "ls -l "+completePath)
                     .build();
             //Cambiamos de carpeta y mostramos los archivos del nuevo path
             showData(data);
         } if (fileType.equals("file")) {
+            name = name.toLowerCase();
+            boolean image = false;
+            if (name.contains("png") || name.contains("jpge") || name.contains("jpg")) {
+                image = true;
+            }
             Bundle bundle = new Bundle();
             bundle.putString("path", completePath);
+            bundle.putBoolean("image", image);
 
             Navigation.findNavController(getView()).navigate(R.id.action_serverManagmentFragment_to_fileInfoFragment, bundle);
         }
+    }
+
+    @Override
+    public void onItemLongClick(int position) {
+
+        String fileType = fileTypes.get(position);
+        String name = fileNames.get(position);
+
+        ActionsFolderFileDialog actionsFolderFileDialog = new ActionsFolderFileDialog();
+        actionsFolderFileDialog.onDialogDismiss = fragment;
+        Bundle bundle = new Bundle();
+        bundle.putString("path", path);
+        bundle.putString("name", name);
+        bundle.putString("fileType", fileType);
+        actionsFolderFileDialog.setArguments(bundle);
+        actionsFolderFileDialog.show(getActivity().getSupportFragmentManager(), "actions");
+
     }
 
     private void showData(Data data) {
@@ -274,21 +302,19 @@ public class FilesFragment extends Fragment implements OnClickRecycleView, OnDia
         showData(data);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        //Para obtener el archivo pem
         if (requestCode == PICKFILE_RESULT_CODE && resultCode == Activity.RESULT_OK) {
             if (data != null) {
                 Uri uri = data.getData();
 
-                //File file = new File(String.valueOf(uri));
+                File file = new File(String.valueOf(uri));
 
                 String username = ServerListFragment.selectedServer.getUser();
                 String host = ServerListFragment.selectedServer.getHost();
 
                 Data data1 = new Data.Builder()
-                        .putString("action", "scp " + uri + " " + username + "@" + host + ":" + path + "/")
+                        .putString("action", "scp " + file.getAbsolutePath() + " " + username + "@" + host + ":" + path + "/")
                         .build();
                 OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(SSHWorker.class)
                         .setInputData(data1)

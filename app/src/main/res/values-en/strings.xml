@@ -44,4 +44,10 @@
     <string name="fileDownload">File dowloaded</string>
     <string name="download_1">The file</string>
     <string name="download_2">has been downloaded.</string>
+    <string name="copy">Copy</string>
+    <string name="move">Move</string>
+    <string name="moveTo">Move to...</string>
+    <string name="copyTo">Copy to...</string>
+    <string name="completePath">Please, write the absolute path.</string>
+    <string name="noPath">The path doesn\'t exist.</string>
 </resources>

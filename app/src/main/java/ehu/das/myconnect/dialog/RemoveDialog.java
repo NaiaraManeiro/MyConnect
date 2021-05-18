@@ -18,6 +18,7 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import ehu.das.myconnect.R;
+import ehu.das.myconnect.fragment.ServerListFragment;
 import ehu.das.myconnect.service.SSHWorker;
 import ehu.das.myconnect.service.ServerWorker;
 
@@ -46,12 +47,13 @@ public class RemoveDialog extends DialogFragment {
         if (bundle != null) {
             where = bundle.getString("where");
             serverName = bundle.getString("serverName");
-            user = bundle.getString("user");
-            host = bundle.getString("host");
-            password = bundle.getString("password");
-            port = bundle.getInt("port");
             path = bundle.getString("path");
         }
+
+        user = ServerListFragment.selectedServer.getUser();
+        host = ServerListFragment.selectedServer.getHost();
+        password = ServerListFragment.selectedServer.getPassword();
+        port = ServerListFragment.selectedServer.getPort();
 
         ImageView yes = vw.findViewById(R.id.imageSi);
 
@@ -81,11 +83,7 @@ public class RemoveDialog extends DialogFragment {
                     WorkManager.getInstance(getContext()).enqueue(otwr);
                 } else if (where.equals("file")) {
                     Data data = new Data.Builder()
-                            .putString("action", "rm "+path)
-                            .putString("user", user)
-                            .putString("host", host)
-                            .putString("password", password)
-                            .putInt("port", port)
+                            .putString("action", "rm " + path)
                             .build();
 
                     OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(SSHWorker.class)

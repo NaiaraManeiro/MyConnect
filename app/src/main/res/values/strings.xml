@@ -74,4 +74,10 @@
     <string name="fileDownload">Archivo descargado</string>
     <string name="download_1">El archivo</string>
     <string name="download_2">ha sido descargado.</string>
+    <string name="copy">Copiar</string>
+    <string name="move">Mover</string>
+    <string name="moveTo">Mover a...</string>
+    <string name="copyTo">Copiar a...</string>
+    <string name="completePath">Por favor, escriba el path absoluto.</string>
+    <string name="noPath">No existe el path.</string>
 </resources>
