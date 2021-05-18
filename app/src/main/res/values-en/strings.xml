@@ -100,4 +100,10 @@
     <string name="choose_file">Choose a file</string>
     <string name="success">success</string>
     <string name="fail">failed</string>
+    <string name="account">Account</string>
+    <string name="account_deleted">Account deleted</string>
+    <string name="error_deleting_user">Error deleting account</string>
+    <string name="not_logged">Log in first</string>
+    <string name="delete_account">Delete account</string>
+    <string name="sure_delete_account">Are you sure you want to delete your account?</string>
 </resources>

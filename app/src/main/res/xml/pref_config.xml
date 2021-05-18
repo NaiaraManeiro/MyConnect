@@ -2,6 +2,9 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <PreferenceCategory android:title="Global">
+
+    </PreferenceCategory>
     <SwitchPreference
         android:defaultValue="true"
         android:key="notify_script"
@@ -12,4 +15,12 @@
         android:entryValues="@array/languages"
         android:key="language"
         android:title="@string/languages" />
+    <PreferenceCategory android:title="@string/account">
+
+    </PreferenceCategory>
+
+    <Preference
+        android:key="delete_account"
+        android:summary=""
+        android:title="@string/delete_account" />
 </PreferenceScreen>

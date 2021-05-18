@@ -111,5 +111,9 @@
     <fragment
         android:id="@+id/preferences"
         android:name="ehu.das.myconnect.fragment.Preferences"
-        android:label="Preferences" />
+        android:label="Preferences" >
+        <action
+            android:id="@+id/action_preferences_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
 </navigation>

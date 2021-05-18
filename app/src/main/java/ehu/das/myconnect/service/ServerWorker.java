@@ -107,6 +107,8 @@ public class ServerWorker extends Worker {
                         parametrosJSON.put("user", getInputData().getString("user"));
                         parametrosJSON.put("name", getInputData().getString("name"));
                         parametrosJSON.put("cmd", getInputData().getString("cmd"));
+                    } else if (action.equals("deleteUser")) {
+                        parametrosJSON.put("user", getInputData().getString("user"));
                     }
                     urlConnection.setRequestProperty("Content-Type","application/json");
                     PrintWriter out = new PrintWriter(urlConnection.getOutputStream());
