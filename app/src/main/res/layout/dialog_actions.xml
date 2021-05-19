@@ -2,120 +2,109 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="40dp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/filePath"
-                android:layout_width="260dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/up_down_right_border"
-                android:paddingLeft="4dp"
-                app:layout_constraintStart_toEndOf="@+id/textView3"
-                app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/textView3"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="20dp"
                 android:background="@drawable/border"
                 android:paddingLeft="4dp"
-                android:text="@string/path"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <EditText
-                android:id="@+id/nameFileFolder"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:ems="10"
-                android:hint="@string/name"
-                android:theme="@style/EditTextColor"
-                android:inputType="textPersonName"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/filePath" />
+                android:text="@string/path" />
 
             <TextView
-                android:id="@+id/completePath"
-                android:layout_width="300dp"
+                android:id="@+id/filePath"
+                android:layout_width="260dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="@string/completePath"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/nameFileFolder" />
+                android:background="@drawable/up_down_right_border"
+                android:paddingLeft="4dp" />
 
-            <EditText
-                android:id="@+id/pathToAction"
-                android:layout_width="300dp"
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/nameFileFolder"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:ems="10"
+            android:hint="@string/name"
+            android:inputType="textPersonName"
+            android:theme="@style/EditTextColor" />
+
+        <TextView
+            android:id="@+id/completePath"
+            style="@style/Texto"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/completePath" />
+
+        <EditText
+            android:id="@+id/pathToAction"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:ems="10"
+            android:hint="@string/path"
+            android:inputType="textPersonName"
+            android:maxLines="1"
+            android:scrollHorizontally="true"
+            android:theme="@style/EditTextColor" />
+
+        <RadioGroup
+            android:id="@+id/actions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/editAction"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:ems="10"
-                android:theme="@style/EditTextColor"
-                android:hint="@string/path"
-                android:scrollHorizontally="true"
-                android:maxLines="1"
-                android:inputType="textPersonName"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/completePath" />
+                android:layout_weight="1"
+                android:text="@string/edit" />
 
-            <RadioGroup
-                android:id="@+id/actions"
-                android:layout_width="match_parent"
+            <RadioButton
+                android:id="@+id/deleteAction"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/pathToAction">
+                android:layout_weight="1"
+                android:text="@string/eliminar" />
 
-                <RadioButton
-                    android:id="@+id/editAction"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/edit" />
+            <RadioButton
+                android:id="@+id/copyAction"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/copy" />
 
-                <RadioButton
-                    android:id="@+id/deleteAction"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/eliminar" />
+            <RadioButton
+                android:id="@+id/moveAction"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/move" />
 
-                <RadioButton
-                    android:id="@+id/copyAction"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/copy" />
+        </RadioGroup>
 
-                <RadioButton
-                    android:id="@+id/moveAction"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/move" />
-
-            </RadioGroup>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/actionButton"
@@ -125,22 +114,31 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="40dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/actions" />
+                android:textColor="#000000"
+                app:strokeColor="#000000"
+                app:strokeWidth="2dp" />
 
-            <Button
-                android:id="@+id/backActions"
-                style="@style/Buttons"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="10dp"
-                android:text="@string/volver"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/actions" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="right"
+                android:orientation="horizontal">
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <Button
+                    android:id="@+id/backActions"
+                    style="@style/Buttons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
+                    android:backgroundTint="#FFFFFF"
+                    android:text="@string/volver"
+                    app:strokeColor="#000000"
+                    app:strokeWidth="2dp" />
+            </LinearLayout>
+
+        </LinearLayout>
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
