@@ -1,7 +1,10 @@
 package ehu.das.myconnect.fragment;
 
 import android.app.Activity;
+import android.content.ContentUris;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,6 +19,9 @@ import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
+import android.os.Environment;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,8 +30,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -160,9 +172,8 @@ public class FilesFragment extends Fragment implements OnClickRecycleView, OnDia
         uploadFile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
+                Intent chooseFile = new Intent(Intent.ACTION_PICK);
                 chooseFile.setType("*/*");
-                chooseFile = Intent.createChooser(chooseFile, "Choose a file");
                 startActivityForResult(chooseFile, PICKFILE_RESULT_CODE);
             }
         });
@@ -186,7 +197,7 @@ public class FilesFragment extends Fragment implements OnClickRecycleView, OnDia
         } if (fileType.equals("file")) {
             name = name.toLowerCase();
             boolean image = false;
-            if (name.contains("png") || name.contains("jpge") || name.contains("jpg")) {
+            if (name.contains("png") || name.contains("jpge") || name.contains("jpg") || name.contains("opus") || name.contains("mp4") || name.contains("mp3")) {
                 image = true;
             }
             Bundle bundle = new Bundle();
@@ -309,40 +320,63 @@ public class FilesFragment extends Fragment implements OnClickRecycleView, OnDia
             if (data != null) {
                 Uri uri = data.getData();
 
-                //File file = new File(String.valueOf(uri));
+                String uri2 = getPath(getContext(), uri);
 
-                String username = ServerListFragment.selectedServer.getUser();
-                String host = ServerListFragment.selectedServer.getHost();
-                int port = ServerListFragment.selectedServer.getPort();
+                if (uri2 != null) {
+                    Data data1 = new Data.Builder()
+                            .putString("action", "")
+                            .putString("from", uri2)
+                            .putString("to", path + "/")
+                            .putString("do", "upload")
+                            .build();
+                    OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(SSHWorker.class)
+                            .setInputData(data1)
+                            .build();
+                    WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(otwr.getId())
+                            .observe(getActivity(), status -> {
+                                if (status != null && status.getState().isFinished()) {
+                                    Data data2 = new Data.Builder()
+                                            .putString("action", "ls -l "+ path)
+                                            .build();
 
-                try {
-                    Process process = Runtime.getRuntime().exec("scp " + uri + " " + username + "@" + host + ":" + path + "/");
-                    System.out.println(process);
-                } catch (IOException e) {
-                    e.printStackTrace();
+                                    //Mostramos los archivos del path actual
+                                    showData(data2);
+                                }
+                            });
+
+                    WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
+                } else {
+                    Toast.makeText(getContext(), getString(R.string.badFileType), Toast.LENGTH_SHORT).show();
                 }
-
-                /*Data data1 = new Data.Builder()
-                        .putString("action", "scp" + file.getAbsolutePath() + " " + username + "@" + host + ":" + path + "/")
-                        .build();
-                OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(SSHWorker.class)
-                        .setInputData(data1)
-                        .build();
-                WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(otwr.getId())
-                        .observe(getActivity(), status -> {
-                            if (status != null && status.getState().isFinished()) {
-                                Data data2 = new Data.Builder()
-                                        .putString("action", "ls -l "+ path)
-                                        .build();
-
-                                //Mostramos los archivos del path actual
-                                showData(data2);
-                            }
-                        });
-
-                WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);*/
             }
+        }
+    }
+    @Nullable
+    public static String getPath(Context context, Uri uri) {
+        if ("content".equalsIgnoreCase(uri.getScheme())) {
+            return getDataColumn(context, uri, null, null);
 
         }
+        return null;
+    }
+
+    public static String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
+        Cursor cursor = null;
+        final String column = "_data";
+        final String[] projection = {column};
+        try {
+            cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                final int index = cursor.getColumnIndexOrThrow(column);
+                return cursor.getString(index);
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            } else {
+                return null;
+            }
+        }
+        return null;
     }
 }
