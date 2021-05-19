@@ -299,7 +299,6 @@ public class FilesFragment extends Fragment implements OnClickRecycleView, OnDia
                             //Mostramos los archivos del path actual
                             showData(data1);
 
-                             */
                         }
                     }
                 });

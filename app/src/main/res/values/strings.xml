@@ -12,10 +12,6 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
-    <string name="path">path</string>
-    <string name="file">archivos</string>
-    <string name="path" translatable="false">Path</string>
-    <string name="file">files</string>
     <string name="scripts">scripts</string>
     <string name="monitoring">monitoreo</string>
     <string name="back">..</string>
@@ -39,6 +35,8 @@
     <string name="contrasena">Contraseña</string>
     <string name="servidorExistente">Ese nombre de servidor ya existe, piense en otro.</string>
     <string name="servidorCreado">¡Servidor creado!</string>
+    <string name="path">path</string>
+    <string name="file">file</string>
     <string name="authFail">Error de autenticación, compruebe los datos.</string>
     <string name="usuarioVacio">El usuario no puede estar vacío.</string>
     <string name="contraVacia">La contraseña no puede estar vacía</string>
@@ -117,8 +115,6 @@
         <item>Spanish</item>
         <item>English</item>
     </string-array>
-    <string name="access_password">Access with password</string>
-    <string name="authSuccessful">Authentication successful</string>
     <string name="wrongPath">No existe el path que has escrito.</string>
     <string name="bigFile">El archivo es muy grande, si quiere verlo todo, descargelo.</string>
     <string name="saveDownload">Selecciona donde guardar la descarga:</string>

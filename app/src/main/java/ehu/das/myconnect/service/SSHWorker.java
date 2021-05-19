@@ -39,7 +39,7 @@ public class SSHWorker  extends Worker {
         } else if (exception.contains("failed to")) {
             result = "failConnect";
         }
-        String[] results = new String[0];
+        String[] resultM = new String[]{};
         if (!exception.contains("Auth fail") && !exception.contains("failed to")) {
             try {
                 if (command.equals("")) {
@@ -47,13 +47,14 @@ public class SSHWorker  extends Worker {
                     String to = getInputData().getString("to");
                     String paths = from + "," + to;
                     String doAcion = getInputData().getString("do");
-                    result = sshConnector.executeCommand(paths, doAcion);
+                    resultM = sshConnector.executeCommand(paths, doAcion);
                 } else {
-                    result = sshConnector.executeCommand(command, "");
-                    if (command.contains("cat") && result.length() > 10240) {
-                        result = "";
-                        result = result + "error,";
-                        result = result + sshConnector.executeCommand("head -10 "+getInputData().getString("path"), "");
+                    resultM = sshConnector.executeCommand(command, "");
+                    String success = resultM[0];
+                    if (command.contains("cat") && success.length() > 10240) {
+                        success = "";
+                        success = success + "error,";
+                        resultM[0] = success + sshConnector.executeCommand("head -10 "+getInputData().getString("path"), "");
                     }
                 }
 
@@ -67,9 +68,9 @@ public class SSHWorker  extends Worker {
         }
 
         Data resultados = new Data.Builder()
-                .putString("success", results[0])
-                .putString("fail", results[1])
-                .putString("result", results[0])
+                .putString("success", resultM[0])
+                .putString("fail", resultM[1])
+                .putString("result", resultM[0])
                 .build();
 
         return Result.success(resultados);
