@@ -19,6 +19,7 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import ehu.das.myconnect.R;
+import ehu.das.myconnect.fragment.ILoading;
 import ehu.das.myconnect.fragment.LoginFragment;
 import ehu.das.myconnect.fragment.ServerListFragment;
 import ehu.das.myconnect.service.ServerWorker;
@@ -31,6 +32,7 @@ public class DialogPassword extends DialogFragment {
     private int port;
     public View view;
     public OnDialogDismiss<String> onDialogDismiss;
+    public ILoading loadingListener;
 
     @NonNull
     @Override
@@ -60,6 +62,7 @@ public class DialogPassword extends DialogFragment {
                 EditText contraServidor = vista.findViewById(R.id.passwordAccess);
                 String contra = contraServidor.getText().toString();
 
+                loadingListener.startLoading();
                 //Editamos los datos a la bd en caso de que se pueda realizar el ssh
                 Data datos = new Data.Builder()
                         .putString("action", "editServer")
@@ -79,6 +82,7 @@ public class DialogPassword extends DialogFragment {
                         .observe(getActivity(), status -> {
                             if (status != null && status.getState().isFinished()) {
                                 String result = status.getOutputData().getString("result");
+                                loadingListener.stopLoading();
                                 onDialogDismiss.onDismiss(result);
                                 dismiss();
                             }

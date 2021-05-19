@@ -63,9 +63,7 @@ public class ServerListFragment extends Fragment implements OnDialogOptionPresse
         View v = inflater.inflate(R.layout.fragment_server_list, container, false);
         RecyclerView serverListRV = v.findViewById(R.id.serverListRV);
         serverListRV.bringToFront();
-        loadingDialog = new LoadingDialog();
-        loadingDialog.setCancelable(false);
-        loadingDialog.show(getActivity().getSupportFragmentManager(), "loading");
+        startLoading();
         serverList = new ArrayList<>();
         Data data = new Data.Builder()
                 .putString("action", "serverData")
@@ -108,7 +106,7 @@ public class ServerListFragment extends Fragment implements OnDialogOptionPresse
                                 e.printStackTrace();
                             }
                         }
-                        loadingDialog.dismiss();
+                        stopLoading();
                     }
                 });
         WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);

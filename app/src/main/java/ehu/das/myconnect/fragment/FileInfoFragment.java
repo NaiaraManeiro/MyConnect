@@ -32,11 +32,12 @@ import androidx.work.WorkManager;
 import java.util.Arrays;
 
 import ehu.das.myconnect.R;
+import ehu.das.myconnect.dialog.LoadingDialog;
 import ehu.das.myconnect.dialog.RemoveDialog;
 import ehu.das.myconnect.service.SSHWorker;
 import lib.folderpicker.FolderPicker;
 
-public class FileInfoFragment extends Fragment {
+public class FileInfoFragment extends Fragment implements ILoading{
 
     private String path;
     private Button save;
@@ -45,6 +46,8 @@ public class FileInfoFragment extends Fragment {
     private String fileName;
     private boolean image;
     private boolean keyPem = false;
+    public LoadingDialog loadingDialog;
+    private ILoading iLoading;
 
     public FileInfoFragment() {}
 
@@ -89,6 +92,8 @@ public class FileInfoFragment extends Fragment {
         fileName = path.substring(path.lastIndexOf("/")+1);
 
         if (!image) {
+            startLoading();
+
             //Mostramos el texto del archivo
             Data data = new Data.Builder()
                     .putString("action", "cat " + path)
@@ -102,6 +107,7 @@ public class FileInfoFragment extends Fragment {
                     .observe(getActivity(), status -> {
                         if (status != null && status.getState().isFinished()) {
                             String result = status.getOutputData().getString("result");
+                            stopLoading();
                             if (result.equals("authFail")) {
                                 Toast.makeText(getContext(), getString(R.string.authFail), Toast.LENGTH_LONG).show();
                             } else if (result.equals("failConnect")) {
@@ -130,6 +136,8 @@ public class FileInfoFragment extends Fragment {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                startLoading();
+
                 String fileText = file.getText().toString();
                 Data data = new Data.Builder()
                         .putString("action", "echo '" +fileText+ "' > " + path)
@@ -142,6 +150,7 @@ public class FileInfoFragment extends Fragment {
                         .observe(getActivity(), status -> {
                             if (status != null && status.getState().isFinished()) {
                                 String result = status.getOutputData().getString("result");
+                                stopLoading();
                                 if (result.equals("authFail")) {
                                     Toast.makeText(getContext(), getString(R.string.authFail), Toast.LENGTH_LONG).show();
                                 } else if (result.equals("failConnect")) {
@@ -176,9 +185,11 @@ public class FileInfoFragment extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        iLoading = this;
         int id = item.getItemId();
         if (id == R.id.eliminar) {
             RemoveDialog removeDialog = new RemoveDialog();
+            removeDialog.loadingListener = iLoading;
             Bundle bundle = new Bundle();
             removeDialog.view = getView();
             bundle.putString("path", path);
@@ -211,6 +222,8 @@ public class FileInfoFragment extends Fragment {
 
                 String folderLocation = data.getExtras().getString("data");
 
+                startLoading();
+
                 Data data1 = new Data.Builder()
                         .putString("action", "")
                         .putString("from", path)
@@ -224,6 +237,7 @@ public class FileInfoFragment extends Fragment {
                 WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(otwr.getId())
                         .observe(getActivity(), status -> {
                             if (status != null && status.getState().isFinished()) {
+                                stopLoading();
                                 NotificationManager elManager = (NotificationManager)getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
                                 NotificationCompat.Builder elBuilder = new NotificationCompat.Builder(getActivity(), "IdCanal");
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -244,5 +258,15 @@ public class FileInfoFragment extends Fragment {
                 WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
             }
         }
+    }
+
+    public void startLoading() {
+        loadingDialog = new LoadingDialog();
+        loadingDialog.setCancelable(false);
+        loadingDialog.show(getActivity().getSupportFragmentManager(), "loading");
+    }
+
+    public void stopLoading() {
+        loadingDialog.dismiss();
     }
 }

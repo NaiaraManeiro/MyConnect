@@ -18,6 +18,7 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import ehu.das.myconnect.R;
+import ehu.das.myconnect.fragment.ILoading;
 import ehu.das.myconnect.fragment.ServerListFragment;
 import ehu.das.myconnect.service.SSHWorker;
 import ehu.das.myconnect.service.ServerWorker;
@@ -29,6 +30,7 @@ public class RemoveDialog extends DialogFragment {
     private String path;
     public View view;
     private boolean keyPem = false;
+    public ILoading loadingListener;
 
     @NonNull
     @Override
@@ -57,6 +59,7 @@ public class RemoveDialog extends DialogFragment {
         yes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                loadingListener.startLoading();
                 if (where.equals("server")) {
                     Data data = new Data.Builder()
                             .putString("action", "removeServer")
@@ -71,6 +74,7 @@ public class RemoveDialog extends DialogFragment {
                                 if (status != null && status.getState().isFinished()) {
                                     String result = status.getOutputData().getString("result");
                                     if (result.equals("Remove")) {
+                                        loadingListener.stopLoading();
                                         dismiss();
                                         Navigation.findNavController(view).navigate(R.id.action_serverInfoFragment_to_serverListFragment);
                                     }
@@ -89,6 +93,7 @@ public class RemoveDialog extends DialogFragment {
                     WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(otwr.getId())
                             .observe(getActivity(), status -> {
                                 if (status != null && status.getState().isFinished()) {
+                                    loadingListener.stopLoading();
                                     dismiss();
                                     String newPath = path.substring(0, path.lastIndexOf("/"));
                                     Bundle bundle = new Bundle();

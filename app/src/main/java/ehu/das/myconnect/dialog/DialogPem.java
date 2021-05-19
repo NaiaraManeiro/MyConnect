@@ -23,6 +23,7 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import ehu.das.myconnect.R;
+import ehu.das.myconnect.fragment.ILoading;
 import ehu.das.myconnect.fragment.LoginFragment;
 import ehu.das.myconnect.fragment.ServerListFragment;
 import ehu.das.myconnect.service.ServerWorker;
@@ -37,6 +38,8 @@ public class DialogPem extends DialogFragment {
     public OnDialogDismiss<String> onDialogDismiss;
     private final int PICKFILE_RESULT_CODE = 10;
     private String key = "";
+    private String error = "";
+    public ILoading loadingListener;
 
     @NonNull
     @Override
@@ -75,6 +78,7 @@ public class DialogPem extends DialogFragment {
         builder.setPositiveButton(getResources().getString(R.string.edit), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                loadingListener.startLoading();
                 //Editamos los datos a la bd en caso de que se pueda realizar el ssh
                 Data datos = new Data.Builder()
                         .putString("action", "editServer")
@@ -94,7 +98,12 @@ public class DialogPem extends DialogFragment {
                         .observe(getActivity(), status -> {
                             if (status != null && status.getState().isFinished()) {
                                 String result = status.getOutputData().getString("result");
-                                onDialogDismiss.onDismiss(result);
+                                loadingListener.stopLoading();
+                                if (error.equals("")) {
+                                    onDialogDismiss.onDismiss(result);
+                                } else {
+                                    onDialogDismiss.onDismiss(error);
+                                }
                                 dismiss();
                             }
                         });
@@ -126,10 +135,10 @@ public class DialogPem extends DialogFragment {
                     if (uri2.contains(".pem")) {
                         key = uri2;
                     } else {
-                        Toast.makeText(getContext(), getString(R.string.notPem), Toast.LENGTH_SHORT).show();
+                        error = "noPem";
                     }
                 } else {
-                    Toast.makeText(getContext(), getString(R.string.badFileType), Toast.LENGTH_SHORT).show();
+                    error = "noFile";
                 }
             }
         }

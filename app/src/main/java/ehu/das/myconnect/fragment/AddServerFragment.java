@@ -26,6 +26,7 @@ import android.widget.Toast;
 import java.util.regex.Pattern;
 
 import ehu.das.myconnect.R;
+import ehu.das.myconnect.dialog.LoadingDialog;
 import ehu.das.myconnect.service.ServerWorker;
 
 
@@ -35,6 +36,7 @@ public class AddServerFragment extends Fragment {
     private final int PICKFILE_RESULT_CODE = 12;
     private String key;
     private int passwordPem = 0;
+    public LoadingDialog loadingDialog;
 
     public AddServerFragment() {}
 
@@ -110,6 +112,10 @@ public class AddServerFragment extends Fragment {
                 } else if (server.length() > 20) {
                     Toast.makeText(getContext(), getString(R.string.servidorLargo), Toast.LENGTH_SHORT).show();
                 } else {
+                    loadingDialog = new LoadingDialog();
+                    loadingDialog.setCancelable(false);
+                    loadingDialog.show(getActivity().getSupportFragmentManager(), "loading");
+
                     boolean keyPem = keyPemSwitch.isChecked();
 
                     if (keyPem) {
@@ -137,6 +143,7 @@ public class AddServerFragment extends Fragment {
                             .observe(getActivity(), status -> {
                                 if (status != null && status.getState().isFinished()) {
                                     String result = status.getOutputData().getString("result");
+                                    loadingDialog.dismiss();
                                     if (result.equals("Error")) {
                                         Toast.makeText(getContext(), getString(R.string.servidorExistente), Toast.LENGTH_SHORT).show();
                                         serverBox.setText("");

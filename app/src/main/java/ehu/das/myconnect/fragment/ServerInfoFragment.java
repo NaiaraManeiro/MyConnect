@@ -15,24 +15,17 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
-import androidx.work.Data;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkManager;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.regex.Pattern;
 
 import ehu.das.myconnect.R;
 import ehu.das.myconnect.dialog.DialogPassword;
 import ehu.das.myconnect.dialog.DialogPem;
-import ehu.das.myconnect.dialog.DialogoAccessPassword;
+import ehu.das.myconnect.dialog.LoadingDialog;
 import ehu.das.myconnect.dialog.OnDialogDismiss;
 import ehu.das.myconnect.dialog.RemoveDialog;
-import ehu.das.myconnect.service.ServerWorker;
 
-public class ServerInfoFragment extends Fragment implements OnDialogDismiss<String> {
+public class ServerInfoFragment extends Fragment implements OnDialogDismiss<String>, ILoading {
 
     private Button edit;
     private EditText serveNameBox;
@@ -40,6 +33,8 @@ public class ServerInfoFragment extends Fragment implements OnDialogDismiss<Stri
     private EditText serverHostBox;
     private EditText serverPortBox;
     private OnDialogDismiss<String> fragment;
+    private ILoading iLoading;
+    public LoadingDialog loadingDialog;
 
     public ServerInfoFragment() {}
 
@@ -78,6 +73,7 @@ public class ServerInfoFragment extends Fragment implements OnDialogDismiss<Stri
         edit.setVisibility(View.INVISIBLE);
 
         fragment = this;
+        iLoading = this;
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,11 +103,13 @@ public class ServerInfoFragment extends Fragment implements OnDialogDismiss<Stri
                         DialogPassword dialogPassword = new DialogPassword();
                         dialogPassword.setArguments(bundle);
                         dialogPassword.onDialogDismiss = fragment;
+                        dialogPassword.loadingListener = iLoading;
                         dialogPassword.show(getActivity().getSupportFragmentManager(), "contrasena");
                     } else {
                         DialogPem dialogPem = new DialogPem();
                         dialogPem.setArguments(bundle);
                         dialogPem.onDialogDismiss = fragment;
+                        dialogPem.loadingListener = iLoading;
                         dialogPem.show(getActivity().getSupportFragmentManager(), "contrasena");
                     }
                 }
@@ -139,6 +137,7 @@ public class ServerInfoFragment extends Fragment implements OnDialogDismiss<Stri
         int id = item.getItemId();
         if (id == R.id.eliminar) {
             RemoveDialog dialogoEliminar = new RemoveDialog();
+            dialogoEliminar.loadingListener = iLoading;
             Bundle bundle = new Bundle();
             dialogoEliminar.view = getView();
             bundle.putString("serverName", ServerListFragment.selectedServer.getName());
@@ -181,5 +180,15 @@ public class ServerInfoFragment extends Fragment implements OnDialogDismiss<Stri
         } else {
             Toast.makeText(getContext(), getString(R.string.servidorEditado), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void startLoading() {
+        loadingDialog = new LoadingDialog();
+        loadingDialog.setCancelable(false);
+        loadingDialog.show(getActivity().getSupportFragmentManager(), "loading");
+    }
+
+    public void stopLoading() {
+        loadingDialog.dismiss();
     }
 }

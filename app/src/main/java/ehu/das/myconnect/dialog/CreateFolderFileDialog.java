@@ -20,6 +20,7 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import ehu.das.myconnect.R;
+import ehu.das.myconnect.fragment.ILoading;
 import ehu.das.myconnect.fragment.ServerListFragment;
 import ehu.das.myconnect.service.SSHWorker;
 
@@ -30,6 +31,7 @@ public class CreateFolderFileDialog extends DialogFragment {
     private String action = "";
     public OnDialogDismiss<String> onDialogDismiss;
     private boolean keyPem = false;
+    public ILoading loadingListener;
 
     @NonNull
     @Override
@@ -68,6 +70,8 @@ public class CreateFolderFileDialog extends DialogFragment {
                         action = "touch " + path + "/" + name;
                     }
 
+                    loadingListener.startLoading();
+
                     Data data = new Data.Builder()
                             .putString("action", action)
                             .putBoolean("keyPem", keyPem)
@@ -84,8 +88,8 @@ public class CreateFolderFileDialog extends DialogFragment {
                                     } else if (action.equals("touch")) {
                                         Toast.makeText(getContext(), getString(R.string.fileCreated), Toast.LENGTH_SHORT).show();
                                     }
+                                    loadingListener.stopLoading();
                                     dismiss();
-
                                     onDialogDismiss.onDismiss(path);
                                 }
                             });
