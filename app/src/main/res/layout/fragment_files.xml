@@ -92,6 +92,7 @@
 
                 <TextView
                     android:id="@+id/textView3"
+                    style="@style/Texto"
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
                     android:background="@drawable/border"
@@ -100,6 +101,7 @@
 
                 <EditText
                     android:id="@+id/path"
+                    style="@style/EditText"
                     android:layout_width="280dp"
                     android:layout_height="wrap_content"
                     android:background="@drawable/up_down_right_border"

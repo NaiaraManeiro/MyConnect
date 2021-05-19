@@ -92,9 +92,7 @@ public class FilesFragment extends Fragment implements OnClickRecycleView, OnDia
             //Actualizamos el path
             showPath("pwd"); //No funciona correctamente
         } else {
-            loadingDialog = new LoadingDialog();
-            loadingDialog.setCancelable(false);
-            loadingDialog.show(getActivity().getSupportFragmentManager(), "loading");
+            startLoading();
 
             TextView oldPath = getActivity().findViewById(R.id.path);
             oldPath.setText(path);
@@ -129,9 +127,7 @@ public class FilesFragment extends Fragment implements OnClickRecycleView, OnDia
         go.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadingDialog = new LoadingDialog();
-                loadingDialog.setCancelable(false);
-                loadingDialog.show(getActivity().getSupportFragmentManager(), "loading");
+                startLoading();
 
                 String pathViejo = path;
                 EditText pathText = getActivity().findViewById(R.id.path);
@@ -150,7 +146,7 @@ public class FilesFragment extends Fragment implements OnClickRecycleView, OnDia
                             if (status != null && status.getState().isFinished()) {
                                 String result = status.getOutputData().getString("result");
                                 if (!result.equals("existe")) {
-                                    loadingDialog.dismiss();
+                                    stopLoading();
                                     Toast.makeText(getContext(), getString(R.string.wrongPath), Toast.LENGTH_SHORT).show();
                                     TextView oldPath = getActivity().findViewById(R.id.path);
                                     oldPath.setText(pathViejo);
@@ -172,9 +168,7 @@ public class FilesFragment extends Fragment implements OnClickRecycleView, OnDia
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadingDialog = new LoadingDialog();
-                loadingDialog.setCancelable(false);
-                loadingDialog.show(getActivity().getSupportFragmentManager(), "loading");
+                startLoading();
 
                 // Ejecutamos el comando cd .. y actualizamos el path
                 TextView oldPath = getActivity().findViewById(R.id.path);
@@ -213,9 +207,7 @@ public class FilesFragment extends Fragment implements OnClickRecycleView, OnDia
         String newPath = pathText.getText().toString();
         String completePath = newPath + "/"+ name;
         if (fileType.equals("folder")) {
-            loadingDialog = new LoadingDialog();
-            loadingDialog.setCancelable(false);
-            loadingDialog.show(getActivity().getSupportFragmentManager(), "loading");
+            startLoading();
 
             path = completePath;
             pathText.setText(completePath);
@@ -227,13 +219,15 @@ public class FilesFragment extends Fragment implements OnClickRecycleView, OnDia
             showData(data);
         } if (fileType.equals("file")) {
             name = name.toLowerCase();
-            boolean image = false;
-            if (name.contains("png") || name.contains("jpge") || name.contains("jpg") || name.contains("opus") || name.contains("mp4") || name.contains("mp3")) {
-                image = true;
+            String image = "";
+            if (name.contains("png") || name.contains("jpge") || name.contains("jpg")) {
+                image = "image";
+            } else if (name.contains("opus") || name.contains("mp4") || name.contains("mp3")) {
+                image = "else";
             }
             Bundle bundle = new Bundle();
             bundle.putString("path", completePath);
-            bundle.putBoolean("image", image);
+            bundle.putString("image", image);
 
             Navigation.findNavController(getView()).navigate(R.id.action_serverManagmentFragment_to_fileInfoFragment, bundle);
         }
@@ -290,7 +284,7 @@ public class FilesFragment extends Fragment implements OnClickRecycleView, OnDia
                                 GridLayoutManager layout = new GridLayoutManager(getActivity(), 4, GridLayoutManager.VERTICAL, false);
                                 rv.setLayoutManager(layout);
 
-                                loadingDialog.dismiss();
+                                stopLoading();
                             }
                         }
                     }
@@ -299,9 +293,7 @@ public class FilesFragment extends Fragment implements OnClickRecycleView, OnDia
     }
 
     private void showPath(String action) {
-        loadingDialog = new LoadingDialog();
-        loadingDialog.setCancelable(false);
-        loadingDialog.show(getActivity().getSupportFragmentManager(), "loading");
+        startLoading();
 
         Data data = new Data.Builder()
                 .putString("action", action)
@@ -346,6 +338,7 @@ public class FilesFragment extends Fragment implements OnClickRecycleView, OnDia
 
     @Override
     public void onDismiss(String path) {
+        startLoading();
         Data data = new Data.Builder()
                 .putString("action", "ls -l "+ path)
                 .putBoolean("keyPem", keyPem)
@@ -362,6 +355,8 @@ public class FilesFragment extends Fragment implements OnClickRecycleView, OnDia
                 Uri uri = data.getData();
 
                 String uri2 = getPath(getContext(), uri);
+
+                startLoading();
 
                 if (uri2 != null) {
                     Data data1 = new Data.Builder()

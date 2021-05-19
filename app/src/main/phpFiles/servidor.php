@@ -24,17 +24,20 @@ if (mysqli_connect_errno($con)) {
         $password = $parametros["password"]; 
         $serverName = $parametros["serverName"]; 
         $userName = $parametros["userName"]; 
+        $keyPem = $parametros["keyPem"]; 
 
-        $result = mysqli_query($con, "SELECT NombreServidor FROM Servidor WHERE NombreServidor = '$serverName'");
+        $result = mysqli_query($con, "SELECT NombreServidor FROM Servidor WHERE NombreServidor = '$serverName' AND NombreUsuario = '$userName'");
         if (!$result) {
             echo 'Ha ocurrido algún error: ' . mysqli_error($con);
         } else {
             if ($row = mysqli_fetch_array($result)) { //Comprobamos si el servidor existe
                 echo 'Error';
             } else {
-                $password_encript = password_hash($password, PASSWORD_DEFAULT);
+                if ($keyPem == 0) {
+                    $password = password_hash($password, PASSWORD_DEFAULT);
+                }
             
-                $result2 = mysqli_query($con, "INSERT INTO Servidor (NombreServidor,Usuario,Host,Puerto,Contrasena,NombreUsuario) VALUES ('$serverName','$user','$host','$port','$password_encript', '$userName')");
+                $result2 = mysqli_query($con, "INSERT INTO Servidor (NombreServidor,Usuario,Host,Puerto,Contrasena,NombreUsuario,PemFile) VALUES ('$serverName','$user','$host','$port','$password','$userName','$keyPem')");
 
                 if (!$result2) {
                     echo 'Ha ocurrido algún error: ' . mysqli_error($con);
@@ -43,7 +46,7 @@ if (mysqli_connect_errno($con)) {
         }
     } else if ($accion == "serverData") {
         $userName = $parametros["userName"]; 
-        $result = mysqli_query($con, "SELECT NombreServidor,Usuario,Host,Puerto FROM Servidor WHERE NombreUsuario = '$userName'");
+        $result = mysqli_query($con, "SELECT NombreServidor,Usuario,Host,Puerto,PemFile FROM Servidor WHERE NombreUsuario = '$userName'");
         if (!$result) {
             echo 'Ha ocurrido algún error: ' . mysqli_error($con);
         } else {
@@ -51,12 +54,14 @@ if (mysqli_connect_errno($con)) {
             $users = array();
             $hosts = array();
             $ports = array();
+            $pems = array();
 
             while($row = mysqli_fetch_array($result)){
                 $names[] = $row["NombreServidor"];
                 $users[] = $row["Usuario"];
                 $hosts[] = $row["Host"];
                 $ports[] = $row["Puerto"];
+                $pems[] = $row["PemFile"];
             }                
             
             $arrayresultados = array(
@@ -64,24 +69,9 @@ if (mysqli_connect_errno($con)) {
                 'users' => $users,
                 'hosts' => $hosts,
                 'ports' => $ports,
+                'pems' => $pems,
                 );
             echo json_encode($arrayresultados);
-        }
-    } else if ($accion == "infoServer") { 
-        $serverName = $parametros["serverName"];
-        $result = mysqli_query($con, "SELECT Usuario,Host,Puerto FROM Servidor WHERE NombreServidor = '$serverName'");
-        if (!$result) {
-            echo 'Ha ocurrido algún error: ' . mysqli_error($con);
-        } else {
-
-            if($row = mysqli_fetch_assoc($result)) {
-                $arrayresultados = array(
-                    'user' => $row['Usuario'],
-                    'host' => $row['Host'],
-                    'port' => $row['Puerto'],
-                    );
-                echo json_encode($arrayresultados);
-            }
         }
     } else if ($accion == "removeServer") { 
         $serverName = $parametros["serverName"];
@@ -98,6 +88,7 @@ if (mysqli_connect_errno($con)) {
         $port = $parametros["port"];
         $serverName = $parametros["serverName"]; 
         $oldServerName = $parametros["oldServerName"]; 
+        $userName = $parametros["userName"]
 
         $result = mysqli_query($con, "SELECT NombreServidor FROM Servidor WHERE NombreServidor = '$serverName'");
         if (!$result) {
@@ -106,7 +97,7 @@ if (mysqli_connect_errno($con)) {
             if ($row = mysqli_fetch_array($result)) { //Comprobamos si el servidor existe
                 echo 'Error';
             } else { 
-                $result2 = mysqli_query($con, "UPDATE Servidor SET NombreServidor = '$serverName', Usuario = '$user', Host = '$host', Puerto = '$port' WHERE NombreServidor = '$oldServerName'");
+                $result2 = mysqli_query($con, "UPDATE Servidor SET NombreServidor = '$serverName', Usuario = '$user', Host = '$host', Puerto = '$port' WHERE NombreServidor = '$oldServerName' AND NombreUsuario = '$userName'");
 
                 if (!$result2) {
                     echo 'Ha ocurrido algún error: ' . mysqli_error($con);

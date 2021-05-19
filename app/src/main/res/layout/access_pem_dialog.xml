@@ -20,11 +20,7 @@
             style="@style/Buttons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:backgroundTint="@color/white"
             android:text="@string/pemButton"
-            android:textColor="#000000"
-            app:strokeColor="#000000"
             app:strokeWidth="2dp" />
 
     </LinearLayout>

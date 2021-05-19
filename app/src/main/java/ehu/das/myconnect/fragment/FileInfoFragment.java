@@ -5,8 +5,13 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -29,6 +34,7 @@ import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 import ehu.das.myconnect.R;
@@ -44,10 +50,9 @@ public class FileInfoFragment extends Fragment implements ILoading{
     private EditText file;
     private static final int COD_NUEVO_FICHERO = 40;
     private String fileName;
-    private boolean image;
+    private String image;
     private boolean keyPem = false;
     public LoadingDialog loadingDialog;
-    private ILoading iLoading;
 
     public FileInfoFragment() {}
 
@@ -71,7 +76,7 @@ public class FileInfoFragment extends Fragment implements ILoading{
         Bundle extras = this.getArguments();
         if (extras != null) {
             path = extras.getString("path");
-            image = extras.getBoolean("image");
+            image = extras.getString("image");
         }
 
         if (ServerListFragment.selectedServer.getPem() == 1) {
@@ -91,7 +96,7 @@ public class FileInfoFragment extends Fragment implements ILoading{
 
         fileName = path.substring(path.lastIndexOf("/")+1);
 
-        if (!image) {
+        if (image.equals("")) {
             startLoading();
 
             //Mostramos el texto del archivo
@@ -128,6 +133,15 @@ public class FileInfoFragment extends Fragment implements ILoading{
                     });
 
             WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
+        } else if (image.equals("imagen")) {
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), Uri.parse(path));
+                Drawable d = new BitmapDrawable(getResources(), bitmap);
+                file.setBackground(d);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         } else {
             file.setText(R.string.imageFile);
         }
@@ -185,7 +199,7 @@ public class FileInfoFragment extends Fragment implements ILoading{
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        iLoading = this;
+        ILoading iLoading = this;
         int id = item.getItemId();
         if (id == R.id.eliminar) {
             RemoveDialog removeDialog = new RemoveDialog();
@@ -197,7 +211,7 @@ public class FileInfoFragment extends Fragment implements ILoading{
             removeDialog.setArguments(bundle);
             removeDialog.show(getActivity().getSupportFragmentManager(), "eliminar");
         } if (id == R.id.edit) {
-            if (!image) {
+            if (image.equals("")) {
                 if (save.getVisibility() == View.VISIBLE) {
                     save.setVisibility(View.INVISIBLE);
                     file.setEnabled(false);

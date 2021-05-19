@@ -14,6 +14,7 @@
 
         <TextView
             android:id="@+id/textView3"
+            style="@style/Texto"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:background="@drawable/border"
@@ -22,6 +23,7 @@
 
         <TextView
             android:id="@+id/filePath"
+            style="@style/Texto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/up_down_right_border"
@@ -37,6 +39,7 @@
 
         <EditText
             android:id="@+id/nameFileFolder"
+            style="@style/EditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
@@ -54,6 +57,7 @@
 
         <EditText
             android:id="@+id/pathToAction"
+            style="@style/EditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -89,6 +93,7 @@
 
                     <RadioButton
                         android:id="@+id/editAction"
+                        style="@style/Texto"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -97,6 +102,7 @@
 
                     <RadioButton
                         android:id="@+id/deleteAction"
+                        style="@style/Texto"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -111,6 +117,7 @@
 
                     <RadioButton
                         android:id="@+id/moveAction"
+                        style="@style/Texto"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -119,6 +126,7 @@
 
                     <RadioButton
                         android:id="@+id/copyAction"
+                        style="@style/Texto"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -148,8 +156,6 @@
                 style="@style/Buttons"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:textColor="#000000"
-                app:strokeColor="#000000"
                 app:strokeWidth="2dp" />
         </LinearLayout>
 

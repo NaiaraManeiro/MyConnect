@@ -14,6 +14,7 @@
 
         <TextView
             android:id="@+id/textNew"
+            style="@style/Texto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -21,6 +22,7 @@
 
         <EditText
             android:id="@+id/newName"
+            style="@style/EditText"
             android:layout_width="299dp"
             android:layout_height="47dp"
             android:layout_marginTop="32dp"
@@ -45,6 +47,7 @@
 
             <RadioButton
                 android:id="@+id/radioButtonFolder"
+                style="@style/Texto"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="60dp"
@@ -57,6 +60,7 @@
 
             <RadioButton
                 android:id="@+id/radioButtonFile"
+                style="@style/Texto"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/archivo"

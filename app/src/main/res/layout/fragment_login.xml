@@ -112,15 +112,13 @@
 
                 <EditText
                     android:id="@+id/emailLogin"
+                    style="@style/EditText"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_weight="1"
-                    android:ems="10"
                     android:hint="@string/username_or_email"
-                    android:inputType="textPersonName"
-                    android:shadowColor="#000000"
-                    android:textColor="#000000"
-                    android:textSize="18sp" />
+                    android:inputType="textPersonName|textEmailAddress"
+                    android:theme="@style/EditTextColor" />
             </LinearLayout>
 
             <TextView
@@ -141,38 +139,33 @@
 
                 <EditText
                     android:id="@+id/passwordLogin"
+                    style="@style/EditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:ems="10"
                     android:hint="@string/password"
                     android:inputType="textPassword"
-                    android:shadowColor="#000000"
-                    android:textColor="#000000"
-                    android:textSize="18sp" />
+                    android:theme="@style/EditTextColor" />
 
             </LinearLayout>
 
             <TextView
                 android:id="@+id/forgotPassword"
+                style="@style/Texto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:gravity="right"
-                android:text="@string/forgot_password"
-                android:textColor="#000000"
-                android:textSize="14sp" />
+                android:text="@string/forgot_password" />
 
             <Button
                 android:id="@+id/login_login"
+                style="@style/Buttons"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
                 android:text="@string/login"
-                android:textColor="#000000"
                 android:textSize="18sp"
-                app:backgroundTint="#FFFFFF"
-                app:strokeColor="#000000"
                 app:strokeWidth="2dp" />
 
             <LinearLayout
@@ -192,14 +185,14 @@
 
                 <TextView
                     android:id="@+id/textView20"
+                    style="@style/Texto"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
                     android:background="@android:color/transparent"
                     android:gravity="center"
-                    android:text="@string/or"
-                    android:textColor="#000000" />
+                    android:text="@string/or" />
 
                 <TextView
                     android:id="@+id/textView23"
@@ -213,13 +206,11 @@
 
             <Button
                 android:id="@+id/signup_login"
+                style="@style/Buttons"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/signup"
-                android:textColor="#000000"
                 android:textSize="18sp"
-                app:backgroundTint="#FFFFFF"
-                app:strokeColor="#000000"
                 app:strokeWidth="2dp" />
 
         </LinearLayout>
