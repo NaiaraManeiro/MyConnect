@@ -26,6 +26,7 @@ import java.util.regex.Pattern;
 
 import ehu.das.myconnect.R;
 import ehu.das.myconnect.dialog.DialogPassword;
+import ehu.das.myconnect.dialog.DialogPem;
 import ehu.das.myconnect.dialog.DialogoAccessPassword;
 import ehu.das.myconnect.dialog.OnDialogDismiss;
 import ehu.das.myconnect.dialog.RemoveDialog;
@@ -96,16 +97,23 @@ public class ServerInfoFragment extends Fragment implements OnDialogDismiss<Stri
                 } else if (name.length() > 20) {
                     Toast.makeText(getContext(), getString(R.string.servidorLargo), Toast.LENGTH_SHORT).show();
                 } else {
-                    //Pedimos la contraseña para asegurar que se puede hacer ssh
-                    DialogPassword dialogPassword = new DialogPassword();
+                    //Pedimos la contraseña o .pem para asegurar que se puede hacer ssh
                     Bundle bundle = new Bundle();
                     bundle.putString("serverName", name);
                     bundle.putString("user", user);
                     bundle.putString("host", host);
                     bundle.putInt("port", port);
-                    dialogPassword.setArguments(bundle);
-                    dialogPassword.onDialogDismiss = fragment;
-                    dialogPassword.show(getActivity().getSupportFragmentManager(), "contrasena");
+                    if (ServerListFragment.selectedServer.getPem() == 0) {
+                        DialogPassword dialogPassword = new DialogPassword();
+                        dialogPassword.setArguments(bundle);
+                        dialogPassword.onDialogDismiss = fragment;
+                        dialogPassword.show(getActivity().getSupportFragmentManager(), "contrasena");
+                    } else {
+                        DialogPem dialogPem = new DialogPem();
+                        dialogPem.setArguments(bundle);
+                        dialogPem.onDialogDismiss = fragment;
+                        dialogPem.show(getActivity().getSupportFragmentManager(), "contrasena");
+                    }
                 }
             }
         });

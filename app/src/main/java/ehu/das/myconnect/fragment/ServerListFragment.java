@@ -34,12 +34,13 @@ import ehu.das.myconnect.R;
 import ehu.das.myconnect.dialog.DialogAccessPem;
 import ehu.das.myconnect.dialog.DialogoAccessPassword;
 import ehu.das.myconnect.dialog.LoadingDialog;
+import ehu.das.myconnect.dialog.OnDialogDismiss;
 import ehu.das.myconnect.dialog.OnDialogOptionPressed;
 import ehu.das.myconnect.list.ServerListAdapter;
 import ehu.das.myconnect.service.SSHConnector;
 import ehu.das.myconnect.service.ServerWorker;
 
-public class ServerListFragment extends Fragment implements OnDialogOptionPressed<String>, ILoading {
+public class ServerListFragment extends Fragment implements OnDialogOptionPressed<String>, ILoading, OnDialogDismiss<String> {
 
     public static SSHConnector connection;
     public static List<Server> serverList;
@@ -160,11 +161,13 @@ public class ServerListFragment extends Fragment implements OnDialogOptionPresse
             d.loadingListener = this;
             d.show(getActivity().getSupportFragmentManager(),null);
         } else {
+            OnDialogDismiss<String> fragment = this;
             DialogAccessPem d = new DialogAccessPem();
             d.scriptAddListener = this;
             d.v = getView();
             d.serverListFragment = this;
             d.loadingListener = this;
+            d.onDialogDismiss = fragment;
             d.show(getActivity().getSupportFragmentManager(),null);
         }
     }
@@ -190,5 +193,14 @@ public class ServerListFragment extends Fragment implements OnDialogOptionPresse
 
     public void stopLoading() {
         loadingDialog.dismiss();
+    }
+
+    @Override
+    public void onDismiss(String data) {
+        if (data.equals("noPem")) {
+            Toast.makeText(getContext(), getString(R.string.notPem), Toast.LENGTH_SHORT).show();
+        } else if (data.equals("noFile")) {
+            Toast.makeText(getContext(), getString(R.string.badFileType), Toast.LENGTH_SHORT).show();
+        }
     }
 }

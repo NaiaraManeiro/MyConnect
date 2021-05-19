@@ -40,6 +40,8 @@ public class DialogAccessPem extends DialogFragment {
     public ILoading loadingListener;
     private final int PICKFILE_RESULT_CODE = 10;
     private String key = "";
+    private String error = "";
+    public OnDialogDismiss<String> onDialogDismiss;
 
     @NonNull
     @Override
@@ -89,6 +91,7 @@ public class DialogAccessPem extends DialogFragment {
                                         ServerListFragment.connection = null;
                                         scriptAddListener.onYesPressed("fail","");
                                         ServerListFragment.selectedServer = old;
+                                        onDialogDismiss.onDismiss(error);
                                         dismiss();
                                     } else {
                                         scriptAddListener.onYesPressed("succesful","");
@@ -130,10 +133,10 @@ public class DialogAccessPem extends DialogFragment {
                     if (uri2.contains(".pem")) {
                         key = uri2;
                     } else {
-                        Toast.makeText(getContext(), getString(R.string.notPem), Toast.LENGTH_SHORT).show();
+                        error = "noPem";
                     }
                 } else {
-                    Toast.makeText(getContext(), getString(R.string.badFileType), Toast.LENGTH_SHORT).show();
+                    error = "noFile";
                 }
             }
         }

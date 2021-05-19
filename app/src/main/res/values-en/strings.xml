@@ -126,6 +126,7 @@
     <string name="badFileType">The type of file can\'t be uploaded.</string>
     <string name="notPem">Choosen file is not a \'.pem\'.</string>
     <string name="pemButton">Obtain .pem</string>
-    <string name="accessPem">Access with .pem file</string>
+    <string name="accessPem">Access with a .pem file</string>
     <string name="editWithPassword">Edit with password</string>
+    <string name="editWithPem">Edit with a .pem file</string>
 </resources>
