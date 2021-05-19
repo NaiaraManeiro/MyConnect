@@ -34,12 +34,14 @@ import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
 import ehu.das.myconnect.R;
 import ehu.das.myconnect.dialog.RemoveDialog;
 import ehu.das.myconnect.service.SSHWorker;
+import lib.folderpicker.FolderPicker;
 
 public class FileInfoFragment extends Fragment {
 
@@ -194,14 +196,9 @@ public class FileInfoFragment extends Fragment {
                 }
             }
         } if (id == R.id.download) {
-            Intent i = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-            i.addCategory(Intent.CATEGORY_DEFAULT);
-            startActivityForResult(Intent.createChooser(i, "Choose directory"), COD_NUEVO_FICHERO);
-            /*Intent intent = new Intent(Intent.ACTION_PICK);
-            intent.addCategory(Intent.CATEGORY_OPENABLE);
-            intent.setType("text/plain");
-            intent.putExtra(Intent.EXTRA_TITLE, fileName);
-            startActivityForResult(intent, COD_NUEVO_FICHERO);*/
+            //Para descargar un fichero del servidor ha nuestro teléfono
+            Intent intent = new Intent(getContext(), FolderPicker.class);
+            startActivityForResult(intent, COD_NUEVO_FICHERO);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -209,20 +206,15 @@ public class FileInfoFragment extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        //Para la descarga de la receta en el telefono
         if (requestCode == COD_NUEVO_FICHERO && resultCode == Activity.RESULT_OK) {
-            Uri uri;
             if (data != null) {
-                uri = data.getData();
 
-                Uri docUri = DocumentsContract.buildDocumentUriUsingTree(uri,
-                        DocumentsContract.getTreeDocumentId(uri));
-                String path = getPath(getContext(), docUri);
+                String folderLocation = data.getExtras().getString("data");
 
                 Data data1 = new Data.Builder()
                         .putString("action", "")
                         .putString("from", path)
-                        .putString("to", uri.getPath())
+                        .putString("to", folderLocation)
                         .putString("do", "download")
 
                         .build();
@@ -252,67 +244,5 @@ public class FileInfoFragment extends Fragment {
                 WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
             }
         }
-    }
-
-    @TargetApi(Build.VERSION_CODES.KITKAT)
-    public static String getPath(final Context context, final Uri uri) {
-
-        final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
-
-        // DocumentProvider
-        if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
-
-            // DownloadsProvider
-            if (isDownloadsDocument(uri)) {
-
-                final String id = DocumentsContract.getDocumentId(uri);
-                final Uri contentUri = ContentUris.withAppendedId(
-                        Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
-
-                return getDataColumn(context, contentUri, null, null);
-            }
-        }
-        // MediaStore (and general)
-        else if ("content".equalsIgnoreCase(uri.getScheme())) {
-
-            return getDataColumn(context, uri, null, null);
-        }
-        // File
-        else if ("file".equalsIgnoreCase(uri.getScheme())) {
-            return uri.getPath();
-        }
-
-        return null;
-    }
-
-    public static String getDataColumn(Context context, Uri uri, String selection,
-                                       String[] selectionArgs) {
-
-        Cursor cursor = null;
-        final String column = "_data";
-        final String[] projection = {
-                column
-        };
-
-        try {
-            cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs,
-                    null);
-            if (cursor != null && cursor.moveToFirst()) {
-                final int index = cursor.getColumnIndexOrThrow(column);
-                return cursor.getString(index);
-            }
-        } finally {
-            if (cursor != null)
-                cursor.close();
-        }
-        return null;
-    }
-
-    /**
-     * @param uri The Uri to check.
-     * @return Whether the Uri authority is DownloadsProvider.
-     */
-    public static boolean isDownloadsDocument(Uri uri) {
-        return "com.android.providers.downloads.documents".equals(uri.getAuthority());
     }
 }
