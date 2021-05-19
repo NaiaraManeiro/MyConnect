@@ -40,9 +40,8 @@ public class ServerListAdapter extends RecyclerView.Adapter<ServerListElementVie
         holder.user.setText(servers.get(position).getUser());
         holder.host.setText(servers.get(position).getHost());
         holder.itemView.setOnLongClickListener(v -> {
-            Bundle bundle = new Bundle();
-            bundle.putString("serverName", holder.serverName.getText().toString()); //Para saber cual es el server seleccionado
-            Navigation.findNavController(v).navigate(R.id.action_serverListFragment_to_serverInfoFragment, bundle);
+            ServerListFragment.selectedServer = servers.get(position);
+            Navigation.findNavController(v).navigate(R.id.action_serverListFragment_to_serverInfoFragment);
             return false;
         });
 

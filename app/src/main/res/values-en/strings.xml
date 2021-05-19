@@ -127,4 +127,5 @@
     <string name="notPem">Choosen file is not a \'.pem\'.</string>
     <string name="pemButton">Obtain .pem</string>
     <string name="accessPem">Access with .pem file</string>
+    <string name="editWithPassword">Edit with password</string>
 </resources>

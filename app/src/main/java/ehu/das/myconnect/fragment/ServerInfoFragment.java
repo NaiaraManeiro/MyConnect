@@ -25,19 +25,20 @@ import org.json.JSONObject;
 import java.util.regex.Pattern;
 
 import ehu.das.myconnect.R;
+import ehu.das.myconnect.dialog.DialogPassword;
 import ehu.das.myconnect.dialog.DialogoAccessPassword;
+import ehu.das.myconnect.dialog.OnDialogDismiss;
 import ehu.das.myconnect.dialog.RemoveDialog;
 import ehu.das.myconnect.service.ServerWorker;
 
-public class ServerInfoFragment extends Fragment {
+public class ServerInfoFragment extends Fragment implements OnDialogDismiss<String> {
 
     private Button edit;
-    private String serverName;
-    private String userName;
     private EditText serveNameBox;
     private EditText serverUserBox;
     private EditText serverHostBox;
     private EditText serverPortBox;
+    private OnDialogDismiss<String> fragment;
 
     public ServerInfoFragment() {}
 
@@ -45,12 +46,6 @@ public class ServerInfoFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-
-        Bundle bundle = this.getArguments();
-        if (bundle != null) {
-            serverName = bundle.getString("serverName");
-            userName = bundle.getString("userName");
-        }
     }
 
     @Override
@@ -81,6 +76,7 @@ public class ServerInfoFragment extends Fragment {
         edit = getActivity().findViewById(R.id.editarServidorInfo);
         edit.setVisibility(View.INVISIBLE);
 
+        fragment = this;
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,18 +97,15 @@ public class ServerInfoFragment extends Fragment {
                     Toast.makeText(getContext(), getString(R.string.servidorLargo), Toast.LENGTH_SHORT).show();
                 } else {
                     //Pedimos la contraseña para asegurar que se puede hacer ssh
-                    DialogoAccessPassword dialogoAccessPassword = new DialogoAccessPassword();
+                    DialogPassword dialogPassword = new DialogPassword();
                     Bundle bundle = new Bundle();
-                    bundle.putString("oldServerName", serverName);
                     bundle.putString("serverName", name);
                     bundle.putString("user", user);
                     bundle.putString("host", host);
-                    bundle.putString("userName", userName);
                     bundle.putInt("port", port);
-                    dialogoAccessPassword.setArguments(bundle);
-                    dialogoAccessPassword.show(getActivity().getSupportFragmentManager(), "contrasena");
-
-                    serverName = name;
+                    dialogPassword.setArguments(bundle);
+                    dialogPassword.onDialogDismiss = fragment;
+                    dialogPassword.show(getActivity().getSupportFragmentManager(), "contrasena");
                 }
             }
         });
@@ -140,7 +133,7 @@ public class ServerInfoFragment extends Fragment {
             RemoveDialog dialogoEliminar = new RemoveDialog();
             Bundle bundle = new Bundle();
             dialogoEliminar.view = getView();
-            bundle.putString("serverName", serverName);
+            bundle.putString("serverName", ServerListFragment.selectedServer.getName());
             bundle.putString("where", "server");
             dialogoEliminar.setArguments(bundle);
             dialogoEliminar.show(getActivity().getSupportFragmentManager(), "eliminar");
@@ -163,35 +156,22 @@ public class ServerInfoFragment extends Fragment {
     }
 
     private void obtenerDatosServidor() {
-        Data data = new Data.Builder()
-                .putString("action", "infoServer")
-                .putString("serverName", serverName)
-                .build();
+        serveNameBox.setText(ServerListFragment.selectedServer.getName());
+        serverUserBox.setText(ServerListFragment.selectedServer.getUser());
+        serverHostBox.setText(ServerListFragment.selectedServer.getHost());
+        serverPortBox.setText(String.valueOf(ServerListFragment.selectedServer.getPort()));
+    }
 
-        OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(ServerWorker.class)
-                .setInputData(data)
-                .build();
-        WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(otwr.getId())
-                .observe(getActivity(), status -> {
-                    if (status != null && status.getState().isFinished()) {
-                        String result = status.getOutputData().getString("result");
-                        if (!result.equals("")) {
-                            try {
-                                JSONObject jsonObject = new JSONObject(result);
-                                String user = jsonObject.get("user").toString();
-                                String host = jsonObject.get("host").toString();
-                                String port = jsonObject.get("port").toString();
-
-                                serveNameBox.setText(serverName);
-                                serverUserBox.setText(user);
-                                serverHostBox.setText(host);
-                                serverPortBox.setText(port);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                });
-        WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
+    @Override
+    public void onDismiss(String result) {
+        if (result.equals("Error")) {
+            Toast.makeText(getContext(), getString(R.string.servidorExistente), Toast.LENGTH_SHORT).show();
+        } else if (result.equals("authFail")) {
+            Toast.makeText(getContext(), getString(R.string.authFail), Toast.LENGTH_LONG).show();
+        } else if (result.equals("failConnect")) {
+            Toast.makeText(getContext(), getString(R.string.sshFailConnect), Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getContext(), getString(R.string.servidorEditado), Toast.LENGTH_SHORT).show();
+        }
     }
 }
