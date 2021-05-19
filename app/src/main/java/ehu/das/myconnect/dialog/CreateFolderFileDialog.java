@@ -26,12 +26,9 @@ import ehu.das.myconnect.service.SSHWorker;
 public class CreateFolderFileDialog extends DialogFragment {
 
     private String path;
-    private String user;
-    private String host;
-    private String password;
-    private int port;
     public View view;
     private String action = "";
+    public OnDialogDismiss<String> onDialogDismiss;
 
     @NonNull
     @Override
@@ -47,11 +44,6 @@ public class CreateFolderFileDialog extends DialogFragment {
         if (bundle != null) {
             path = bundle.getString("path");
         }
-
-        user = ServerListFragment.selectedServer.getUser();
-        host = ServerListFragment.selectedServer.getHost();
-        password = ServerListFragment.selectedServer.getPassword();
-        port = ServerListFragment.selectedServer.getPort();
 
         Button create = vw.findViewById(R.id.createButton);
         create.setOnClickListener(new View.OnClickListener() {
@@ -73,10 +65,6 @@ public class CreateFolderFileDialog extends DialogFragment {
 
                     Data data = new Data.Builder()
                             .putString("action", action)
-                            .putString("user", user)
-                            .putString("host", host)
-                            .putString("password", password)
-                            .putInt("port", port)
                             .build();
 
                     OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(SSHWorker.class)
@@ -92,16 +80,7 @@ public class CreateFolderFileDialog extends DialogFragment {
                                     }
                                     dismiss();
 
-                                    //No funciona bien, no aparecen las carpetas, archivos ni el path
-                                    Bundle bundle = new Bundle();
-                                    bundle.putString("user", user);
-                                    bundle.putString("host", host);
-                                    bundle.putString("password", password);
-                                    bundle.putInt("port", port);
-                                    bundle.putString("path", path);
-
-                                    //Navigation.findNavController(view).navigate(R.id.action_filesFragment_self, bundle);
-                                    getActivity().recreate();
+                                    onDialogDismiss.onDismiss(path);
                                 }
                             });
                     WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);

@@ -42,7 +42,21 @@ public class SSHWorker  extends Worker {
         String[] results = new String[0];
         if (!exception.contains("Auth fail") && !exception.contains("failed to")) {
             try {
-                results = sshConnector.executeCommand(command);
+                if (command.equals("")) {
+                    String from = getInputData().getString("from");
+                    String to = getInputData().getString("to");
+                    String paths = from + "," + to;
+                    String doAcion = getInputData().getString("do");
+                    result = sshConnector.executeCommand(paths, doAcion);
+                } else {
+                    result = sshConnector.executeCommand(command, "");
+                    if (command.contains("cat") && result.length() > 10240) {
+                        result = "";
+                        result = result + "error,";
+                        result = result + sshConnector.executeCommand("head -10 "+getInputData().getString("path"), "");
+                    }
+                }
+
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             } catch (JSchException e) {

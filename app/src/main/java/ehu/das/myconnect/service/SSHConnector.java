@@ -1,9 +1,19 @@
 package ehu.das.myconnect.service;
 
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.MediaStore;
+
+import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelExec;
+import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
+import com.jcraft.jsch.SftpException;
+
+import java.io.BufferedReader;
+import java.io.File;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -86,10 +96,15 @@ public class SSHConnector {
      *                                luego de la ejecución del comando
      *                                SSH.
      */
-    public final String[] executeCommand(String command)
+    public final String executeCommand(String command, String sftpAction)
             throws IllegalAccessException, JSchException, IOException {
         if (this.session != null && this.session.isConnected()) {
 
+            if (sftpAction.equals("upload") || sftpAction.equals("download")) {
+                Channel channel = session.openChannel("sftp");
+                channel.connect();
+
+                ChannelSftp sftp = (ChannelSftp) channel;
             // Abrimos un canal SSH. Es como abrir una consola.
             ChannelExec channel = (ChannelExec) this.session.
                     openChannel("exec");
@@ -97,6 +112,49 @@ public class SSHConnector {
 /**
             InputStream in = channelExec.getInputStream();
 
+                try {
+                    String[] paths = command.split(",");
+                    String from = paths[0];
+                    String to = paths[1];
+                    if (sftpAction.equals("upload")) {
+                        sftp.put(from,to);
+                    } else {
+                        sftp.get(from, to);
+                    }
+
+                } catch (SftpException e) {
+                    e.printStackTrace();
+                }
+
+                return "";
+            } else {
+                // Abrimos un canal SSH. Es como abrir una consola.
+                ChannelExec channelExec = (ChannelExec) this.session.
+                        openChannel("exec");
+
+                InputStream in = channelExec.getInputStream();
+
+                // Ejecutamos el comando.
+
+                channelExec.setCommand(command);
+                channelExec.connect();
+
+                // Obtenemos el texto impreso en la consola.
+                BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                StringBuilder builder = new StringBuilder();
+                String linea;
+
+                while ((linea = reader.readLine()) != null) {
+                    builder.append(linea);
+                    builder.append(ENTER_KEY);
+                }
+
+                // Cerramos el canal SSH.
+                channelExec.disconnect();
+
+                // Retornamos el texto impreso en la consola.
+                return builder.toString();
+            }
             // Ejecutamos el comando.
             channelExec.setCommand(command);
             final ByteArrayOutputStream error = new ByteArrayOutputStream();
@@ -153,4 +211,6 @@ public class SSHConnector {
     public final void disconnect() {
         this.session.disconnect();
     }
+
+
 }

@@ -14,6 +14,8 @@
     <string name="menu_slideshow">Slideshow</string>
     <string name="path">path</string>
     <string name="file">archivos</string>
+    <string name="path" translatable="false">Path</string>
+    <string name="file">files</string>
     <string name="scripts">scripts</string>
     <string name="monitoring">monitoreo</string>
     <string name="back">..</string>
@@ -115,4 +117,24 @@
         <item>Spanish</item>
         <item>English</item>
     </string-array>
+    <string name="access_password">Access with password</string>
+    <string name="authSuccessful">Authentication successful</string>
+    <string name="wrongPath">No existe el path que has escrito.</string>
+    <string name="bigFile">El archivo es muy grande, si quiere verlo todo, descargelo.</string>
+    <string name="saveDownload">Selecciona donde guardar la descarga:</string>
+    <string name="download">Descargar</string>
+    <string name="fileDownload">Archivo descargado</string>
+    <string name="download_1">El archivo</string>
+    <string name="download_2">ha sido descargado.</string>
+    <string name="copy">Copiar</string>
+    <string name="move">Mover</string>
+    <string name="moveTo">Mover a...</string>
+    <string name="copyTo">Copiar a...</string>
+    <string name="completePath">Por favor, escriba el path absoluto.</string>
+    <string name="noPath">No existe el path.</string>
+    <string name="imageFile">No se puede mostrar el contenido del archivo.</string>
+    <string name="badFileType">No se puede subir ese tipo de archivo.</string>
+    <string name="port22" translatable="false">22</string>
+    <string name="host" translatable="false">Host</string>
+    <string name="notPem">El archivo escogido no es un \'.pem\'.</string>
 </resources>
