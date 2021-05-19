@@ -12,7 +12,7 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
-    <string name="path">path</string>
+    <string name="path" translatable="false">Path</string>
     <string name="file">files</string>
     <string name="scripts">scripts</string>
     <string name="monitoring">monitoring</string>
@@ -82,4 +82,6 @@
     <string name="noPath">No existe el path.</string>
     <string name="imageFile">No se puede mostrar el contenido del archivo.</string>
     <string name="badFileType">No se puede subir ese tipo de archivo.</string>
+    <string name="port22" translatable="false">22</string>
+    <string name="host" translatable="false">Host</string>
 </resources>

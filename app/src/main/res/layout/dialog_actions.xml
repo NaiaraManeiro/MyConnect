@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -47,6 +46,7 @@
                 android:layout_marginTop="40dp"
                 android:ems="10"
                 android:hint="@string/name"
+                android:theme="@style/EditTextColor"
                 android:inputType="textPersonName"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -68,7 +68,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:ems="10"
-                android:hint="Path"
+                android:theme="@style/EditTextColor"
+                android:hint="@string/path"
                 android:scrollHorizontally="true"
                 android:maxLines="1"
                 android:inputType="textPersonName"
@@ -118,6 +119,7 @@
 
             <Button
                 android:id="@+id/actionButton"
+                style="@style/Buttons"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -128,6 +130,7 @@
 
             <Button
                 android:id="@+id/backActions"
+                style="@style/Buttons"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"

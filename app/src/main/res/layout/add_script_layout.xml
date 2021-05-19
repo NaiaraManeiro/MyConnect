@@ -30,6 +30,7 @@
             android:hint="@string/add_script_name_hint"
             android:inputType="textPersonName"
             android:padding="4dp"
+            android:theme="@style/EditTextColor"
             android:textSize="12sp" />
 
         <TextView
@@ -53,6 +54,7 @@
             android:hint="@string/add_script_enter_command_hint"
             android:inputType="textPersonName"
             android:padding="4dp"
+            android:theme="@style/EditTextColor"
             android:textSize="12sp" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
