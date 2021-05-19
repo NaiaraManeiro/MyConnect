@@ -108,6 +108,9 @@
     <string name="error_deleting_user">Error borrando cuenta</string>
     <string name="not_logged">Inicia sesión primero</string>
     <string name="sure_delete_account">¿Seguro que quieres eliminar la cuenta?</string>
+    <string name="server_connection_lost">Notificar pérdida de la conexión con el servidor</string>
+    <string name="server_connect_added">El servidor debe estar accesible para poder añadirlo</string>
+    <string name="connection_lost">Connection lost</string>
     <string-array name="languages">
         <item>Spanish</item>
         <item>English</item>

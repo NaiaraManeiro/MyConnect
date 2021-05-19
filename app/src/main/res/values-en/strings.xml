@@ -106,4 +106,7 @@
     <string name="not_logged">Log in first</string>
     <string name="delete_account">Delete account</string>
     <string name="sure_delete_account">Are you sure you want to delete your account?</string>
+    <string name="server_connection_lost">Notificar conexión perdida con el servidor</string>
+    <string name="server_connect_added">Server must connect to be added</string>
+    <string name="connection_lost">El servidor debe estar accesible para poder añadirlo</string>
 </resources>

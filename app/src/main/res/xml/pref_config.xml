@@ -9,6 +9,16 @@
         android:defaultValue="true"
         android:key="notify_script"
         android:title="@string/notify_script" />
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="server_connnect"
+        android:persistent="true"
+        android:title="@string/server_connect_added"
+        app:persistent="true" />
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="switch_preference_1"
+        android:title="@string/server_connection_lost" />
     <ListPreference
         android:defaultValue="true"
         android:entries="@array/languages"
