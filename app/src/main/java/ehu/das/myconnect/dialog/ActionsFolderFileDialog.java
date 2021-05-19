@@ -2,6 +2,7 @@ package ehu.das.myconnect.dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -157,10 +158,9 @@ public class ActionsFolderFileDialog extends DialogFragment {
             }
         });
 
-        Button back = actionsLayout.findViewById(R.id.backActions);
-        back.setOnClickListener(new View.OnClickListener() {
+        alertDialog.setNegativeButton(getString(R.string.back), new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(DialogInterface dialog, int which) {
                 dismiss();
             }
         });

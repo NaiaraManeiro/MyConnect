@@ -2,6 +2,7 @@ package ehu.das.myconnect.dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -52,10 +53,9 @@ public class CreateFolderFileDialog extends DialogFragment {
             keyPem = true;
         }
 
-        Button create = vw.findViewById(R.id.createButton);
-        create.setOnClickListener(new View.OnClickListener() {
+        builder.setPositiveButton(getString(R.string.create), new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(DialogInterface dialog, int which) {
                 EditText nameBox = vw.findViewById(R.id.newName);
                 String name = nameBox.getText().toString();
                 RadioGroup rg = vw.findViewById(R.id.options);
@@ -98,10 +98,9 @@ public class CreateFolderFileDialog extends DialogFragment {
             }
         });
 
-        Button back = vw.findViewById(R.id.volverNewButton);
-        back.setOnClickListener(new View.OnClickListener() {
+        builder.setNegativeButton(getString(R.string.back), new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(DialogInterface dialog, int which) {
                 dismiss();
             }
         });

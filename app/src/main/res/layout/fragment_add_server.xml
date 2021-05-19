@@ -50,64 +50,70 @@
             android:paddingLeft="40dp"
             android:paddingRight="40dp">
 
-            <TextView
-                android:id="@+id/infoEdit"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:gravity="center_horizontal"
-                android:text="@string/datosServidor" />
+                android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/usuario"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:ems="10"
-                android:hint='@string/usuario'
-                android:theme="@style/EditTextColor"
-                android:inputType="textPersonName" />
+                <TextView
+                    android:id="@+id/infoEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:gravity="center_horizontal"
+                    android:text="@string/datosServidor" />
 
-            <EditText
-                android:id="@+id/host"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                android:ems="10"
-                android:hint="@string/host"
-                android:theme="@style/EditTextColor"
-                android:inputType="textPersonName" />
+                <EditText
+                    android:id="@+id/usuario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:ems="10"
+                    android:hint='@string/usuario'
+                    android:inputType="textPersonName"
+                    android:theme="@style/EditTextColor" />
 
-            <EditText
-                android:id="@+id/puerto"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                android:ems="10"
-                android:hint="@string/puerto"
-                android:inputType="number"
-                android:theme="@style/EditTextColor"
-                android:text="@string/port22" />
+                <EditText
+                    android:id="@+id/host"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:ems="10"
+                    android:hint="@string/host"
+                    android:inputType="textPersonName"
+                    android:theme="@style/EditTextColor" />
 
-            <EditText
-                android:id="@+id/nombreServidor"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                android:ems="10"
-                android:hint="@string/nombreServidor"
-                android:theme="@style/EditTextColor"
-                android:inputType="textPersonName" />
+                <EditText
+                    android:id="@+id/puerto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:ems="10"
+                    android:hint="@string/puerto"
+                    android:inputType="number"
+                    android:text="@string/port22"
+                    android:theme="@style/EditTextColor" />
 
-            <EditText
-                android:id="@+id/contrasena"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                android:ems="10"
-                android:hint="@string/contrasena"
-                android:theme="@style/EditTextColor"
-                android:inputType="textPassword" />
+                <EditText
+                    android:id="@+id/nombreServidor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:ems="10"
+                    android:hint="@string/nombreServidor"
+                    android:inputType="textPersonName"
+                    android:theme="@style/EditTextColor" />
+
+                <EditText
+                    android:id="@+id/contrasena"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:ems="10"
+                    android:hint="@string/contrasena"
+                    android:inputType="textPassword"
+                    android:theme="@style/EditTextColor" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -144,12 +150,6 @@
                         android:orientation="horizontal"
                         android:padding="20dp">
 
-                        <TextView
-                            android:id="@+id/textView12"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1" />
-
                         <Button
                             android:id="@+id/pemButton"
                             style="@style/Buttons"
@@ -166,12 +166,6 @@
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/textView16"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -182,6 +176,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="0"
+                    android:gravity="center"
                     android:orientation="horizontal">
 
                     <Button
@@ -196,17 +191,12 @@
                         app:strokeColor="#000000"
                         app:strokeWidth="2dp" />
 
-                    <TextView
-                        android:id="@+id/textView17"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1" />
-
                     <Button
                         android:id="@+id/anadirServidor"
                         style="@style/Buttons"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="80dp"
                         android:backgroundTint="#FFFFFF"
                         android:text="@string/addServidor"
                         android:textColor="#000000"
