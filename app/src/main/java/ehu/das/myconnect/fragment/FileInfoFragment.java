@@ -1,17 +1,12 @@
 package ehu.das.myconnect.fragment;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.DocumentsContract;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -34,8 +29,6 @@ import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 
 import ehu.das.myconnect.R;
@@ -51,6 +44,7 @@ public class FileInfoFragment extends Fragment {
     private static final int COD_NUEVO_FICHERO = 40;
     private String fileName;
     private boolean image;
+    private boolean keyPem = false;
 
     public FileInfoFragment() {}
 
@@ -77,6 +71,10 @@ public class FileInfoFragment extends Fragment {
             image = extras.getBoolean("image");
         }
 
+        if (ServerListFragment.selectedServer.getPem() == 1) {
+            keyPem = true;
+        }
+
         ((AppCompatActivity) getActivity()).setSupportActionBar(getActivity().findViewById(R.id.labarra));
 
         save = getActivity().findViewById(R.id.saveFileButton);
@@ -95,6 +93,7 @@ public class FileInfoFragment extends Fragment {
             Data data = new Data.Builder()
                     .putString("action", "cat " + path)
                     .putString("path", path)
+                    .putBoolean("keyPem", keyPem)
                     .build();
             OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(SSHWorker.class)
                     .setInputData(data)
@@ -134,6 +133,7 @@ public class FileInfoFragment extends Fragment {
                 String fileText = file.getText().toString();
                 Data data = new Data.Builder()
                         .putString("action", "echo '" +fileText+ "' > " + path)
+                        .putBoolean("keyPem", keyPem)
                         .build();
                 OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(SSHWorker.class)
                         .setInputData(data)
@@ -216,7 +216,7 @@ public class FileInfoFragment extends Fragment {
                         .putString("from", path)
                         .putString("to", folderLocation)
                         .putString("do", "download")
-
+                        .putBoolean("keyPem", keyPem)
                         .build();
                 OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(SSHWorker.class)
                         .setInputData(data1)

@@ -57,6 +57,7 @@ public class FilesFragment extends Fragment implements OnClickRecycleView, OnDia
     private String path;
     private final int PICKFILE_RESULT_CODE = 12;
     private OnDialogDismiss<String> fragment;
+    private boolean keyPem = false;
 
     public FilesFragment() {}
 
@@ -81,6 +82,10 @@ public class FilesFragment extends Fragment implements OnClickRecycleView, OnDia
             path = extras.getString("path");
         }
 
+        if (ServerListFragment.selectedServer.getPem() == 1) {
+            keyPem = true;
+        }
+
         if (path == null) {
             //Actualizamos el path
             showPath("pwd"); //No funciona correctamente
@@ -89,6 +94,7 @@ public class FilesFragment extends Fragment implements OnClickRecycleView, OnDia
             oldPath.setText(path);
             Data data = new Data.Builder()
                     .putString("action", "ls -l "+path)
+                    .putBoolean("keyPem", keyPem)
                     .build();
             showData(data);
         }
@@ -122,6 +128,7 @@ public class FilesFragment extends Fragment implements OnClickRecycleView, OnDia
                 //Primero comprobamos si el path existe
                 Data data = new Data.Builder()
                         .putString("action", "[ -d "+ pathNuevo +" ] && echo 'existe'")
+                        .putBoolean("keyPem", keyPem)
                         .build();
                 OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(SSHWorker.class)
                         .setInputData(data)
@@ -138,6 +145,7 @@ public class FilesFragment extends Fragment implements OnClickRecycleView, OnDia
                                     path = pathNuevo;
                                     Data data1 = new Data.Builder()
                                             .putString("action", "ls -l "+ path)
+                                            .putBoolean("keyPem", keyPem)
                                             .build();
                                     showData(data1);
                                 }
@@ -162,6 +170,7 @@ public class FilesFragment extends Fragment implements OnClickRecycleView, OnDia
                 path = newPath;
                 Data data = new Data.Builder()
                         .putString("action", "ls -l "+newPath)
+                        .putBoolean("keyPem", keyPem)
                         .build();
                 showData(data);
             }
@@ -191,6 +200,7 @@ public class FilesFragment extends Fragment implements OnClickRecycleView, OnDia
             pathText.setText(completePath);
             Data data = new Data.Builder()
                     .putString("action", "ls -l "+completePath)
+                    .putBoolean("keyPem", keyPem)
                     .build();
             //Cambiamos de carpeta y mostramos los archivos del nuevo path
             showData(data);
@@ -268,6 +278,7 @@ public class FilesFragment extends Fragment implements OnClickRecycleView, OnDia
     private void showPath(String action) {
         Data data = new Data.Builder()
                 .putString("action", action)
+                .putBoolean("keyPem", keyPem)
                 .build();
 
         OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(SSHWorker.class)
@@ -294,6 +305,7 @@ public class FilesFragment extends Fragment implements OnClickRecycleView, OnDia
 
                             Data data1 = new Data.Builder()
                                     .putString("action", "ls -l "+pathText.getText().toString())
+                                    .putBoolean("keyPem", keyPem)
                                     .build();
 
                             //Mostramos los archivos del path actual
@@ -309,6 +321,7 @@ public class FilesFragment extends Fragment implements OnClickRecycleView, OnDia
     public void onDismiss(String path) {
         Data data = new Data.Builder()
                 .putString("action", "ls -l "+ path)
+                .putBoolean("keyPem", keyPem)
                 .build();
 
         //Mostramos los archivos del path actual
@@ -329,6 +342,7 @@ public class FilesFragment extends Fragment implements OnClickRecycleView, OnDia
                             .putString("from", uri2)
                             .putString("to", path + "/")
                             .putString("do", "upload")
+                            .putBoolean("keyPem", keyPem)
                             .build();
                     OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(SSHWorker.class)
                             .setInputData(data1)
@@ -338,6 +352,7 @@ public class FilesFragment extends Fragment implements OnClickRecycleView, OnDia
                                 if (status != null && status.getState().isFinished()) {
                                     Data data2 = new Data.Builder()
                                             .putString("action", "ls -l "+ path)
+                                            .putBoolean("keyPem", keyPem)
                                             .build();
 
                                     //Mostramos los archivos del path actual

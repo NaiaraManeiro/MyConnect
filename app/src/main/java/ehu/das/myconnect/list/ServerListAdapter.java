@@ -19,7 +19,7 @@ import ehu.das.myconnect.fragment.ServerListFragment;
 public class ServerListAdapter extends RecyclerView.Adapter<ServerListElementViewHolder> {
 
     public ServerListFragment fragment;
-    private List<Server> servers;
+    private final List<Server> servers;
     private final FragmentManager fragmentManager;
 
     public ServerListAdapter(List<Server> servers, FragmentManager fragmentManager) {

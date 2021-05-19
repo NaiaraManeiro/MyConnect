@@ -151,7 +151,7 @@
                             android:layout_weight="1" />
 
                         <Button
-                            android:id="@+id/keyPemButton"
+                            android:id="@+id/pemButton"
                             style="@style/Buttons"
                             android:layout_width="233dp"
                             android:layout_height="wrap_content"

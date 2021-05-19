@@ -22,6 +22,7 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import ehu.das.myconnect.R;
+import ehu.das.myconnect.fragment.ServerListFragment;
 import ehu.das.myconnect.service.SSHWorker;
 
 public class ActionsFolderFileDialog extends DialogFragment {
@@ -31,6 +32,7 @@ public class ActionsFolderFileDialog extends DialogFragment {
     private String fileType;
     private String command;
     public OnDialogDismiss<String> onDialogDismiss;
+    private boolean keyPem = false;
 
     @NonNull
     @Override
@@ -47,6 +49,10 @@ public class ActionsFolderFileDialog extends DialogFragment {
             path = bundle.getString("path");
             name = bundle.getString("name");
             fileType = bundle.getString("fileType");
+        }
+
+        if (ServerListFragment.selectedServer.getPem() == 1) {
+            keyPem = true;
         }
 
         String completePath = path + "/" + name;
@@ -108,6 +114,7 @@ public class ActionsFolderFileDialog extends DialogFragment {
                     //Primero comprobamos si el path existe
                     Data data = new Data.Builder()
                             .putString("action", "[ -d "+ pathMoveCopy +" ] && echo 'existe'")
+                            .putBoolean("keyPem", keyPem)
                             .build();
                     OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(SSHWorker.class)
                             .setInputData(data)
@@ -144,6 +151,7 @@ public class ActionsFolderFileDialog extends DialogFragment {
                 if (!command.equals("")) {
                     Data data = new Data.Builder()
                             .putString("action", command)
+                            .putBoolean("keyPem", keyPem)
                             .build();
 
                     OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(SSHWorker.class)

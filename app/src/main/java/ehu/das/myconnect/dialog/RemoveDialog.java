@@ -27,11 +27,8 @@ public class RemoveDialog extends DialogFragment {
     private String serverName;
     private String where;
     private String path;
-    private String user;
-    private String host;
-    private String password;
-    private int port;
     public View view;
+    private boolean keyPem = false;
 
     @NonNull
     @Override
@@ -50,10 +47,9 @@ public class RemoveDialog extends DialogFragment {
             path = bundle.getString("path");
         }
 
-        user = ServerListFragment.selectedServer.getUser();
-        host = ServerListFragment.selectedServer.getHost();
-        password = ServerListFragment.selectedServer.getPassword();
-        port = ServerListFragment.selectedServer.getPort();
+        if (ServerListFragment.selectedServer.getPem() == 1) {
+            keyPem = true;
+        }
 
         ImageView yes = vw.findViewById(R.id.imageSi);
 
@@ -84,6 +80,7 @@ public class RemoveDialog extends DialogFragment {
                 } else if (where.equals("file")) {
                     Data data = new Data.Builder()
                             .putString("action", "rm " + path)
+                            .putBoolean("keyPem", keyPem)
                             .build();
 
                     OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(SSHWorker.class)
@@ -96,10 +93,6 @@ public class RemoveDialog extends DialogFragment {
                                     String newPath = path.substring(0, path.lastIndexOf("/"));
                                     Bundle bundle = new Bundle();
                                     bundle.putString("path", newPath);
-                                    bundle.putString("user", user);
-                                    bundle.putString("host", host);
-                                    bundle.putString("password", password);
-                                    bundle.putInt("port", port);
                                     Navigation.findNavController(view).navigate(R.id.action_fileInfoFragment_to_serverManagmentFragment, bundle);
                                 }
                             });

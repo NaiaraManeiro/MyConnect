@@ -29,6 +29,7 @@ public class CreateFolderFileDialog extends DialogFragment {
     public View view;
     private String action = "";
     public OnDialogDismiss<String> onDialogDismiss;
+    private boolean keyPem = false;
 
     @NonNull
     @Override
@@ -43,6 +44,10 @@ public class CreateFolderFileDialog extends DialogFragment {
         Bundle bundle = getArguments();
         if (bundle != null) {
             path = bundle.getString("path");
+        }
+
+        if (ServerListFragment.selectedServer.getPem() == 1) {
+            keyPem = true;
         }
 
         Button create = vw.findViewById(R.id.createButton);
@@ -65,6 +70,7 @@ public class CreateFolderFileDialog extends DialogFragment {
 
                     Data data = new Data.Builder()
                             .putString("action", action)
+                            .putBoolean("keyPem", keyPem)
                             .build();
 
                     OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(SSHWorker.class)

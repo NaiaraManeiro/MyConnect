@@ -76,6 +76,7 @@ public class ServerWorker extends Worker {
                         parametrosJSON.put("password", getInputData().getString("password"));
                         parametrosJSON.put("serverName", getInputData().getString("serverName"));
                         parametrosJSON.put("userName", getInputData().getString("userName"));
+                        parametrosJSON.put("keyPem", getInputData().getInt("passwordPem",0));
                     } else if (action.equals("serverData")) {
                         parametrosJSON.put("userName", getInputData().getString("userName"));
                     } else if (action.equals("removeServer") || action.equals("infoServer")) {
@@ -117,8 +118,6 @@ public class ServerWorker extends Worker {
                 }
             }
 
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
         } catch (IOException | JSONException e) {
             e.printStackTrace();
         }

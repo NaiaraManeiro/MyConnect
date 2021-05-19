@@ -58,11 +58,7 @@ public class SSHWorker  extends Worker {
                     }
                 }
 
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (JSchException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
+            } catch (IllegalAccessException | IOException | JSchException e) {
                 e.printStackTrace();
             }
         }

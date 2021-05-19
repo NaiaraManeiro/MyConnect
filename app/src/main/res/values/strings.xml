@@ -133,4 +133,6 @@
     <string name="port22" translatable="false">22</string>
     <string name="host" translatable="false">Host</string>
     <string name="notPem">El archivo escogido no es un \'.pem\'.</string>
+    <string name="pemButton">Obtener .pem</string>
+    <string name="accessPem">Acceder con un fichero .pem</string>
 </resources>
