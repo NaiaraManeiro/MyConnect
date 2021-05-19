@@ -232,8 +232,8 @@ public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<S
                 .observe(getActivity(), status -> {
                     if (status != null && status.getState().isFinished()) {
                         String result = status.getOutputData().getString("result");
-                        String success = status.getOutputData().getString("result");
-                        String failed = status.getOutputData().getString("result");
+                        String success = status.getOutputData().getString("success");
+                        String failed = status.getOutputData().getString("fail");
                         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
                         if (prefs.getBoolean("notify_script", true)) {
                             if (failed.trim().equals("") && !success.trim().equals("")) {

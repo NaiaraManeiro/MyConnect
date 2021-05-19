@@ -100,7 +100,7 @@
     <string name="error_script_added">Error añadiendo el script</string>
     <string name="script_deleted">Script eliminado</string>
     <string name="error_script_deleted">Error eliminando el script</string>
-    <string name="success">exito</string>
+    <string name="success">se ejecutó correctamente</string>
     <string name="fail">falló</string>
     <string name="account">Cuenta</string>
     <string name="delete_account">Borrar cuenta</string>
