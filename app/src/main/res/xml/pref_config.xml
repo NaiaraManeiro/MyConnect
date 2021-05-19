@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="Global">
+
+    </PreferenceCategory>
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="notify_script"
+        android:title="@string/notify_script" />
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="server_connnect"
+        android:persistent="true"
+        android:title="@string/server_connect_added"
+        app:persistent="true" />
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="switch_preference_1"
+        android:title="@string/server_connection_lost" />
+    <ListPreference
+        android:defaultValue="true"
+        android:entries="@array/languages"
+        android:entryValues="@array/languages"
+        android:key="language"
+        android:title="@string/languages" />
+    <PreferenceCategory android:title="@string/account">
+
+    </PreferenceCategory>
+
+    <Preference
+        android:key="delete_account"
+        android:summary=""
+        android:title="@string/delete_account" />
+</PreferenceScreen>

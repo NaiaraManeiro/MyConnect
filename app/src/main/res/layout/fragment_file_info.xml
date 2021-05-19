@@ -2,7 +2,6 @@
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -15,88 +14,108 @@
             android:id="@+id/labarra"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            android:background="@drawable/down_border_with_background"
             android:elevation="4dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:orientation="horizontal">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+
+                <TextView
+                    android:id="@+id/filePath"
+                    android:layout_width="310dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/up_down_right_border"
+                    android:maxLines="1"
+                    android:paddingLeft="4dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView3"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:background="@drawable/border"
+                    android:paddingLeft="4dp"
+                    android:text="@string/path"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="550dp">
+            android:layout_height="510dp"
+            android:layout_marginTop="10dp"
+            android:fadeScrollbars="true"
+            android:isScrollContainer="true"
+            android:nestedScrollingEnabled="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="550dp"
-                android:orientation="vertical">
+                android:layout_height="510dp"
+                android:orientation="vertical"
+                android:overScrollMode="ifContentScrolls">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <EditText
+                    android:id="@+id/fileText"
                     android:layout_width="match_parent"
-                    android:layout_height="550dp">
-
-                    <TextView
-                        android:id="@+id/filePath"
-                        android:layout_width="270dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:background="@drawable/up_down_right_border"
-                        android:paddingLeft="4dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toEndOf="@+id/textView3"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/textView3"
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:background="@drawable/border"
-                        android:paddingLeft="4dp"
-                        android:text="@string/path"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.119"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <EditText
-                        android:id="@+id/fileText"
-                        android:layout_width="350dp"
-                        android:layout_height="480dp"
-                        android:layout_marginTop="16dp"
-                        android:background="@drawable/border"
-                        android:gravity="start|top"
-                        android:inputType="textMultiLine"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/filePath" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:layout_height="510dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@drawable/border"
+                    android:gravity="start|top"
+                    android:inputType="textMultiLine" />
 
             </LinearLayout>
         </ScrollView>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <Button
-                android:id="@+id/saveFileButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/saveFile"
-                app:layout_constraintBottom_toTopOf="@+id/volverFile"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <Button
-                android:id="@+id/volverFile"
-                android:layout_width="405dp"
-                android:layout_height="55dp"
-                android:text="@string/volver"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <Button
+                    android:id="@+id/saveFileButton"
+                    style="@style/Buttons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/saveFile"
+                    app:layout_constraintBottom_toTopOf="@+id/volverFile"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/volverFile"
+                    style="@style/Buttons"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:text="@string/volver"
+                    app:strokeColor="#4B6DFF"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
     </LinearLayout>
 

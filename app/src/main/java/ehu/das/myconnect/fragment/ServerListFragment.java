@@ -1,6 +1,7 @@
 package ehu.das.myconnect.fragment;
 
 import android.app.Dialog;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -17,12 +18,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +45,6 @@ import ehu.das.myconnect.service.ServerWorker;
 public class ServerListFragment extends Fragment implements OnDialogOptionPressed<String>, ILoading {
 
     public static SSHConnector connection;
-    private String nombreUsuario = "Naiara";
     public static List<Server> serverList;
     public static Server selectedServer = null;
     public LoadingDialog loadingDialog;
@@ -60,11 +65,13 @@ public class ServerListFragment extends Fragment implements OnDialogOptionPresse
         View v = inflater.inflate(R.layout.fragment_server_list, container, false);
         RecyclerView serverListRV = v.findViewById(R.id.serverListRV);
         serverListRV.bringToFront();
+        loadingDialog = new LoadingDialog();
+        loadingDialog.setCancelable(false);
+        loadingDialog.show(getActivity().getSupportFragmentManager(), "loading");
         serverList = new ArrayList<>();
-
         Data data = new Data.Builder()
                 .putString("action", "serverData")
-                .putString("userName", nombreUsuario)
+                .putString("userName", LoginFragment.username)
                 .build();
 
         OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(ServerWorker.class)
@@ -74,7 +81,6 @@ public class ServerListFragment extends Fragment implements OnDialogOptionPresse
                 .observe(getActivity(), status -> {
                     if (status != null && status.getState().isFinished()) {
                         String result = status.getOutputData().getString("result");
-
                         if (!result.equals("")) {
                             JSONObject jsonObject;
                             try {
@@ -83,7 +89,6 @@ public class ServerListFragment extends Fragment implements OnDialogOptionPresse
                                 JSONArray jsonArrayUsers = jsonObject.getJSONArray("users");
                                 JSONArray jsonArrayHosts = jsonObject.getJSONArray("hosts");
                                 JSONArray jsonArrayPorts = jsonObject.getJSONArray("ports");
-
                                 for (int i = 0; i < jsonArrayServers.length(); i++) {
                                     String serverName = jsonArrayServers.get(i).toString();
                                     String user = jsonArrayUsers.get(i).toString();
@@ -92,7 +97,6 @@ public class ServerListFragment extends Fragment implements OnDialogOptionPresse
                                     Server server = new Server(serverName,user,host,port);
                                     serverList.add(server);
                                 }
-
                                 if (serverList.size() == jsonArrayHosts.length()) {
                                     ServerListAdapter serverListAdapter = new ServerListAdapter(serverList, getActivity().getSupportFragmentManager());
                                     serverListAdapter.fragment = this;
@@ -104,6 +108,7 @@ public class ServerListFragment extends Fragment implements OnDialogOptionPresse
                                 e.printStackTrace();
                             }
                         }
+                        loadingDialog.dismiss();
                     }
                 });
         WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
@@ -124,18 +129,31 @@ public class ServerListFragment extends Fragment implements OnDialogOptionPresse
         if (extras != null) {
             userName = extras.getString("userName");
         }*/
-
+        ImageView conf = getActivity().findViewById(R.id.confServerList);
+        conf.setColorFilter(Color.WHITE);
+        conf.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.action_serverListFragment_to_preferences);
+        });
+        TextView username = getActivity().findViewById(R.id.usernameTV);
+        username.setText(LoginFragment.username);
+        ImageView logout = getActivity().findViewById(R.id.logout);
+        logout.setOnClickListener(v -> {
+            FirebaseAuth.getInstance().signOut();
+            Navigation.findNavController(v).navigate(R.id.action_serverListFragment_to_loginFragment);
+        });
+        logout.setColorFilter(Color.WHITE);
         //Obtenemos los datos de los servidores del usuario
         RecyclerView serverListRV = getActivity().findViewById(R.id.serverListRV);
         serverListRV.bringToFront();
 
-        Button addServer = getActivity().findViewById(R.id.addServer);
+        ImageView addServer = getActivity().findViewById(R.id.addServer);
         addServer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Navigation.findNavController(v).navigate(R.id.action_serverListFragment_to_addServerFragment);
             }
         });
+        addServer.setColorFilter(Color.WHITE);
     }
 
     public void connectServer() {

@@ -1,6 +1,7 @@
 package ehu.das.myconnect.service;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.work.Data;
@@ -31,7 +32,12 @@ public class ServerWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        String direccion = "http://ec2-54-167-31-169.compute-1.amazonaws.com/nmaneiro001/WEB/MyConnect/servidor.php";
+        String script = getInputData().getString("script");
+        if (script == null) {
+            script = "servidor.php";
+        }
+        String direccion = "http://ec2-54-167-31-169.compute-1.amazonaws.com/nmaneiro001/WEB/MyConnect/" + script;
+        Log.i("register", direccion);
         HttpURLConnection urlConnection = null;
         String action = getInputData().getString("action");
 
@@ -62,9 +68,7 @@ public class ServerWorker extends Worker {
             } else {
                 if (!action.equals("conectServer")) {
                     JSONObject parametrosJSON = new JSONObject();
-
                     parametrosJSON.put("action", action);
-
                     if (action.equals("addServer")) {
                         parametrosJSON.put("user", getInputData().getString("user"));
                         parametrosJSON.put("host", getInputData().getString("host"));
@@ -82,10 +86,31 @@ public class ServerWorker extends Worker {
                         parametrosJSON.put("port", getInputData().getInt("port",22));
                         parametrosJSON.put("serverName", getInputData().getString("serverName"));
                         parametrosJSON.put("oldServerName", getInputData().getString("oldServerName"));
+                    } else if (action.equals("register")) {
+                        Log.i("register", "register_input");
+                        parametrosJSON.put("user", getInputData().getString("user"));
+                        parametrosJSON.put("email", getInputData().getString("email"));
+                        parametrosJSON.put("password", getInputData().getString("password"));
+                    } else if (action.equals("login")) {
+                        parametrosJSON.put("user", getInputData().getString("user"));
+                        parametrosJSON.put("password", getInputData().getString("password"));
+                    } else if (action.equals("user")) {
+                        parametrosJSON.put("email", getInputData().getString("email"));
+                    } else if (action.equals("scripts")) {
+                        parametrosJSON.put("user", getInputData().getString("user"));
+                    } else if (action.equals("addScript")) {
+                        parametrosJSON.put("user", getInputData().getString("user"));
+                        parametrosJSON.put("name", getInputData().getString("name"));
+                        parametrosJSON.put("cmd", getInputData().getString("cmd"));
+                    } else if (action.equals("deleteScript")) {
+                        Log.i("script", "elimino");
+                        parametrosJSON.put("user", getInputData().getString("user"));
+                        parametrosJSON.put("name", getInputData().getString("name"));
+                        parametrosJSON.put("cmd", getInputData().getString("cmd"));
+                    } else if (action.equals("deleteUser")) {
+                        parametrosJSON.put("user", getInputData().getString("user"));
                     }
-
                     urlConnection.setRequestProperty("Content-Type","application/json");
-
                     PrintWriter out = new PrintWriter(urlConnection.getOutputStream());
                     out.print(parametrosJSON.toString());
                     out.close();

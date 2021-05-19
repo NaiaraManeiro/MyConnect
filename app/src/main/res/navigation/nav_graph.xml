@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/serverListFragment">
+    app:startDestination="@id/loginFragment">
 
     <fragment
         android:id="@+id/addServerFragment"
@@ -25,6 +25,12 @@
             android:id="@+id/action_serverListFragment_to_serverInfoFragment"
             app:destination="@id/serverInfoFragment" />
         <action
+            android:id="@+id/action_serverListFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_serverListFragment_to_preferences"
+            app:destination="@id/preferences" />
+        <action
             android:id="@+id/action_serverListFragment_to_filesFragment"
             app:destination="@id/filesFragment" />
     </fragment>
@@ -36,18 +42,12 @@
         <action
             android:id="@+id/action_serverManagmentFragment_to_serverListFragment"
             app:destination="@id/serverListFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/filesFragment"
-        android:name="ehu.das.myconnect.fragment.FilesFragment"
-        android:label="fragment_files"
-        tools:layout="@layout/fragment_files" >
         <action
-            android:id="@+id/action_filesFragment_to_fileInfoFragment"
+            android:id="@+id/action_serverManagmentFragment_to_preferences"
+            app:destination="@id/preferences" />
+        <action
+            android:id="@+id/action_serverManagmentFragment_to_fileInfoFragment"
             app:destination="@id/fileInfoFragment" />
-        <action
-            android:id="@+id/action_filesFragment_self"
-            app:destination="@id/filesFragment" />
     </fragment>
     <fragment
         android:id="@+id/serverInfoFragment"
@@ -71,7 +71,52 @@
         android:name="ehu.das.myconnect.fragment.FileInfoFragment"
         android:label="FileInfoFragment" >
         <action
-            android:id="@+id/action_fileInfoFragment_to_filesFragment"
-            app:destination="@id/filesFragment" />
+            android:id="@+id/action_fileInfoFragment_to_serverManagmentFragment"
+            app:destination="@id/serverManagmentFragment" />
+        <action
+            android:id="@+id/action_fileInfoFragment_to_serverManagmentFragment2"
+            app:destination="@id/serverManagmentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="ehu.das.myconnect.fragment.LoginFragment"
+        android:label="LoginFragment" >
+        <action
+            android:id="@+id/action_loginFragment_to_serverListFragment"
+            app:destination="@id/serverListFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_preferences"
+            app:destination="@id/preferences" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="ehu.das.myconnect.fragment.RegisterFragment"
+        android:label="RegisterFragment" >
+        <action
+            android:id="@+id/action_registerFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_registerFragment_to_preferences"
+            app:destination="@id/preferences" />
+    </fragment>
+    <fragment
+        android:id="@+id/preferences"
+        android:name="ehu.das.myconnect.fragment.Preferences"
+        android:label="Preferences" >
+        <action
+            android:id="@+id/action_preferences_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/filesFragment"
+        android:name="ehu.das.myconnect.fragment.FilesFragment"
+        android:label="fragment_files"
+        tools:layout="@layout/fragment_files" >
+        <action
+            android:id="@+id/action_filesFragment_to_fileInfoFragment"
+            app:destination="@id/fileInfoFragment" />
     </fragment>
 </navigation>

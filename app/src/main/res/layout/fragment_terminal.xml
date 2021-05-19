@@ -31,7 +31,7 @@
                     android:text="ander@127.0.0.1" />
 
                 <TextView
-                    android:id="@+id/textView2"
+                    android:id="@+id/terminalPath"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=":/home/ander" />
@@ -56,10 +56,10 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="left"
-                    android:hint="command"
+                    android:hint="@string/command_no_dots"
                     android:includeFontPadding="false"
                     android:inputType="textPersonName"
-                    android:textSize="12sp" />
+                    android:textSize="14sp" />
 
                 <Button
                     android:id="@+id/runCmdButton"
@@ -80,6 +80,7 @@
                 android:text="@string/output" />
 
             <androidx.core.widget.NestedScrollView
+                android:id="@+id/nestedScroll"
                 android:layout_width="match_parent"
                 android:layout_height="432dp"
                 android:fillViewport="true">

@@ -19,11 +19,18 @@
             android:layout_marginTop="-20dp"
             android:layout_marginEnd="-10dp"
             android:layout_marginRight="-10dp"
+            android:layout_weight="0"
             android:background="#3F51B5"
             app:cardBackgroundColor="#3F51B5"
             app:cardCornerRadius="50dp"
-            app:cardUseCompatPadding="false"
-            app:contentPadding="20dp">
+            app:cardUseCompatPadding="false">
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/conecta4" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -33,22 +40,44 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:padding="20dp">
+
+                    <ImageView
+                        android:id="@+id/confServerList"
+                        android:layout_width="101dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/settings" />
 
                     <TextView
-                        android:id="@+id/textView13"
+                        android:id="@+id/usernameTV"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1" />
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:textColor="#FFFFFF" />
 
-                    <Button
+                    <ImageView
                         android:id="@+id/addServer"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="24dp"
-                        android:text="@string/addServidor"
-                        android:textSize="10sp"
-                        app:backgroundTint="@android:color/transparent" />
+                        android:layout_width="101dp"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/add" />
+
+                    <ImageView
+                        android:id="@+id/logout"
+                        android:layout_width="101dp"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/logout" />
 
                 </LinearLayout>
 
@@ -56,13 +85,21 @@
                     android:id="@+id/textView14"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="-4dp"
+                    android:layout_marginTop="-5dp"
                     android:fontFamily="sans-serif-smallcaps"
                     android:gravity="center"
                     android:text="MyConnect"
                     android:textColor="#FFFFFF"
                     android:textSize="36sp"
                     android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textView24"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/servers"
+                    android:textColor="#FFFFFF" />
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -73,6 +110,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="-40dp"
             android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:translationZ="90dp" />
 
     </LinearLayout>

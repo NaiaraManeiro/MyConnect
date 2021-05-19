@@ -39,10 +39,25 @@ public class SSHWorker  extends Worker {
         } else if (exception.contains("failed to")) {
             result = "failConnect";
         }
-
+        String[] resultM = new String[]{};
         if (!exception.contains("Auth fail") && !exception.contains("failed to")) {
             try {
-                result = sshConnector.executeCommand(command);
+                if (command.equals("")) {
+                    String from = getInputData().getString("from");
+                    String to = getInputData().getString("to");
+                    String paths = from + "," + to;
+                    String doAcion = getInputData().getString("do");
+                    resultM = sshConnector.executeCommand(paths, doAcion);
+                } else {
+                    resultM = sshConnector.executeCommand(command, "");
+                    String success = resultM[0];
+                    if (command.contains("cat") && success.length() > 10240) {
+                        success = "";
+                        success = success + "error,";
+                        resultM[0] = success + sshConnector.executeCommand("head -10 "+getInputData().getString("path"), "");
+                    }
+                }
+
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             } catch (JSchException e) {
@@ -53,7 +68,9 @@ public class SSHWorker  extends Worker {
         }
 
         Data resultados = new Data.Builder()
-                .putString("result", result)
+                .putString("success", resultM[0])
+                .putString("fail", resultM[1])
+                .putString("result", resultM[0])
                 .build();
 
         return Result.success(resultados);

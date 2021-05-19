@@ -27,5 +27,13 @@ public class FileListElementViewHolder extends RecyclerView.ViewHolder {
                 onClickRecycleView.onItemClick(getAdapterPosition());
             }
         });
+
+        itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                onClickRecycleView.onItemLongClick(getAdapterPosition());
+                return false;
+            }
+        });
     }
 }

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "662225177743",
+    "project_id": "myconnect-970a0",
+    "storage_bucket": "myconnect-970a0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:662225177743:android:436307f3363286eb46b4fa",
+        "android_client_info": {
+          "package_name": "com.example.myconnect"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "662225177743-qrarv5d6t1qd521n1s54kg5orlk4tm3b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDq3tJtywcvqtbSNJHLM_5Q3HPdroDsQhg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "662225177743-qrarv5d6t1qd521n1s54kg5orlk4tm3b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

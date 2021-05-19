@@ -1,10 +1,16 @@
 package ehu.das.myconnect.service;
 
+import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelExec;
+import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
+import com.jcraft.jsch.SftpException;
+
 import java.io.BufferedReader;
+
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -86,38 +92,100 @@ public class SSHConnector {
      *                                luego de la ejecución del comando
      *                                SSH.
      */
-    public final String executeCommand(String command)
+    public final String[] executeCommand(String command, String sftpAction)
             throws IllegalAccessException, JSchException, IOException {
         if (this.session != null && this.session.isConnected()) {
+            // Naiara
+            if (sftpAction.equals("upload") || sftpAction.equals("download")) {
+                Channel channel = session.openChannel("sftp");
+                channel.connect();
 
-            // Abrimos un canal SSH. Es como abrir una consola.
-            ChannelExec channelExec = (ChannelExec) this.session.
-                    openChannel("exec");
+                ChannelSftp sftp = (ChannelSftp) channel;
+                try {
+                    String[] paths = command.split(",");
+                    String from = paths[0];
+                    String to = paths[1];
+                    if (sftpAction.equals("upload")) {
+                        sftp.put(from, to);
+                    } else {
+                        sftp.get(from, to);
+                    }
 
-            InputStream in = channelExec.getInputStream();
+                } catch (SftpException e) {
+                    e.printStackTrace();
+                }
 
-            // Ejecutamos el comando.
-            channelExec.setCommand(command);
-            channelExec.connect();
+                return new String[]{"",""};
+            } else {
+                /** // Abrimos un canal SSH. Es como abrir una consola.
+                 ChannelExec channelExec = (ChannelExec) this.session.
+                 openChannel("exec");
 
-            // Obtenemos el texto impreso en la consola.
-            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-            StringBuilder builder = new StringBuilder();
-            String linea;
+                 InputStream in = channelExec.getInputStream();
 
-            while ((linea = reader.readLine()) != null) {
-                builder.append(linea);
-                builder.append(ENTER_KEY);
+                 // Ejecutamos el comando.
+
+                 channelExec.setCommand(command);
+                 channelExec.connect();
+
+                 // Obtenemos el texto impreso en la consola.
+                 BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                 StringBuilder builder = new StringBuilder();
+                 String linea;
+
+                 while ((linea = reader.readLine()) != null) {
+                 builder.append(linea);
+                 builder.append(ENTER_KEY);
+                 }
+
+                 // Cerramos el canal SSH.
+                 channelExec.disconnect();
+
+                 // Retornamos el texto impreso en la consola.
+                 return builder.toString();*/
+                // Ander
+                // Abrimos un canal SSH. Es como abrir una consola.
+                ChannelExec channelExec = (ChannelExec) this.session.
+                        openChannel("exec");
+                // https://stackoverflow.com/questions/6902386/how-to-read-jsch-command-output
+
+                // Ejecutamos el comando.
+                channelExec.setCommand(command);
+                InputStream in = channelExec.getInputStream();
+                InputStream err = channelExec.getExtInputStream();
+                StringBuilder outputBuffer = new StringBuilder();
+                StringBuilder errorBuffer = new StringBuilder();
+                channelExec.setCommand(command);
+                channelExec.connect();
+                byte[] tmp = new byte[1024];
+                while (true) {
+                    while (in.available() > 0) {
+                        int i = in.read(tmp, 0, 1024);
+                        if (i < 0) break;
+                        outputBuffer.append(new String(tmp, 0, i));
+                    }
+                    while (err.available() > 0) {
+                        int i = err.read(tmp, 0, 1024);
+                        if (i < 0) break;
+                        errorBuffer.append(new String(tmp, 0, i));
+                    }
+                    if (channelExec.isClosed()) {
+                        if ((in.available() > 0) || (err.available() > 0)) continue;
+                        System.out.println("exit-status: " + channelExec.getExitStatus());
+                        break;
+                    }
+                    try {
+                        Thread.sleep(1000);
+                    } catch (Exception ee) {
+                    }
+                }
+                System.out.println("output: " + outputBuffer.toString());
+                System.out.println("error: " + errorBuffer.toString());
+                return new String[]{outputBuffer.toString().trim(), errorBuffer.toString().trim()};
             }
-
-            // Cerramos el canal SSH.
-            channelExec.disconnect();
-
-            // Retornamos el texto impreso en la consola.
-            return builder.toString();
-        } else {
-            throw new IllegalAccessException("No existe sesion SSH iniciada.");
-        }
+            } else{
+                throw new IllegalAccessException("No existe sesion SSH iniciada.");
+            }
     }
 
     /**
@@ -126,4 +194,6 @@ public class SSHConnector {
     public final void disconnect() {
         this.session.disconnect();
     }
+
+
 }

@@ -33,10 +33,10 @@
 
             <TextView
                 android:id="@+id/textView4"
-                android:layout_width="92dp"
+                android:layout_width="110dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="User:" />
+                android:text="@string/server_list_user" />
 
             <TextView
                 android:id="@+id/servidorUsuario"
@@ -55,7 +55,7 @@
 
             <TextView
                 android:id="@+id/textView15"
-                android:layout_width="92dp"
+                android:layout_width="110dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Host: " />
