@@ -128,7 +128,7 @@ public class ServerInfoFragment extends Fragment implements OnDialogDismiss<Stri
     //Creación del menú
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu, menu);
+        inflater.inflate(R.menu.menu2, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
