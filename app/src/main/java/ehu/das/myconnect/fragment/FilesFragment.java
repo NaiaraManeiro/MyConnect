@@ -242,7 +242,7 @@ public class FilesFragment extends Fragment implements OnClickRecycleView, OnDia
                         } else {
                             fileTypes = new ArrayList<>();
                             fileNames = new ArrayList<>();
-                            String[] lines = result.split(",");
+                            String[] lines = result.split("\n");
                             for (String line : lines) {
                                 if (line.startsWith("d")) {
                                     fileTypes.add("folder");
