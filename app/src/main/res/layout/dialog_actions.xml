@@ -27,7 +27,7 @@
 
             <TextView
                 android:id="@+id/filePath"
-                android:layout_width="260dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/up_down_right_border"
                 android:paddingLeft="4dp" />
@@ -106,17 +106,22 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/actionButton"
-                style="@style/Buttons"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="40dp"
-                android:textColor="#000000"
-                app:strokeColor="#000000"
-                app:strokeWidth="2dp" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="left"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/actionButton"
+                    style="@style/Buttons"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:textColor="#000000"
+                    app:strokeColor="#000000"
+                    app:strokeWidth="2dp" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
