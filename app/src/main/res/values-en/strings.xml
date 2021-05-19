@@ -52,4 +52,5 @@
     <string name="noPath">The path doesn\'t exist.</string>
     <string name="imageFile">The file data can\'t be shown.</string>
     <string name="badFileType">The type of file can\'t be uploaded.</string>
+    <string name="notPem">Choosen file is not a \'.pem\'.</string>
 </resources>

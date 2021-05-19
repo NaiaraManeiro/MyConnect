@@ -1,7 +1,9 @@
 package ehu.das.myconnect.fragment;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,6 +30,7 @@ import java.io.File;
 import java.util.regex.Pattern;
 
 import ehu.das.myconnect.R;
+import ehu.das.myconnect.service.SSHWorker;
 import ehu.das.myconnect.service.ServerWorker;
 
 
@@ -79,12 +82,12 @@ public class AddServerFragment extends Fragment {
             }
         });
 
+        //Para obtener el archivo pem
         keyPemButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
+                Intent chooseFile = new Intent(Intent.ACTION_PICK);
                 chooseFile.setType("*/*");
-                chooseFile = Intent.createChooser(chooseFile, "Choose a file");
                 startActivityForResult(chooseFile, PICKFILE_RESULT_CODE);
             }
         });
@@ -169,22 +172,55 @@ public class AddServerFragment extends Fragment {
         });
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        //Para obtener el archivo pem
         if (requestCode == PICKFILE_RESULT_CODE && resultCode == Activity.RESULT_OK) {
             if (data != null) {
                 Uri uri = data.getData();
-                File filePem = new File(uri.getPath());
-                key = filePem.getName();
-                /*try {
-                    key = new String(Files.readAllBytes(filePem.toPath()));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }*/
+
+                String uri2 = getPath(getContext(), uri);
+
+                //File filePem = new File(uri.getPath());
+                //key = filePem.getName();
+
+                if (uri2 != null) {
+                    if (uri2.contains(".pem")) {
+                        key = uri2;
+                    } else {
+                        Toast.makeText(getContext(), getString(R.string.notPem), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getContext(), getString(R.string.badFileType), Toast.LENGTH_SHORT).show();
+                }
             }
+        }
+    }
+    @Nullable
+    public static String getPath(Context context, Uri uri) {
+        if ("content".equalsIgnoreCase(uri.getScheme())) {
+            return getDataColumn(context, uri, null, null);
 
         }
+        return null;
+    }
+
+    public static String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
+        Cursor cursor = null;
+        final String column = "_data";
+        final String[] projection = {column};
+        try {
+            cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                final int index = cursor.getColumnIndexOrThrow(column);
+                return cursor.getString(index);
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            } else {
+                return null;
+            }
+        }
+        return null;
     }
 }
