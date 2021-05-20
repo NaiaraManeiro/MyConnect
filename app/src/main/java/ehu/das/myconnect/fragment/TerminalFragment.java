@@ -147,5 +147,4 @@ public class TerminalFragment extends Fragment implements PasswordListener {
                 });
         WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
     }
-
 }

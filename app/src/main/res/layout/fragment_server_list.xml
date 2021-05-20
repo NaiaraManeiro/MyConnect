@@ -91,6 +91,7 @@
                     android:id="@+id/textView24"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-smallcaps"
                     android:gravity="center"
                     android:text="@string/servers"
                     android:textColor="#FFFFFF" />
