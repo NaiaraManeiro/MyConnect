@@ -41,7 +41,7 @@
     <string name="contraVacia">La contraseña no puede estar vacía</string>
     <string name="servidorVacio">El nombre del servidor no puede estar vacío.</string>
     <string name="servidorLargo">El nombre del servidor no puede tener más de 20 letras.</string>
-    <string name="hostPattern">El host tiene que tener formato \'XXX.XXX.XXX.XXX\'.</string>
+    <string name="hostPattern">El formato del host es incorrecto.</string>
     <string name="eliminar">Eliminar</string>
     <string name="edit">Editar</string>
     <string name="saveData">Guardar datos</string>

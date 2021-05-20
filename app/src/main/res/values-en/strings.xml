@@ -13,7 +13,7 @@
     <string name="contraVacia">The password can\'t be empty.</string>
     <string name="servidorVacio">The server name can\'t be empty.</string>
     <string name="servidorLargo">The server name can\'t be longer than 20 letters.</string>
-    <string name="hostPattern">The host format has to be \'XXX.XXX.XXX.XXX\'.</string>
+    <string name="hostPattern">The host format it\'s wrong.</string>
     <string name="eliminar">Delete</string>
     <string name="edit">Edit</string>
     <string name="saveData">Save data</string>
