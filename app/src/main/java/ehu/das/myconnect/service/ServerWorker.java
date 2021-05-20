@@ -69,7 +69,6 @@ public class ServerWorker extends Worker {
                     parametrosJSON.put("user", getInputData().getString("user"));
                     parametrosJSON.put("host", getInputData().getString("host"));
                     parametrosJSON.put("port", getInputData().getInt("port",22));
-                    parametrosJSON.put("password", getInputData().getString("password"));
                     parametrosJSON.put("serverName", getInputData().getString("serverName"));
                     parametrosJSON.put("userName", getInputData().getString("userName"));
                     parametrosJSON.put("keyPem", getInputData().getInt("passwordPem",0));
@@ -77,6 +76,7 @@ public class ServerWorker extends Worker {
                     parametrosJSON.put("userName", getInputData().getString("userName"));
                 } else if (action.equals("removeServer")) {
                     parametrosJSON.put("serverName", getInputData().getString("serverName"));
+                    parametrosJSON.put("userName", getInputData().getString("userName"));
                 } else if (action.equals("editServer")) {
                     parametrosJSON.put("user", getInputData().getString("user"));
                     parametrosJSON.put("host", getInputData().getString("host"));

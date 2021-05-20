@@ -19,6 +19,7 @@ import androidx.work.WorkManager;
 
 import ehu.das.myconnect.R;
 import ehu.das.myconnect.fragment.ILoading;
+import ehu.das.myconnect.fragment.LoginFragment;
 import ehu.das.myconnect.fragment.ServerListFragment;
 import ehu.das.myconnect.service.SSHWorker;
 import ehu.das.myconnect.service.ServerWorker;
@@ -64,6 +65,7 @@ public class RemoveDialog extends DialogFragment {
                     Data data = new Data.Builder()
                             .putString("action", "removeServer")
                             .putString("serverName", serverName)
+                            .putString("userName", LoginFragment.username)
                             .build();
 
                     OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(ServerWorker.class)
