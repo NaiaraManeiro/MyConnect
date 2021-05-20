@@ -48,6 +48,7 @@ public class DialogPem extends DialogFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(getResources().getString(R.string.editWithPem));
+        builder.setIcon(R.drawable.password);
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View vista = inflater.inflate(R.layout.access_pem_dialog, null);

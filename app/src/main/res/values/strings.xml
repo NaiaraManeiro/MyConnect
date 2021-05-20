@@ -109,7 +109,7 @@
     <string name="sure_delete_account">¿Seguro que quieres eliminar la cuenta?</string>
     <string name="server_connection_lost">Notificar pérdida de la conexión con el servidor</string>
     <string name="server_connect_added">El servidor debe estar accesible para poder añadirlo</string>
-    <string name="connection_lost">Connection lost</string>
+    <string name="connection_lost">Perdida de conexión</string>
     <string-array name="languages">
         <item>Spanish</item>
         <item>English</item>
@@ -141,4 +141,5 @@
     <string name="terminal" translatable="false">Terminal</string>
     <string name="conexion">¿Quiere comprobar la conexión ahora?</string>
     <string name="removeServer">Eliminar servidor</string>
+    <string name="perdidaConexion">Se ha perdido la conexión con el servidor, por favor compruebe que todo está bien.</string>
 </resources>

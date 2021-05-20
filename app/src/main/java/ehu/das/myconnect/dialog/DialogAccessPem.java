@@ -49,6 +49,7 @@ public class DialogAccessPem extends DialogFragment {
         super.onCreateDialog(savedInstanceState);
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
         alert.setTitle(getResources().getString(R.string.accessPem));
+        alert.setIcon(R.drawable.password);
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View loginServer = inflater.inflate(R.layout.access_pem_dialog, null);
 
