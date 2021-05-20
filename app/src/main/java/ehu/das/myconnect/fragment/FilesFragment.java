@@ -29,6 +29,7 @@ import java.util.List;
 
 import ehu.das.myconnect.R;
 import ehu.das.myconnect.dialog.ActionsFolderFileDialog;
+import ehu.das.myconnect.dialog.ConnectionLostDialog;
 import ehu.das.myconnect.dialog.LoadingDialog;
 import ehu.das.myconnect.dialog.OnClickRecycleView;
 import ehu.das.myconnect.dialog.CreateFolderFileDialog;
@@ -193,7 +194,6 @@ public class FilesFragment extends Fragment implements OnClickRecycleView, OnDia
         String completePath = newPath + "/"+ name;
         if (fileType.equals("folder")) {
             startLoading();
-
             path = completePath;
             pathText.setText(completePath);
             Data data = new Data.Builder()
@@ -246,9 +246,12 @@ public class FilesFragment extends Fragment implements OnClickRecycleView, OnDia
                     if (status != null && status.getState().isFinished()) {
                         String result = status.getOutputData().getString("result");
                         if (result.equals("authFail")) {
-                            Toast.makeText(getContext(), getString(R.string.connectRefused), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(), getString(R.string.authFail), Toast.LENGTH_LONG).show();
                         } else if (result.equals("failConnect")) {
-                            Toast.makeText(getContext(), getString(R.string.sshFailConnect), Toast.LENGTH_LONG).show();
+                            ConnectionLostDialog connectionLostDialog = new ConnectionLostDialog();
+                            connectionLostDialog.show(getActivity().getSupportFragmentManager(), "lost");
+                        } else if (result.equals("hostUnreachable")) {
+                            Toast.makeText(getContext(), getString(R.string.hostUnreachable), Toast.LENGTH_LONG).show();
                         } else {
                             fileTypes = new ArrayList<>();
                             fileNames = new ArrayList<>();
@@ -293,9 +296,12 @@ public class FilesFragment extends Fragment implements OnClickRecycleView, OnDia
                     if (status != null && status.getState().isFinished()) {
                         String result = status.getOutputData().getString("result");
                         if (result.equals("authFail")) {
-                            Toast.makeText(getContext(), getString(R.string.connectRefused), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(), getString(R.string.authFail), Toast.LENGTH_LONG).show();
                         } else if (result.equals("failConnect")) {
-                            Toast.makeText(getContext(), getString(R.string.sshFailConnect), Toast.LENGTH_LONG).show();
+                            ConnectionLostDialog connectionLostDialog = new ConnectionLostDialog();
+                            connectionLostDialog.show(getActivity().getSupportFragmentManager(), "lost");
+                        } else if (result.equals("hostUnreachable")) {
+                            Toast.makeText(getContext(), getString(R.string.hostUnreachable), Toast.LENGTH_LONG).show();
                         } else {
                             String[] lines = result.split(",");
                             TextView pathText = getActivity().findViewById(R.id.path);

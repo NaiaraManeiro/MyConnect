@@ -37,6 +37,7 @@ import java.io.File;
 import java.util.Arrays;
 
 import ehu.das.myconnect.R;
+import ehu.das.myconnect.dialog.ConnectionLostDialog;
 import ehu.das.myconnect.dialog.LoadingDialog;
 import ehu.das.myconnect.dialog.RemoveDialog;
 import ehu.das.myconnect.service.SSHWorker;
@@ -115,9 +116,8 @@ public class FileInfoFragment extends Fragment implements ILoading{
                             if (result.equals("authFail")) {
                                 Toast.makeText(getContext(), getString(R.string.connectRefused), Toast.LENGTH_LONG).show();
                             } else if (result.equals("failConnect")) {
-                                Toast.makeText(getContext(), getString(R.string.sshFailConnect), Toast.LENGTH_LONG).show();
-                            } else if (result.equals("hostUnreachable")) {
-                                Toast.makeText(getContext(), getString(R.string.hostUnreachable), Toast.LENGTH_LONG).show();
+                                ConnectionLostDialog connectionLostDialog = new ConnectionLostDialog();
+                                connectionLostDialog.show(getActivity().getSupportFragmentManager(), "lost");                            } else if (result.equals("hostUnreachable")) {
                             } else {
                                 String[] lines = result.split(",");
                                 if (lines[0].equals("error")) {
@@ -166,7 +166,8 @@ public class FileInfoFragment extends Fragment implements ILoading{
                                 if (result.equals("authFail")) {
                                     Toast.makeText(getContext(), getString(R.string.connectRefused), Toast.LENGTH_LONG).show();
                                 } else if (result.equals("failConnect")) {
-                                    Toast.makeText(getContext(), getString(R.string.sshFailConnect), Toast.LENGTH_LONG).show();
+                                    ConnectionLostDialog connectionLostDialog = new ConnectionLostDialog();
+                                    connectionLostDialog.show(getActivity().getSupportFragmentManager(), "lost");
                                 } else if (result.equals("hostUnreachable")) {
                                     Toast.makeText(getContext(), getString(R.string.hostUnreachable), Toast.LENGTH_LONG).show();
                                 } else {
