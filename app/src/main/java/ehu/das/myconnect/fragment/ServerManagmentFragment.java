@@ -5,6 +5,7 @@ import android.graphics.ColorFilter;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -59,8 +60,8 @@ public class ServerManagmentFragment extends Fragment implements OnDialogOptionP
         ImageButton configButton = getActivity().findViewById(R.id.disconnectServer);
         configButton.setColorFilter(Color.WHITE);
         RecyclerView serverListRV = getActivity().findViewById(R.id.serverListRV);*/
-        ImageButton conf = getActivity().findViewById(R.id.configButton);
-        conf.setColorFilter(Color.WHITE);
+        ActionMenuItemView conf = getActivity().findViewById(R.id.configButton);
+        // conf.setColorFilter(Color.WHITE);
         conf.setOnClickListener(v -> {
             Navigation.findNavController(v).navigate(R.id.action_serverManagmentFragment_to_preferences);
         });
@@ -76,8 +77,8 @@ public class ServerManagmentFragment extends Fragment implements OnDialogOptionP
         serverList.add(new Server("das4"));
         serverList.add(new Server("das5"));
         */
-        ImageButton iv = getActivity().findViewById(R.id.disconnectServer);
-        iv.setColorFilter(Color.WHITE);
+        ActionMenuItemView iv = getActivity().findViewById(R.id.disconnectServer);
+        // iv.setColorFilter(Color.WHITE);
         iv.setOnClickListener(v -> {
             ServerListFragment.selectedServer = null;
             Navigation.findNavController(getView()).navigate(R.id.action_serverManagmentFragment_to_serverListFragment);
@@ -106,6 +107,7 @@ public class ServerManagmentFragment extends Fragment implements OnDialogOptionP
         DialogoAccessPassword d = new DialogoAccessPassword();
         d.scriptAddListener = this;
         d.recreate = true;
+        d.serverManagmentFragment = this;
         d.loadingListener = this;
         d.position = position;
         d.show(getActivity().getSupportFragmentManager(),"");
