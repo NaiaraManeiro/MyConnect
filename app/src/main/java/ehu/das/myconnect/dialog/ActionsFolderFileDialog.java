@@ -55,7 +55,7 @@ public class ActionsFolderFileDialog extends DialogFragment {
             fileType = bundle.getString("fileType");
         }
 
-        ImageView typeFile = getActivity().findViewById(R.id.fileTypeImagen);
+        ImageView typeFile = actionsLayout.findViewById(R.id.fileTypeImagen);
 
         if (fileType.equals("folder")) {
             typeFile.setBackgroundResource(R.drawable.folder);
@@ -167,7 +167,7 @@ public class ActionsFolderFileDialog extends DialogFragment {
             }
         });
 
-        alertDialog.setNegativeButton(getString(R.string.back), new DialogInterface.OnClickListener() {
+        alertDialog.setNegativeButton(getString(R.string.volver), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dismiss();

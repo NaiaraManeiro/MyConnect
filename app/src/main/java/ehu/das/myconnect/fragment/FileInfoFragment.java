@@ -192,7 +192,7 @@ public class FileInfoFragment extends Fragment implements ILoading{
     //Creación del menú
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu, menu);
+        inflater.inflate(R.menu.file_info_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 

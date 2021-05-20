@@ -98,7 +98,7 @@ public class CreateFolderFileDialog extends DialogFragment {
             }
         });
 
-        builder.setNegativeButton(getString(R.string.back), new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getString(R.string.volver), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dismiss();
