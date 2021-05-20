@@ -39,45 +39,102 @@
                     android:layout_marginTop="80dp"
                     android:text="@string/serverInfo" />
 
-                <EditText
-                    android:id="@+id/usuarioInfo"
-                    style="@style/EditText"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
-                    android:hint='@string/usuario'
-                    android:inputType="textPersonName"
-                    android:theme="@style/EditTextColor" />
+                    android:layout_marginTop="30dp"
+                    android:orientation="horizontal">
 
-                <EditText
-                    android:id="@+id/hostInfo"
-                    style="@style/EditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="40dp"
-                    android:hint="@string/host"
-                    android:inputType="textPersonName"
-                    android:theme="@style/EditTextColor" />
+                    <ImageView
+                        android:id="@+id/imageView9"
+                        android:layout_width="114dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:src="@drawable/user" />
 
-                <EditText
-                    android:id="@+id/puertoInfo"
-                    style="@style/EditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="40dp"
-                    android:hint="@string/puerto"
-                    android:inputType="number"
-                    android:theme="@style/EditTextColor" />
+                    <EditText
+                        android:id="@+id/usuarioInfo"
+                        style="@style/EditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint='@string/usuario'
+                        android:inputType="textPersonName"
+                        android:theme="@style/EditTextColor" />
+                </LinearLayout>
 
-                <EditText
-                    android:id="@+id/nombreServidorInfo"
-                    style="@style/EditText"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="40dp"
-                    android:hint="@string/nombreServidor"
-                    android:inputType="textPersonName"
-                    android:theme="@style/EditTextColor" />
+                    android:layout_marginTop="25dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/imageView12"
+                        android:layout_width="114dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:src="@drawable/host" />
+
+                    <EditText
+                        android:id="@+id/hostInfo"
+                        style="@style/EditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="@string/host"
+                        android:inputType="textPersonName"
+                        android:theme="@style/EditTextColor" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/imageView13"
+                        android:layout_width="114dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:src="@drawable/port" />
+
+                    <EditText
+                        android:id="@+id/puertoInfo"
+                        style="@style/EditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="@string/puerto"
+                        android:inputType="number"
+                        android:text="@string/port22"
+                        android:theme="@style/EditTextColor" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/imageView11"
+                        android:layout_width="114dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:src="@drawable/server" />
+
+                    <EditText
+                        android:id="@+id/nombreServidorInfo"
+                        style="@style/EditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="@string/nombreServidor"
+                        android:inputType="textPersonName"
+                        android:theme="@style/EditTextColor" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout

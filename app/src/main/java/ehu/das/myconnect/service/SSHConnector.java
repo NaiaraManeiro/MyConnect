@@ -21,10 +21,6 @@ import java.io.InputStreamReader;
 public class SSHConnector {
 
     /**
-     * Constante que representa un enter.
-     */
-    private static final String ENTER_KEY = ",";
-    /**
      * Sesión SSH establecida.
      */
     private Session session;
@@ -95,7 +91,6 @@ public class SSHConnector {
     public final String[] executeCommand(String command, String sftpAction)
             throws IllegalAccessException, JSchException, IOException {
         if (this.session != null && this.session.isConnected()) {
-            // Naiara
             if (sftpAction.equals("upload") || sftpAction.equals("download")) {
                 Channel channel = session.openChannel("sftp");
                 channel.connect();
@@ -117,33 +112,6 @@ public class SSHConnector {
 
                 return new String[]{"",""};
             } else {
-                /** // Abrimos un canal SSH. Es como abrir una consola.
-                 ChannelExec channelExec = (ChannelExec) this.session.
-                 openChannel("exec");
-
-                 InputStream in = channelExec.getInputStream();
-
-                 // Ejecutamos el comando.
-
-                 channelExec.setCommand(command);
-                 channelExec.connect();
-
-                 // Obtenemos el texto impreso en la consola.
-                 BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-                 StringBuilder builder = new StringBuilder();
-                 String linea;
-
-                 while ((linea = reader.readLine()) != null) {
-                 builder.append(linea);
-                 builder.append(ENTER_KEY);
-                 }
-
-                 // Cerramos el canal SSH.
-                 channelExec.disconnect();
-
-                 // Retornamos el texto impreso en la consola.
-                 return builder.toString();*/
-                // Ander
                 // Abrimos un canal SSH. Es como abrir una consola.
                 ChannelExec channelExec = (ChannelExec) this.session.
                         openChannel("exec");
@@ -187,13 +155,4 @@ public class SSHConnector {
                 throw new IllegalAccessException("No existe sesion SSH iniciada.");
             }
     }
-
-    /**
-     * Cierra la sesión SSH.
-     */
-    public final void disconnect() {
-        this.session.disconnect();
-    }
-
-
 }

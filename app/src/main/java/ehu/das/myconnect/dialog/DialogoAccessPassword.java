@@ -71,6 +71,7 @@ public class DialogoAccessPassword extends DialogFragment {
                 WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(otwr.getId())
                         .observe(getActivity(), status -> {
                             if (status != null && status.getState().isFinished()) {
+                                loadingListener.stopLoading();
                                 if (!status.getOutputData().getString("result").equals("")) {
                                     ServerListFragment.connection = null;
                                     scriptAddListener.onYesPressed("fail","");
@@ -87,7 +88,6 @@ public class DialogoAccessPassword extends DialogFragment {
                                         serverManagmentFragment.recreateFragment();
                                     }
                                 }
-                                loadingListener.stopLoading();
                             }
                         });
                 WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
