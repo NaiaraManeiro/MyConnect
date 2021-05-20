@@ -123,6 +123,9 @@ public class AddServerFragment extends Fragment {
                     Toast.makeText(getContext(), getString(R.string.servidorVacio), Toast.LENGTH_SHORT).show();
                 } else if (server.length() > 20) {
                     Toast.makeText(getContext(), getString(R.string.servidorLargo), Toast.LENGTH_SHORT).show();
+                    portBox.setText("");
+                } else if (port > 65535) {
+                    Toast.makeText(getContext(), getString(R.string.invalidPort), Toast.LENGTH_SHORT).show();
                 } else {
                     boolean keyPem = keyPemSwitch.isChecked();
 

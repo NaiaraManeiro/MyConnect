@@ -148,4 +148,5 @@
     <string name="authFail">Autenticación fallida.</string>
     <string name="noPassword">¡Qué no se te olvide añadir la contraseña o el .pem!</string>
     <string name="changeName">Cambiar nombre</string>
+    <string name="invalidPort">El valor máximo aceptado es 65535.</string>
 </resources>

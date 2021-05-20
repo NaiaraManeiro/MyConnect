@@ -123,4 +123,5 @@
     <string name="authFail">Failed authentication.</string>
     <string name="noPassword">Don\'t forget to add the password o the .pem file!</string>
     <string name="changeName">Change name</string>
+    <string name="invalidPort">The maximun value accepted is 65535.</string>
 </resources>

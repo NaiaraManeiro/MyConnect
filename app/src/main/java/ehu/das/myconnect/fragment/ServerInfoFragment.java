@@ -110,6 +110,9 @@ public class ServerInfoFragment extends Fragment implements OnDialogDismiss<Stri
                     Toast.makeText(getContext(), getString(R.string.servidorVacio), Toast.LENGTH_SHORT).show();
                 } else if (name.length() > 20) {
                     Toast.makeText(getContext(), getString(R.string.servidorLargo), Toast.LENGTH_SHORT).show();
+                } else if (port > 65535) {
+                    Toast.makeText(getContext(), getString(R.string.invalidPort), Toast.LENGTH_SHORT).show();
+                    serverPortBox.setText("");
                 } else {
                     boolean checked = conexion.isChecked();
 
