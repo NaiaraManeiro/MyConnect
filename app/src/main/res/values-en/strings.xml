@@ -118,7 +118,7 @@
     <string name="conexion">Do you want to check the conexion now?</string>
     <string name="removeServer">Remove server</string>
     <string name="connection_lost">Connection lost</string>
-    <string name="perdidaConexion">The connection with the server has been lost, please chech that everything is okey.</string>
+    <string name="perdidaConexion">The internet connection has been lost, please check that everything is okey.</string>
     <string name="hostUnreachable">The host is unreachable, check if the data is okey.</string>
     <string name="authFail">Failed authentication.</string>
     <string name="noPassword">Don\'t forget to add the password o the .pem file!</string>
