@@ -14,6 +14,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
             android:orientation="vertical"
             android:paddingLeft="25dp"
             android:paddingTop="30dp"
@@ -85,7 +86,7 @@
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/nestedScroll"
                 android:layout_width="match_parent"
-                android:layout_height="440dp"
+                android:layout_height="match_parent"
                 android:fillViewport="true">
 
                 <LinearLayout
@@ -99,8 +100,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/border"
-                        android:paddingLeft="5dp"
-                        android:paddingRight="5dp"
+                        android:padding="5dp"
                         android:scrollbarAlwaysDrawHorizontalTrack="true"
                         android:scrollbars="horizontal|vertical"
                         android:scrollHorizontally="true"
