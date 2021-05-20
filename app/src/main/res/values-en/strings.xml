@@ -114,4 +114,5 @@
     <string name="editWithPassword">Edit with password</string>
     <string name="editWithPem">Edit with a .pem file</string>
     <string name="file">Files</string>
+    <string name="conexion">Do you want to check the conexion now?</string>
 </resources>

@@ -3,6 +3,7 @@ package ehu.das.myconnect.fragment;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.preference.PreferenceManager;
 import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
@@ -18,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
@@ -36,6 +39,7 @@ public class AddServerFragment extends Fragment {
     private final int PICKFILE_RESULT_CODE = 12;
     private String key;
     private int passwordPem = 0;
+    private boolean conexionCheck = false;
     public LoadingDialog loadingDialog;
 
     public AddServerFragment() {}
@@ -55,6 +59,14 @@ public class AddServerFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        CheckBox conexion = getActivity().findViewById(R.id.checkBox);
+        conexion.setText(getString(R.string.conexion));
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        if (prefs.getBoolean("server_connnect", true)) {
+            conexion.setChecked(true);
+        }
 
         EditText passwordBox = getActivity().findViewById(R.id.contrasena);
         keyPemSwitch = getActivity().findViewById(R.id.keyPem);
@@ -123,6 +135,12 @@ public class AddServerFragment extends Fragment {
                         passwordPem = 1;
                     }
 
+                    boolean checked = conexion.isChecked();
+
+                    if (checked) {
+                        conexionCheck = true;
+                    }
+
                     //Añadimos los datos a la bd en caso de que se pueda realizar el ssh
                     Data data = new Data.Builder()
                             .putString("action", "addServer")
@@ -134,6 +152,7 @@ public class AddServerFragment extends Fragment {
                             .putString("userName", LoginFragment.username)
                             .putBoolean("keyPem", keyPem)
                             .putInt("passwordPem", passwordPem)
+                            .putBoolean("conexion", conexionCheck)
                             .build();
 
                     OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(ServerWorker.class)

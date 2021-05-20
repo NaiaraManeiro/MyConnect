@@ -139,4 +139,5 @@
     <string name="keyPem" translatable="false">Key .pem</string>
     <string name="email" translatable="false">Email</string>
     <string name="terminal" translatable="false">Terminal</string>
+    <string name="conexion">¿Quiere comprobar la conexión ahora?</string>
 </resources>

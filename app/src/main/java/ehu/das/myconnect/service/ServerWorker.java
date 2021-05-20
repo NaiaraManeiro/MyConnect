@@ -49,7 +49,9 @@ public class ServerWorker extends Worker {
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoOutput(true);
 
-            if (action.equals("addServer") || action.equals("editServer")) {
+            boolean conexion = getInputData().getBoolean("conexion", false);
+
+            if ((action.equals("addServer") && conexion) || action.equals("editServer")) {
                 SSHConnector sshConnector = new SSHConnector();
                 try {
                     exception = sshConnector.connect(getInputData().getString("user"), getInputData().getString("password"), getInputData().getString("host"), getInputData().getInt("port",22), getInputData().getBoolean("keyPem", false));
