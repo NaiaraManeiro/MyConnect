@@ -115,6 +115,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_weight="1"
+                    android:fontFamily="@font/gentium_book_basic"
                     android:hint="@string/username"
                     android:inputType="textPersonName"
                     android:theme="@style/EditTextColor" />
