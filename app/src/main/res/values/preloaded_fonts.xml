@@ -7,5 +7,8 @@
         <item>@font/gentium_book_basic</item>
         <item>@font/kelly_slab</item>
         <item>@font/neuton</item>
+        <item>@font/overlock</item>
+        <item>@font/rosarivo</item>
+        <item>@font/share_tech</item>
     </array>
 </resources>
