@@ -122,4 +122,5 @@
     <string name="hostUnreachable">The host is unreachable, check if the data is okey.</string>
     <string name="authFail">Failed authentication.</string>
     <string name="noPassword">Don\'t forget to add the password o the .pem file!</string>
+    <string name="changeName">Change name</string>
 </resources>

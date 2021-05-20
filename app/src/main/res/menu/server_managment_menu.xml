@@ -9,7 +9,7 @@ android:title="@string/disconnect"
 app:showAsAction="ifRoom|withText" />
 <item
 android:id="@+id/configButton"
-android:icon="@drawable/settings"
+android:icon="@drawable/settings2"
 android:title="@string/settings"
 app:showAsAction="ifRoom|withText" />
 </menu>

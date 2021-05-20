@@ -55,7 +55,7 @@ public class TerminalFragment extends Fragment implements PasswordListener {
         }
 
         TextView textView = getActivity().findViewById(R.id.userHost);
-        textView.setText(ServerListFragment.selectedServer.getUser() + "@" + ServerListFragment.selectedServer.getHost());
+        textView.setText(ServerListFragment.selectedServer.getUser() + "@" + ServerListFragment.selectedServer.getHost() + ":");
         TextView terminalPath = getActivity().findViewById(R.id.terminalPath);
         terminalPath.setText("/home/"+ ServerListFragment.selectedServer.getUser());
         EditText cmdInput = getActivity().findViewById(R.id.cmdInput);

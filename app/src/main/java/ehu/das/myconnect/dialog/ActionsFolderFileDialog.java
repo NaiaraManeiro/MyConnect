@@ -90,16 +90,16 @@ public class ActionsFolderFileDialog extends DialogFragment {
                 if (name.equals("Eliminar") || name.equals("Delete")) {
                     action.setText(R.string.eliminar);
                     pathToAction.setEnabled(false);
-                } else if (name.equals("Editar") || name.equals("Edit")) {
+                } else if (name.contains("Cambiar") || name.contains("Change")) {
                     action.setText(R.string.edit);
                     pathToAction.setEnabled(false);
                     nameFileFolder.setEnabled(true);
-                } else if (name.equals("Mover") || name.equals("Move")) {
+                } else if (name.contains("Mover") || name.contains("Move")) {
                     action.setText(R.string.move);
                     pathToAction.setHint(R.string.moveTo);
                     pathToAction.setEnabled(true);
                     nameFileFolder.setEnabled(false);
-                } else if (name.equals("Copiar") || name.equals("Copy")) {
+                } else if (name.contains("Copiar") || name.contains("Copy")) {
                     action.setText(R.string.copy);
                     pathToAction.setHint(R.string.copyTo);
                     pathToAction.setEnabled(true);

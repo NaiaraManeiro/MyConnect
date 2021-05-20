@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,7 +13,7 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="50">
 
             <LinearLayout
@@ -45,11 +44,9 @@
 
                 <ImageView
                     android:id="@+id/back"
-                    android:layout_width="40dp"
-                    android:layout_height="30dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_width="35dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="20dp"
                     android:src="@drawable/back" />
 
                 <LinearLayout
@@ -59,22 +56,18 @@
 
                     <ImageView
                         android:id="@+id/addImage"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_marginStart="230dp"
+                        style="@style/icon"
+                        android:layout_width="35dp"
+                        android:layout_height="40dp"
                         android:layout_marginLeft="230dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginRight="16dp"
                         android:src="@drawable/add" />
 
                     <ImageView
                         android:id="@+id/uploadFile"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginRight="16dp"
+                        android:layout_width="35dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
                         android:src="@drawable/arrowup" />
                 </LinearLayout>
 
@@ -92,8 +85,9 @@
                     style="@style/Texto"
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
                     android:background="@drawable/border"
-                    android:paddingLeft="4dp"
+                    android:paddingLeft="5dp"
                     android:text="@string/path" />
 
                 <EditText
@@ -103,15 +97,13 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/up_down_right_border"
                     android:maxLines="1"
-                    android:paddingLeft="4dp"
+                    android:paddingLeft="5dp"
                     android:scrollHorizontally="true" />
 
                 <ImageView
                     android:id="@+id/go"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:rotationY="180"
-                    android:src="@drawable/back" />
+                    style="@style/icon"
+                    android:src="@drawable/go" />
             </LinearLayout>
         </LinearLayout>
 

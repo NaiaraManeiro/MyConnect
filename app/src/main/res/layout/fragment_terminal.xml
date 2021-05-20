@@ -98,7 +98,6 @@
                         style="@style/Texto"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="5dp"
                         android:background="@drawable/border"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
