@@ -33,15 +33,13 @@
 
             <TextView
                 android:id="@+id/textView4"
-                style="@style/Texto"
-                android:layout_width="120dp"
+                android:layout_width="110dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/server_list_user" />
 
             <TextView
                 android:id="@+id/servidorUsuario"
-                style="@style/Texto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -58,11 +56,10 @@
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/host" />
+                android:text="@string/server_list_host" />
 
             <TextView
                 android:id="@+id/servidorHost"
-                style="@style/Texto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
