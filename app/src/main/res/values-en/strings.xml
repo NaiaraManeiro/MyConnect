@@ -124,4 +124,9 @@
     <string name="noPassword">Don\'t forget to add the password o the .pem file!</string>
     <string name="changeName">Change name</string>
     <string name="invalidPort">The maximun value accepted is 65535.</string>
+    <string name="exit">Exit</string>
+    <string name="scriptNameInvalidLong">Script name has to be shorter than 255 characters</string>
+    <string name="scriptNameInsert">Insert a script name</string>
+    <string name="scriptCmdInsert">Insert a command</string>
+    <string name="insertUsername">Insert a username</string>
 </resources>

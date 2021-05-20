@@ -93,7 +93,7 @@ public class TerminalFragment extends Fragment implements PasswordListener {
     public void execCmd(String cmd) {
         Button runButton = getActivity().findViewById(R.id.runCmdButton);
         TextView terminalPath = getActivity().findViewById(R.id.terminalPath);
-        String path = terminalPath.getText().toString().substring(1);
+        String path = terminalPath.getText().toString();
         if (cmd.contains("ls")) {
             cmd = cmd.replace("ls", "ls " + path);
         }

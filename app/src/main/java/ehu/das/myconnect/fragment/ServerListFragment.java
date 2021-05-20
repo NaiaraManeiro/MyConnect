@@ -183,6 +183,12 @@ public class ServerListFragment extends Fragment implements OnDialogOptionPresse
     public void onNoPressed(String data) {
 
     }
+
+    @Override
+    public void notifyError(String string) {
+
+    }
+
     public void startLoading() {
         loadingDialog = new LoadingDialog();
         loadingDialog.setCancelable(false);

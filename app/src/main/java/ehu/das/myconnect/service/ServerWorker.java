@@ -100,15 +100,18 @@ public class ServerWorker extends Worker {
                     parametrosJSON.put("email", getInputData().getString("email"));
                 } else if (action.equals("scripts")) {
                     parametrosJSON.put("user", getInputData().getString("user"));
+                    parametrosJSON.put("server", getInputData().getString("serverName"));
                 } else if (action.equals("addScript")) {
                     parametrosJSON.put("user", getInputData().getString("user"));
                     parametrosJSON.put("name", getInputData().getString("name"));
                     parametrosJSON.put("cmd", getInputData().getString("cmd"));
+                    parametrosJSON.put("server", getInputData().getString("serverName"));
                 } else if (action.equals("deleteScript")) {
                     Log.i("script", "elimino");
                     parametrosJSON.put("user", getInputData().getString("user"));
                     parametrosJSON.put("name", getInputData().getString("name"));
                     parametrosJSON.put("cmd", getInputData().getString("cmd"));
+                    parametrosJSON.put("server", getInputData().getString("serverName"));
                 } else if (action.equals("deleteUser")) {
                     parametrosJSON.put("user", getInputData().getString("user"));
                 }

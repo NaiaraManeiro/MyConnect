@@ -78,6 +78,11 @@ public class ServerManagmentFragment extends Fragment implements OnDialogOptionP
     @Override
     public void onNoPressed(String data) {}
 
+    @Override
+    public void notifyError(String string) {
+
+    }
+
     public void changeServer(int position) {
         Server server = ServerListFragment.serverList.get(position);
          if (server.getPem() == 0) {

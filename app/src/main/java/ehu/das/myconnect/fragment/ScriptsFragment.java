@@ -74,6 +74,7 @@ public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<S
                 .putString("action", "scripts")
                 .putString("script", "scripts.php")
                 .putString("user", LoginFragment.username)
+                .putString("serverName", ServerListFragment.selectedServer.getName())
                 .build();
         OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(ServerWorker.class)
                 .setInputData(data)
@@ -180,6 +181,7 @@ public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<S
                 .putString("action", "addScript")
                 .putString("script", "add_script.php")
                 .putString("user", LoginFragment.username)
+                .putString("serverName", ServerListFragment.selectedServer.getName())
                 .putString("name", data1)
                 .putString("cmd", data2)
                 .build();
@@ -190,6 +192,7 @@ public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<S
                 .observe(getActivity(), status -> {
                     if (status != null && status.getState().isFinished()) {
                         String result = status.getOutputData().getString("result");
+                        Log.i("scripts", "add " + result);
                         if (result.equals("0")) {
                             scriptNames.add(data1);
                             scriptCmds.add(data2);
@@ -208,6 +211,11 @@ public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<S
     @Override
     public void onNoPressed(String data) {
 
+    }
+
+    @Override
+    public void notifyError(String string) {
+        Toast.makeText(getContext(), string, Toast.LENGTH_SHORT).show();
     }
 
     public void executeScript(String cmd, String scriptName) {
@@ -285,6 +293,7 @@ public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<S
         Data data = new Data.Builder()
                 .putString("action", "deleteScript")
                 .putString("script", "delete_script.php")
+                .putString("serverName", ServerListFragment.selectedServer.getName())
                 .putString("user", LoginFragment.username)
                 .putString("name", name)
                 .putString("cmd", cmd)

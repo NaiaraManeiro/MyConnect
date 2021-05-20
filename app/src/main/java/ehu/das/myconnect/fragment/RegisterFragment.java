@@ -84,21 +84,21 @@ public class RegisterFragment extends Fragment {
         conf.setOnClickListener(v -> {
             Navigation.findNavController(v).navigate(R.id.action_serverListFragment_to_preferences);
         });
-        loadingDialog.show(getActivity().getSupportFragmentManager(), "loading");
         EditText userField = getActivity().findViewById(R.id.registerUser);
         EditText emailField = getActivity().findViewById(R.id.registerEmail);
         EditText passwordField = getActivity().findViewById(R.id.registerPassword);
         EditText repeatPasswordField = getActivity().findViewById(R.id.registerRepeatPassword);
         if (userField.getText().toString().trim().equals("")) {
-            Toast.makeText(getContext(), "Insert a username", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getResources().getString(R.string.insertUsername), Toast.LENGTH_SHORT).show();
         }
-        if (!emailField.getText().toString().contains("@") || !(emailField.getText().toString().length() > 0) || !emailField.getText().toString().contains(".")) {
+        else if (!emailField.getText().toString().contains("@") || !(emailField.getText().toString().length() > 0) || !emailField.getText().toString().contains(".")) {
             Toast.makeText(getContext(), getResources().getString(R.string.email_validity), Toast.LENGTH_SHORT).show();
         } else if (passwordField.getText().toString().length() < 8) {
             Toast.makeText(getContext(), getResources().getString(R.string.password_validity), Toast.LENGTH_SHORT).show();
         } else if (!passwordField.getText().toString().equals(repeatPasswordField.getText().toString())) {
             Toast.makeText(getContext(), getResources().getString(R.string.password_dont_match), Toast.LENGTH_SHORT).show();
         } else {
+            loadingDialog.show(getActivity().getSupportFragmentManager(), "loading");
             Data data = new Data.Builder()
                     .putString("action", "register")
                     .putString("script", "register.php")
