@@ -60,10 +60,12 @@ public class ServerWorker extends Worker {
                 }
             }
 
-            if (exception.contains("Auth fail")) {
+            if (exception.toLowerCase().contains("auth fail")) {
                 result = "authFail";
-            } else if (exception.contains("failed to")) {
+            } else if (exception.contains("failed to connect")) {
                 result = "failConnect";
+            } else if (exception.contains("Host unreachable")) {
+                result = "hostUnreachable";
             } else {
                 JSONObject parametrosJSON = new JSONObject();
                 parametrosJSON.put("action", action);

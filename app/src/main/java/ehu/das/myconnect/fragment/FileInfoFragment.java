@@ -9,11 +9,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -37,7 +34,6 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 
 import ehu.das.myconnect.R;
@@ -117,9 +113,11 @@ public class FileInfoFragment extends Fragment implements ILoading{
                             String result = status.getOutputData().getString("result");
                             stopLoading();
                             if (result.equals("authFail")) {
-                                Toast.makeText(getContext(), getString(R.string.authFail), Toast.LENGTH_LONG).show();
+                                Toast.makeText(getContext(), getString(R.string.connectRefused), Toast.LENGTH_LONG).show();
                             } else if (result.equals("failConnect")) {
                                 Toast.makeText(getContext(), getString(R.string.sshFailConnect), Toast.LENGTH_LONG).show();
+                            } else if (result.equals("hostUnreachable")) {
+                                Toast.makeText(getContext(), getString(R.string.hostUnreachable), Toast.LENGTH_LONG).show();
                             } else {
                                 String[] lines = result.split(",");
                                 if (lines[0].equals("error")) {
@@ -166,9 +164,11 @@ public class FileInfoFragment extends Fragment implements ILoading{
                                 String result = status.getOutputData().getString("result");
                                 stopLoading();
                                 if (result.equals("authFail")) {
-                                    Toast.makeText(getContext(), getString(R.string.authFail), Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getContext(), getString(R.string.connectRefused), Toast.LENGTH_LONG).show();
                                 } else if (result.equals("failConnect")) {
                                     Toast.makeText(getContext(), getString(R.string.sshFailConnect), Toast.LENGTH_LONG).show();
+                                } else if (result.equals("hostUnreachable")) {
+                                    Toast.makeText(getContext(), getString(R.string.hostUnreachable), Toast.LENGTH_LONG).show();
                                 } else {
                                     Toast.makeText(getContext(), getString(R.string.fileUpdated), Toast.LENGTH_SHORT).show();
                                 }

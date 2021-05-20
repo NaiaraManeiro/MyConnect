@@ -36,7 +36,7 @@
     <string name="servidorCreado">¡Servidor creado!</string>
     <string name="path" translatable="false">Path</string>
     <string name="file">Archivos</string>
-    <string name="authFail">Error de autenticación, compruebe los datos.</string>
+    <string name="connectRefused">Conexión rechazada, compruebe la conexión del servidor.</string>
     <string name="usuarioVacio">El usuario no puede estar vacío.</string>
     <string name="contraVacia">La contraseña no puede estar vacía</string>
     <string name="servidorVacio">El nombre del servidor no puede estar vacío.</string>
@@ -142,4 +142,7 @@
     <string name="conexion">¿Quiere comprobar la conexión ahora?</string>
     <string name="removeServer">Eliminar servidor</string>
     <string name="perdidaConexion">Se ha perdido la conexión con el servidor, por favor compruebe que todo está bien.</string>
+    <string name="hostUnreachable">El host es inalcanzable, compruebe si es el correcto.</string>
+    <string name="authFail">Autenticación fallida.</string>
+    <string name="noPassword">¡Qué no se te olvide añadir la contraseña o el .pem!</string>
 </resources>

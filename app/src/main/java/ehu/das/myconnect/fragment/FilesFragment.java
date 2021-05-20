@@ -1,16 +1,13 @@
 package ehu.das.myconnect.fragment;
 
 import android.app.Activity;
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -19,9 +16,6 @@ import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
-import android.os.Environment;
-import android.provider.DocumentsContract;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,14 +24,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -260,7 +246,7 @@ public class FilesFragment extends Fragment implements OnClickRecycleView, OnDia
                     if (status != null && status.getState().isFinished()) {
                         String result = status.getOutputData().getString("result");
                         if (result.equals("authFail")) {
-                            Toast.makeText(getContext(), getString(R.string.authFail), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(), getString(R.string.connectRefused), Toast.LENGTH_LONG).show();
                         } else if (result.equals("failConnect")) {
                             Toast.makeText(getContext(), getString(R.string.sshFailConnect), Toast.LENGTH_LONG).show();
                         } else {
@@ -307,7 +293,7 @@ public class FilesFragment extends Fragment implements OnClickRecycleView, OnDia
                     if (status != null && status.getState().isFinished()) {
                         String result = status.getOutputData().getString("result");
                         if (result.equals("authFail")) {
-                            Toast.makeText(getContext(), getString(R.string.authFail), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(), getString(R.string.connectRefused), Toast.LENGTH_LONG).show();
                         } else if (result.equals("failConnect")) {
                             Toast.makeText(getContext(), getString(R.string.sshFailConnect), Toast.LENGTH_LONG).show();
                         } else {

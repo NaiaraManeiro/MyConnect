@@ -124,10 +124,6 @@ public class AddServerFragment extends Fragment {
                 } else if (server.length() > 20) {
                     Toast.makeText(getContext(), getString(R.string.servidorLargo), Toast.LENGTH_SHORT).show();
                 } else {
-                    loadingDialog = new LoadingDialog();
-                    loadingDialog.setCancelable(false);
-                    loadingDialog.show(getActivity().getSupportFragmentManager(), "loading");
-
                     boolean keyPem = keyPemSwitch.isChecked();
 
                     if (keyPem) {
@@ -141,42 +137,52 @@ public class AddServerFragment extends Fragment {
                         conexionCheck = true;
                     }
 
-                    //Añadimos los datos a la bd en caso de que se pueda realizar el ssh
-                    Data data = new Data.Builder()
-                            .putString("action", "addServer")
-                            .putString("user", user)
-                            .putString("host", host)
-                            .putString("password", password)
-                            .putInt("port", port)
-                            .putString("serverName", server)
-                            .putString("userName", LoginFragment.username)
-                            .putBoolean("keyPem", keyPem)
-                            .putInt("passwordPem", passwordPem)
-                            .putBoolean("conexion", conexionCheck)
-                            .build();
+                    if (password == null && conexionCheck) {
+                        Toast.makeText(getContext(), getString(R.string.noPassword), Toast.LENGTH_SHORT).show();
+                    } else {
+                        loadingDialog = new LoadingDialog();
+                        loadingDialog.setCancelable(false);
+                        loadingDialog.show(getActivity().getSupportFragmentManager(), "loading");
 
-                    OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(ServerWorker.class)
-                            .setInputData(data)
-                            .build();
-                    WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(otwr.getId())
-                            .observe(getActivity(), status -> {
-                                if (status != null && status.getState().isFinished()) {
-                                    String result = status.getOutputData().getString("result");
-                                    loadingDialog.dismiss();
-                                    if (result.equals("Error")) {
-                                        Toast.makeText(getContext(), getString(R.string.servidorExistente), Toast.LENGTH_SHORT).show();
-                                        serverBox.setText("");
-                                    } else if (result.equals("authFail")) {
-                                        Toast.makeText(getContext(), getString(R.string.authFail), Toast.LENGTH_LONG).show();
-                                    } else if (result.equals("failConnect")) {
-                                        Toast.makeText(getContext(), getString(R.string.sshFailConnect), Toast.LENGTH_LONG).show();
-                                    } else {
-                                        Toast.makeText(getContext(), getString(R.string.servidorCreado), Toast.LENGTH_SHORT).show();
-                                        Navigation.findNavController(v).popBackStack();
+                        //Añadimos los datos a la bd en caso de que se pueda realizar el ssh
+                        Data data = new Data.Builder()
+                                .putString("action", "addServer")
+                                .putString("user", user)
+                                .putString("host", host)
+                                .putString("password", password)
+                                .putInt("port", port)
+                                .putString("serverName", server)
+                                .putString("userName", LoginFragment.username)
+                                .putBoolean("keyPem", keyPem)
+                                .putInt("passwordPem", passwordPem)
+                                .putBoolean("conexion", conexionCheck)
+                                .build();
+
+                        OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(ServerWorker.class)
+                                .setInputData(data)
+                                .build();
+                        WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(otwr.getId())
+                                .observe(getActivity(), status -> {
+                                    if (status != null && status.getState().isFinished()) {
+                                        String result = status.getOutputData().getString("result");
+                                        loadingDialog.dismiss();
+                                        if (result.equals("Error")) {
+                                            Toast.makeText(getContext(), getString(R.string.servidorExistente), Toast.LENGTH_SHORT).show();
+                                            serverBox.setText("");
+                                        } else if (result.equals("authFail")) {
+                                            Toast.makeText(getContext(), getString(R.string.authFail), Toast.LENGTH_LONG).show();
+                                        } else if (result.equals("failConnect")) {
+                                            Toast.makeText(getContext(), getString(R.string.connectRefused), Toast.LENGTH_LONG).show();
+                                        } else if (result.equals("hostUnreachable")) {
+                                            Toast.makeText(getContext(), getString(R.string.hostUnreachable), Toast.LENGTH_LONG).show();
+                                        } else {
+                                            Toast.makeText(getContext(), getString(R.string.servidorCreado), Toast.LENGTH_SHORT).show();
+                                            Navigation.findNavController(v).popBackStack();
+                                        }
                                     }
-                                }
-                            });
-                    WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
+                                });
+                        WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
+                    }
                 }
             }
         });

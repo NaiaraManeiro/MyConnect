@@ -230,7 +230,9 @@ public class ServerInfoFragment extends Fragment implements OnDialogDismiss<Stri
         } else if (result.equals("authFail")) {
             Toast.makeText(getContext(), getString(R.string.authFail), Toast.LENGTH_LONG).show();
         } else if (result.equals("failConnect")) {
-            Toast.makeText(getContext(), getString(R.string.sshFailConnect), Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), getString(R.string.connectRefused), Toast.LENGTH_LONG).show();
+        } else if (result.equals("hostUnreachable")) {
+            Toast.makeText(getContext(), getString(R.string.hostUnreachable), Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(getContext(), getString(R.string.servidorEditado), Toast.LENGTH_SHORT).show();
             ServerListFragment.selectedServer.setName(name);

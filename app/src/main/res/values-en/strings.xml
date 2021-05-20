@@ -8,7 +8,7 @@
     <string name="contrasena">Password</string>
     <string name="servidorExistente">That server name already exists, think another one.</string>
     <string name="servidorCreado">Server created!</string>
-    <string name="authFail">Authentication error, chech the data.</string>
+    <string name="connectRefused">Connection refused, chech the server connection.</string>
     <string name="usuarioVacio">The user can\'t be empty.</string>
     <string name="contraVacia">The password can\'t be empty.</string>
     <string name="servidorVacio">The server name can\'t be empty.</string>
@@ -117,4 +117,7 @@
     <string name="removeServer">Remove server</string>
     <string name="connection_lost">Connection lost</string>
     <string name="perdidaConexion">The connection with the server has been lost, please chech that everything is okey.</string>
+    <string name="hostUnreachable">The host is unreachable, check if the data is okey.</string>
+    <string name="authFail">Failed authentication.</string>
+    <string name="noPassword">Don\'t forget to add the password o the .pem file!</string>
 </resources>
