@@ -112,6 +112,7 @@
 
                 <EditText
                     android:id="@+id/emailLogin"
+                    style="@style/EditTextColor"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_weight="1"
@@ -141,6 +142,7 @@
 
                 <EditText
                     android:id="@+id/passwordLogin"
+                    style="@style/EditTextColor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

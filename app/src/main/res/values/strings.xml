@@ -133,4 +133,6 @@
     <string name="port22" translatable="false">22</string>
     <string name="host" translatable="false">Host</string>
     <string name="notPem">El archivo escogido no es un \'.pem\'.</string>
+    <string name="settings">configuración</string>
+    <string name="disconnect">desconectarse</string>
 </resources>

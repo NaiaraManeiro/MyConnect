@@ -125,4 +125,6 @@
     <string name="imageFile">The file data can\'t be shown.</string>
     <string name="badFileType">The type of file can\'t be uploaded.</string>
     <string name="notPem">Choosen file is not a \'.pem\'.</string>
+    <string name="settings">settings</string>
+    <string name="disconnect">disconnect</string>
 </resources>

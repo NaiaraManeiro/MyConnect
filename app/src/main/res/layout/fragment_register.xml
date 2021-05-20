@@ -115,6 +115,7 @@
 
                 <EditText
                     android:id="@+id/registerUser"
+                    style="@style/EditTextColor"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_weight="1"
@@ -147,6 +148,7 @@
 
                 <EditText
                     android:id="@+id/registerEmail"
+                    style="@style/EditTextColor"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_weight="1"
@@ -170,6 +172,7 @@
 
                 <EditText
                     android:id="@+id/registerPassword"
+                    style="@style/EditTextColor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -193,6 +196,7 @@
 
                 <EditText
                     android:id="@+id/registerRepeatPassword"
+                    style="@style/EditTextColor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
