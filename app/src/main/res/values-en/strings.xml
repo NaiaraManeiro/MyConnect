@@ -8,7 +8,7 @@
     <string name="contrasena">Password</string>
     <string name="servidorExistente">That server name already exists, think another one.</string>
     <string name="servidorCreado">Server created!</string>
-    <string name="authFail">Authentication error, chech the data.</string>
+    <string name="connectRefused">Connection refused, chech the server connection.</string>
     <string name="usuarioVacio">The user can\'t be empty.</string>
     <string name="contraVacia">The password can\'t be empty.</string>
     <string name="servidorVacio">The server name can\'t be empty.</string>
@@ -18,7 +18,7 @@
     <string name="edit">Edit</string>
     <string name="saveData">Save data</string>
     <string name="nuevaContra">New password</string>
-    <string name="eliminarServer">Do you want to delete the server?</string>
+    <string name="eliminarServer">Are you sure you want to delete the server?</string>
     <string name="serverInfo">Server data:</string>
     <string name="volver">Back</string>
     <string name="servidorEditado">Server data has been updated!</string>
@@ -92,7 +92,6 @@
     <string name="sure_delete_account">Are you sure you want to delete your account?</string>
     <string name="server_connection_lost">Notificar conexión perdida con el servidor</string>
     <string name="server_connect_added">Server must connect to be added</string>
-    <string name="connection_lost">El servidor debe estar accesible para poder añadirlo</string>
     <string name="wrongPath">The writen path doesn\'t exist.</string>
     <string name="bigFile">The file is too big, download it to see complete,</string>
     <string name="saveDownload">Choose where to download the file:</string>
@@ -116,4 +115,11 @@
     <string name="editWithPassword">Edit with password</string>
     <string name="editWithPem">Edit with a .pem file</string>
     <string name="file">Files</string>
+    <string name="conexion">Do you want to check the conexion now?</string>
+    <string name="removeServer">Remove server</string>
+    <string name="connection_lost">Connection lost</string>
+    <string name="perdidaConexion">The connection with the server has been lost, please chech that everything is okey.</string>
+    <string name="hostUnreachable">The host is unreachable, check if the data is okey.</string>
+    <string name="authFail">Failed authentication.</string>
+    <string name="noPassword">Don\'t forget to add the password o the .pem file!</string>
 </resources>

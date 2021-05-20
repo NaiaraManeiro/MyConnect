@@ -32,10 +32,7 @@ public class TerminalFragment extends Fragment implements PasswordListener {
 
     private boolean keyPem = false;
 
-    public TerminalFragment() {
-        // Required empty public constructor
-    }
-
+    public TerminalFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,6 +56,8 @@ public class TerminalFragment extends Fragment implements PasswordListener {
 
         TextView textView = getActivity().findViewById(R.id.userHost);
         textView.setText(ServerListFragment.selectedServer.getUser() + "@" + ServerListFragment.selectedServer.getHost());
+        TextView terminalPath = getActivity().findViewById(R.id.terminalPath);
+        terminalPath.setText("/home/"+ ServerListFragment.selectedServer.getUser());
         EditText cmdInput = getActivity().findViewById(R.id.cmdInput);
         Button runButton = getActivity().findViewById(R.id.runCmdButton);
         TextView tv = getActivity().findViewById(R.id.resultArea);

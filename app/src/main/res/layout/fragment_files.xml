@@ -14,8 +14,8 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="597dp"
-            android:layout_weight="1">
+            android:layout_height="match_parent"
+            android:layout_weight="50">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -36,7 +36,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:orientation="vertical">
 
             <LinearLayout
@@ -51,7 +50,6 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="8dp"
-                    android:background="@drawable/border"
                     android:src="@drawable/back" />
 
                 <LinearLayout
@@ -61,24 +59,22 @@
 
                     <ImageView
                         android:id="@+id/addImage"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_marginStart="230dp"
                         android:layout_marginLeft="230dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="16dp"
                         android:layout_marginRight="16dp"
-                        android:background="@drawable/border"
                         android:src="@drawable/add" />
 
                     <ImageView
                         android:id="@+id/uploadFile"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="16dp"
                         android:layout_marginRight="16dp"
-                        android:background="@drawable/border"
                         android:src="@drawable/arrowup" />
                 </LinearLayout>
 
@@ -87,6 +83,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
                 android:gravity="center"
                 android:orientation="horizontal">
 
@@ -111,9 +108,8 @@
 
                 <ImageView
                     android:id="@+id/go"
-                    android:layout_width="40dp"
+                    android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:layout_marginLeft="10dp"
                     android:rotationY="180"
                     android:src="@drawable/back" />
             </LinearLayout>

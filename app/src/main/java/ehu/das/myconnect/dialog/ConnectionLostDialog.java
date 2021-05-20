@@ -29,6 +29,7 @@ public class ConnectionLostDialog extends DialogFragment {
         super.onCreateDialog(savedInstanceState);
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
         alert.setTitle(getResources().getString(R.string.connection_lost));
+        alert.setIcon(R.drawable.connection_lost);
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View loginServer = inflater.inflate(R.layout.connection_lost_layout, null);
         alert.setNegativeButton("Exit", new DialogInterface.OnClickListener() {

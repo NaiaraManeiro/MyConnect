@@ -1,7 +1,6 @@
 package ehu.das.myconnect.fragment;
 
 import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -14,13 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import ehu.das.myconnect.R;
-import ehu.das.myconnect.dialog.DialogAccessPem;
 import ehu.das.myconnect.dialog.DialogoAccessPassword;
 import ehu.das.myconnect.dialog.LoadingDialog;
 import ehu.das.myconnect.dialog.OnDialogOptionPressed;
@@ -92,7 +88,7 @@ public class ServerManagmentFragment extends Fragment implements OnDialogOptionP
     @Override
     public void onYesPressed(String data1, String data2) {
         if (data1.equals("fail")) {
-            Toast.makeText(getContext(), getResources().getString(R.string.authFail), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getResources().getString(R.string.connectRefused), Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(getContext(), getResources().getString(R.string.authSuccessful), Toast.LENGTH_SHORT).show();
         }

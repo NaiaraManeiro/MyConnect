@@ -1,5 +1,6 @@
 package ehu.das.myconnect.fragment;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -8,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -15,6 +17,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.preference.PreferenceManager;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
 import java.util.regex.Pattern;
 
@@ -24,6 +30,7 @@ import ehu.das.myconnect.dialog.DialogPem;
 import ehu.das.myconnect.dialog.LoadingDialog;
 import ehu.das.myconnect.dialog.OnDialogDismiss;
 import ehu.das.myconnect.dialog.RemoveDialog;
+import ehu.das.myconnect.service.ServerWorker;
 
 public class ServerInfoFragment extends Fragment implements OnDialogDismiss<String>, ILoading {
 
@@ -35,6 +42,8 @@ public class ServerInfoFragment extends Fragment implements OnDialogDismiss<Stri
     private OnDialogDismiss<String> fragment;
     private ILoading iLoading;
     public LoadingDialog loadingDialog;
+    private CheckBox conexion;
+    private String name;
 
     public ServerInfoFragment() {}
 
@@ -55,6 +64,15 @@ public class ServerInfoFragment extends Fragment implements OnDialogDismiss<Stri
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        conexion = getActivity().findViewById(R.id.checkBox);
+        conexion.setText(getString(R.string.conexion));
+        conexion.setVisibility(View.INVISIBLE);
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        if (prefs.getBoolean("server_connnect", true)) {
+            conexion.setChecked(true);
+        }
 
         serveNameBox = getActivity().findViewById(R.id.nombreServidorInfo);
         serveNameBox.setEnabled(false);
@@ -77,7 +95,7 @@ public class ServerInfoFragment extends Fragment implements OnDialogDismiss<Stri
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name = serveNameBox.getText().toString();
+                name = serveNameBox.getText().toString();
                 String user = serverUserBox.getText().toString();
                 String host = serverHostBox.getText().toString();
                 int port = Integer.parseInt(serverPortBox.getText().toString());
@@ -93,24 +111,58 @@ public class ServerInfoFragment extends Fragment implements OnDialogDismiss<Stri
                 } else if (name.length() > 20) {
                     Toast.makeText(getContext(), getString(R.string.servidorLargo), Toast.LENGTH_SHORT).show();
                 } else {
-                    //Pedimos la contraseña o .pem para asegurar que se puede hacer ssh
-                    Bundle bundle = new Bundle();
-                    bundle.putString("serverName", name);
-                    bundle.putString("user", user);
-                    bundle.putString("host", host);
-                    bundle.putInt("port", port);
-                    if (ServerListFragment.selectedServer.getPem() == 0) {
-                        DialogPassword dialogPassword = new DialogPassword();
-                        dialogPassword.setArguments(bundle);
-                        dialogPassword.onDialogDismiss = fragment;
-                        dialogPassword.loadingListener = iLoading;
-                        dialogPassword.show(getActivity().getSupportFragmentManager(), "contrasena");
+                    boolean checked = conexion.isChecked();
+
+                    if (checked) {
+                        //Pedimos la contraseña o .pem para asegurar que se puede hacer ssh
+                        Bundle bundle = new Bundle();
+                        bundle.putString("serverName", name);
+                        bundle.putString("user", user);
+                        bundle.putString("host", host);
+                        bundle.putInt("port", port);
+                        if (ServerListFragment.selectedServer.getPem() == 0) {
+                            DialogPassword dialogPassword = new DialogPassword();
+                            dialogPassword.setArguments(bundle);
+                            dialogPassword.onDialogDismiss = fragment;
+                            dialogPassword.loadingListener = iLoading;
+                            dialogPassword.show(getActivity().getSupportFragmentManager(), "contrasena");
+                        } else {
+                            DialogPem dialogPem = new DialogPem();
+                            dialogPem.setArguments(bundle);
+                            dialogPem.onDialogDismiss = fragment;
+                            dialogPem.loadingListener = iLoading;
+                            dialogPem.show(getActivity().getSupportFragmentManager(), "contrasena");
+                        }
                     } else {
-                        DialogPem dialogPem = new DialogPem();
-                        dialogPem.setArguments(bundle);
-                        dialogPem.onDialogDismiss = fragment;
-                        dialogPem.loadingListener = iLoading;
-                        dialogPem.show(getActivity().getSupportFragmentManager(), "contrasena");
+                        startLoading();
+                        //Editamos los datos a la bd en caso de que se pueda realizar el ssh
+                        Data datos = new Data.Builder()
+                                .putString("action", "editServer")
+                                .putString("user", user)
+                                .putString("host", host)
+                                .putInt("port", port)
+                                .putString("serverName", name)
+                                .putString("oldServerName", ServerListFragment.selectedServer.getName())
+                                .putString("userName", LoginFragment.username)
+                                .build();
+
+                        OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(ServerWorker.class)
+                                .setInputData(datos)
+                                .build();
+                        WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(otwr.getId())
+                                .observe(getActivity(), status -> {
+                                    if (status != null && status.getState().isFinished()) {
+                                        stopLoading();
+                                        String result = status.getOutputData().getString("result");
+                                        if (result.equals("Error")) {
+                                            Toast.makeText(getContext(), getString(R.string.servidorExistente), Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            Toast.makeText(getContext(), getString(R.string.servidorEditado), Toast.LENGTH_SHORT).show();
+                                            ServerListFragment.selectedServer.setName(name);
+                                        }
+                                    }
+                                });
+                        WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
                     }
                 }
             }
@@ -128,7 +180,7 @@ public class ServerInfoFragment extends Fragment implements OnDialogDismiss<Stri
     //Creación del menú
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu2, menu);
+        inflater.inflate(R.menu.server_info_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -147,12 +199,14 @@ public class ServerInfoFragment extends Fragment implements OnDialogDismiss<Stri
         } if (id == R.id.edit) {
             if (edit.getVisibility() == View.VISIBLE) {
                 edit.setVisibility(View.INVISIBLE);
+                conexion.setVisibility(View.INVISIBLE);
                 serveNameBox.setEnabled(false);
                 serverUserBox.setEnabled(false);
                 serverHostBox.setEnabled(false);
                 serverPortBox.setEnabled(false);
             } else {
                 edit.setVisibility(View.VISIBLE);
+                conexion.setVisibility(View.VISIBLE);
                 serveNameBox.setEnabled(true);
                 serverUserBox.setEnabled(true);
                 serverHostBox.setEnabled(true);
@@ -176,9 +230,12 @@ public class ServerInfoFragment extends Fragment implements OnDialogDismiss<Stri
         } else if (result.equals("authFail")) {
             Toast.makeText(getContext(), getString(R.string.authFail), Toast.LENGTH_LONG).show();
         } else if (result.equals("failConnect")) {
-            Toast.makeText(getContext(), getString(R.string.sshFailConnect), Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), getString(R.string.connectRefused), Toast.LENGTH_LONG).show();
+        } else if (result.equals("hostUnreachable")) {
+            Toast.makeText(getContext(), getString(R.string.hostUnreachable), Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(getContext(), getString(R.string.servidorEditado), Toast.LENGTH_SHORT).show();
+            ServerListFragment.selectedServer.setName(name);
         }
     }
 

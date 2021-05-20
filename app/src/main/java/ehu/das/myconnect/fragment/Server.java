@@ -1,7 +1,7 @@
 package ehu.das.myconnect.fragment;
 
 public class Server {
-    private final String name;
+    private String name;
     private final String user;
     private final String host;
     private final int port;
@@ -18,6 +18,10 @@ public class Server {
 
     public String getName() {
         return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getUser() {

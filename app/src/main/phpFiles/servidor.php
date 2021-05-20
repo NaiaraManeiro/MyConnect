@@ -21,7 +21,6 @@ if (mysqli_connect_errno($con)) {
         $user = $parametros["user"]; 
         $host = $parametros["host"]; 
         $port = $parametros["port"];
-        $password = $parametros["password"]; 
         $serverName = $parametros["serverName"]; 
         $userName = $parametros["userName"]; 
         $keyPem = $parametros["keyPem"]; 
@@ -33,11 +32,7 @@ if (mysqli_connect_errno($con)) {
             if ($row = mysqli_fetch_array($result)) { //Comprobamos si el servidor existe
                 echo 'Error';
             } else {
-                if ($keyPem == 0) {
-                    $password = password_hash($password, PASSWORD_DEFAULT);
-                }
-            
-                $result2 = mysqli_query($con, "INSERT INTO Servidor (NombreServidor,Usuario,Host,Puerto,Contrasena,NombreUsuario,PemFile) VALUES ('$serverName','$user','$host','$port','$password','$userName','$keyPem')");
+                $result2 = mysqli_query($con, "INSERT INTO Servidor (NombreServidor,Usuario,Host,Puerto,NombreUsuario,PemFile) VALUES ('$serverName','$user','$host','$port','$userName','$keyPem')");
 
                 if (!$result2) {
                     echo 'Ha ocurrido algún error: ' . mysqli_error($con);
@@ -75,7 +70,8 @@ if (mysqli_connect_errno($con)) {
         }
     } else if ($accion == "removeServer") { 
         $serverName = $parametros["serverName"];
-        $result = mysqli_query($con, "DELETE FROM Servidor WHERE NombreServidor = '$serverName'");
+        $userName = $parametros["userName"];
+        $result = mysqli_query($con, "DELETE FROM Servidor WHERE NombreServidor = '$serverName' AND NombreUsuario = '$userName'");
 
         if (!$result) {
             echo 'Ha ocurrido algún error: ' . mysqli_error($con);
@@ -88,7 +84,7 @@ if (mysqli_connect_errno($con)) {
         $port = $parametros["port"];
         $serverName = $parametros["serverName"]; 
         $oldServerName = $parametros["oldServerName"]; 
-        $userName = $parametros["userName"]
+        $userName = $parametros["userName"];
 
         $result = mysqli_query($con, "SELECT NombreServidor FROM Servidor WHERE NombreServidor = '$serverName'");
         if (!$result) {

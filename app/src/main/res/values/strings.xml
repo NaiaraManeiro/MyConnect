@@ -36,7 +36,7 @@
     <string name="servidorCreado">¡Servidor creado!</string>
     <string name="path" translatable="false">Path</string>
     <string name="file">Archivos</string>
-    <string name="authFail">Error de autenticación, compruebe los datos.</string>
+    <string name="connectRefused">Conexión rechazada, compruebe la conexión del servidor.</string>
     <string name="usuarioVacio">El usuario no puede estar vacío.</string>
     <string name="contraVacia">La contraseña no puede estar vacía</string>
     <string name="servidorVacio">El nombre del servidor no puede estar vacío.</string>
@@ -46,7 +46,7 @@
     <string name="edit">Editar</string>
     <string name="saveData">Guardar datos</string>
     <string name="nuevaContra">Nueva contraseña</string>
-    <string name="eliminarServer">¿Quieres eliminar el servidor?</string>
+    <string name="eliminarServer">¿Estás seguro/a de que quieres eliminar el servidor?</string>
     <string name="serverInfo">Datos del servidor:</string>
     <string name="volver">Volver</string>
     <string name="servidorEditado">¡Los datos del servidor han sido editados!</string>
@@ -109,7 +109,7 @@
     <string name="sure_delete_account">¿Seguro que quieres eliminar la cuenta?</string>
     <string name="server_connection_lost">Notificar pérdida de la conexión con el servidor</string>
     <string name="server_connect_added">El servidor debe estar accesible para poder añadirlo</string>
-    <string name="connection_lost">Connection lost</string>
+    <string name="connection_lost">Perdida de conexión</string>
     <string-array name="languages">
         <item>Spanish</item>
         <item>English</item>
@@ -141,4 +141,10 @@
     <string name="keyPem" translatable="false">Key .pem</string>
     <string name="email" translatable="false">Email</string>
     <string name="terminal" translatable="false">Terminal</string>
+    <string name="conexion">¿Quiere comprobar la conexión ahora?</string>
+    <string name="removeServer">Eliminar servidor</string>
+    <string name="perdidaConexion">Se ha perdido la conexión con el servidor, por favor compruebe que todo está bien.</string>
+    <string name="hostUnreachable">El host es inalcanzable, compruebe si es el correcto.</string>
+    <string name="authFail">Autenticación fallida.</string>
+    <string name="noPassword">¡Qué no se te olvide añadir la contraseña o el .pem!</string>
 </resources>

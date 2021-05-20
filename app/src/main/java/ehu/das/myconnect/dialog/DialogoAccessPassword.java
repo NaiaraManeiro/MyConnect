@@ -46,6 +46,7 @@ public class DialogoAccessPassword extends DialogFragment {
         super.onCreateDialog(savedInstanceState);
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
         alert.setTitle(getResources().getString(R.string.access_password));
+        alert.setIcon(R.drawable.password);
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View loginServer = inflater.inflate(R.layout.access_password_layout, null);
         EditText passwordField = loginServer.findViewById(R.id.passwordAccess);

@@ -2,6 +2,7 @@ package ehu.das.myconnect.dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import androidx.work.WorkManager;
 
 import ehu.das.myconnect.R;
 import ehu.das.myconnect.fragment.ILoading;
+import ehu.das.myconnect.fragment.LoginFragment;
 import ehu.das.myconnect.fragment.ServerListFragment;
 import ehu.das.myconnect.service.SSHWorker;
 import ehu.das.myconnect.service.ServerWorker;
@@ -39,6 +41,9 @@ public class RemoveDialog extends DialogFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
+        builder.setTitle(R.string.removeServer);
+        builder.setIcon(R.drawable.delete_server);
+
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View vw = inflater.inflate(R.layout.dialogo_eliminar, null);
 
@@ -53,17 +58,15 @@ public class RemoveDialog extends DialogFragment {
             keyPem = true;
         }
 
-        ImageView yes = vw.findViewById(R.id.imageSi);
-
-        //Eliminamos el servidor de la base de datos
-        yes.setOnClickListener(new View.OnClickListener() {
+        builder.setPositiveButton(getString(R.string.eliminar), new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(DialogInterface dialog, int which) {
                 loadingListener.startLoading();
                 if (where.equals("server")) {
                     Data data = new Data.Builder()
                             .putString("action", "removeServer")
                             .putString("serverName", serverName)
+                            .putString("userName", LoginFragment.username)
                             .build();
 
                     OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(ServerWorker.class)
@@ -106,10 +109,9 @@ public class RemoveDialog extends DialogFragment {
             }
         });
 
-        ImageView no = vw.findViewById(R.id.imageNo);
-        no.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        builder.setNegativeButton(getString(R.string.volver), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
                 dismiss();
             }
         });
