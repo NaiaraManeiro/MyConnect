@@ -40,10 +40,7 @@
 
                 <ImageView
                     android:id="@+id/confLogin"
-                    android:layout_width="23dp"
-                    android:layout_height="30dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="25dp"
+                    style="@style/iconButtons"
                     android:src="@drawable/settings" />
 
                 <LinearLayout
@@ -69,7 +66,7 @@
                     android:id="@+id/textView14"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="10dp"
                     android:fontFamily="sans-serif-smallcaps"
                     android:gravity="center"
                     android:text="MyConnect"
