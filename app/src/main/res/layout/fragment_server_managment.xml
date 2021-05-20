@@ -22,7 +22,10 @@
                 android:background="@drawable/down_border_with_background"
                 android:minHeight="?attr/actionBarSize"
                 android:theme="?attr/actionBarTheme"
-                app:menu="@menu/server_managment_menu" />
+                app:menu="@menu/server_managment_menu"
+                app:subtitleTextColor="#FFFFFF"
+                app:title="@string/app_name"
+                app:titleTextColor="#FFFFFF" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/serverListRV"

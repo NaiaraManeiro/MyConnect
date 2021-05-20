@@ -23,84 +23,106 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/textView3"
-                style="@style/Texto"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/border"
-                android:text="@string/path" />
-
-            <TextView
-                android:id="@+id/filePath"
-                style="@style/Texto"
-                android:layout_width="310dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/up_down_right_border"
-                android:maxLines="1" />
-
-        </LinearLayout>
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="510dp"
-            android:layout_marginTop="10dp"
-            android:fadeScrollbars="true"
-            android:isScrollContainer="true"
-            android:nestedScrollingEnabled="true">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="40dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="510dp"
-                android:orientation="vertical"
-                android:overScrollMode="ifContentScrolls">
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:gravity="center"
+                android:orientation="horizontal">
 
-                <EditText
-                    android:id="@+id/fileText"
+                <TextView
+                    android:id="@+id/textView3"
+                    style="@style/Texto"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/border"
+                    android:paddingLeft="5dp"
+                    android:text="@string/path" />
+
+                <TextView
+                    android:id="@+id/filePath"
                     style="@style/Texto"
                     android:layout_width="match_parent"
-                    android:layout_height="510dp"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginEnd="15dp"
-                    android:layout_marginRight="15dp"
-                    android:background="@drawable/border"
-                    android:gravity="start|top"
-                    android:inputType="textMultiLine" />
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/up_down_right_border"
+                    android:maxLines="1"
+                    android:paddingLeft="5dp" />
 
             </LinearLayout>
-        </ScrollView>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <Button
-                android:id="@+id/saveFileButton"
-                style="@style/Buttons"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/saveFile"
-                app:strokeWidth="2dp" />
-
-            <Button
-                android:id="@+id/volverFile"
-                style="@style/Buttons"
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="55dp"
+                android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
-                android:text="@string/volver"
-                app:strokeWidth="2dp" />
+                android:layout_weight="1"
+                android:fadeScrollbars="true"
+                android:isScrollContainer="true"
+                android:nestedScrollingEnabled="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:overScrollMode="ifContentScrolls">
+
+                    <EditText
+                        android:id="@+id/fileText"
+                        style="@style/Texto"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/border"
+                        android:gravity="start|top"
+                        android:inputType="textMultiLine"
+                        android:padding="5dp" />
+
+                </LinearLayout>
+            </ScrollView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/saveFileButton"
+                        style="@style/Buttons"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/saveFile"
+                        app:strokeWidth="2dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="right"
+                        android:orientation="vertical">
+
+                        <Button
+                            android:id="@+id/volverFile"
+                            style="@style/Buttons"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="@string/volver"
+                            app:strokeWidth="2dp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
-
     </LinearLayout>
 
 </FrameLayout>
