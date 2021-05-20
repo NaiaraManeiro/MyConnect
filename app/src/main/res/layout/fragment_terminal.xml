@@ -9,7 +9,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="549dp">
+        android:layout_height="565dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -26,15 +26,15 @@
 
                 <TextView
                     android:id="@+id/userHost"
+                    style="@style/Texto"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="ander@127.0.0.1" />
+                    android:layout_height="wrap_content" />
 
                 <TextView
                     android:id="@+id/terminalPath"
+                    style="@style/Texto"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=":/home/ander" />
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
 
@@ -52,28 +52,31 @@
 
                 <EditText
                     android:id="@+id/cmdInput"
-                    android:layout_width="233dp"
+                    style="@style/EditText"
+                    android:layout_width="230dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="left"
                     android:hint="@string/command_no_dots"
                     android:includeFontPadding="false"
                     android:inputType="textPersonName"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:theme="@style/EditTextColor" />
 
                 <Button
                     android:id="@+id/runCmdButton"
+                    style="@style/Buttons"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:background="@drawable/border"
                     android:text="@string/run"
                     android:textSize="10sp"
-                    app:backgroundTint="@color/material_on_background_disabled" />
+                    app:strokeWidth="2dp" />
 
             </LinearLayout>
 
             <TextView
                 android:id="@+id/textView10"
+                style="@style/Texto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="10dp"
@@ -82,16 +85,17 @@
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/nestedScroll"
                 android:layout_width="match_parent"
-                android:layout_height="432dp"
+                android:layout_height="440dp"
                 android:fillViewport="true">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/resultArea"
+                        style="@style/Texto"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="5dp"

@@ -46,6 +46,7 @@ public class DialogoAccessPassword extends DialogFragment {
         super.onCreateDialog(savedInstanceState);
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
         alert.setTitle(getResources().getString(R.string.access_password));
+        alert.setIcon(R.drawable.password);
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View loginServer = inflater.inflate(R.layout.access_password_layout, null);
         EditText passwordField = loginServer.findViewById(R.id.passwordAccess);
@@ -71,6 +72,7 @@ public class DialogoAccessPassword extends DialogFragment {
                 WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(otwr.getId())
                         .observe(getActivity(), status -> {
                             if (status != null && status.getState().isFinished()) {
+                                loadingListener.stopLoading();
                                 if (!status.getOutputData().getString("result").equals("")) {
                                     ServerListFragment.connection = null;
                                     scriptAddListener.onYesPressed("fail","");
@@ -86,9 +88,7 @@ public class DialogoAccessPassword extends DialogFragment {
                                         ServerListFragment.selectedServer = ServerListFragment.serverList.get(position);
                                         serverManagmentFragment.recreateFragment();
                                     }
-                                    //Toast.makeText(getActivity(), getResources().getString(R.string.authSuccessful), Toast.LENGTH_LONG).show();
                                 }
-                                loadingListener.stopLoading();
                             }
                         });
                 WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);

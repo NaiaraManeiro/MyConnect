@@ -1,17 +1,16 @@
 package ehu.das.myconnect.fragment;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.DocumentsContract;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -35,22 +34,24 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 
 import ehu.das.myconnect.R;
+import ehu.das.myconnect.dialog.LoadingDialog;
 import ehu.das.myconnect.dialog.RemoveDialog;
 import ehu.das.myconnect.service.SSHWorker;
 import lib.folderpicker.FolderPicker;
 
-public class FileInfoFragment extends Fragment {
+public class FileInfoFragment extends Fragment implements ILoading{
 
     private String path;
     private Button save;
     private EditText file;
     private static final int COD_NUEVO_FICHERO = 40;
     private String fileName;
-    private boolean image;
+    private String image;
+    private boolean keyPem = false;
+    public LoadingDialog loadingDialog;
 
     public FileInfoFragment() {}
 
@@ -74,7 +75,11 @@ public class FileInfoFragment extends Fragment {
         Bundle extras = this.getArguments();
         if (extras != null) {
             path = extras.getString("path");
-            image = extras.getBoolean("image");
+            image = extras.getString("image");
+        }
+
+        if (ServerListFragment.selectedServer.getPem() == 1) {
+            keyPem = true;
         }
 
         ((AppCompatActivity) getActivity()).setSupportActionBar(getActivity().findViewById(R.id.labarra));
@@ -90,11 +95,14 @@ public class FileInfoFragment extends Fragment {
 
         fileName = path.substring(path.lastIndexOf("/")+1);
 
-        if (!image) {
+        if (image.equals("")) {
+            startLoading();
+
             //Mostramos el texto del archivo
             Data data = new Data.Builder()
                     .putString("action", "cat " + path)
                     .putString("path", path)
+                    .putBoolean("keyPem", keyPem)
                     .build();
             OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(SSHWorker.class)
                     .setInputData(data)
@@ -103,10 +111,13 @@ public class FileInfoFragment extends Fragment {
                     .observe(getActivity(), status -> {
                         if (status != null && status.getState().isFinished()) {
                             String result = status.getOutputData().getString("result");
+                            stopLoading();
                             if (result.equals("authFail")) {
-                                Toast.makeText(getContext(), getString(R.string.authFail), Toast.LENGTH_LONG).show();
+                                Toast.makeText(getContext(), getString(R.string.connectRefused), Toast.LENGTH_LONG).show();
                             } else if (result.equals("failConnect")) {
                                 Toast.makeText(getContext(), getString(R.string.sshFailConnect), Toast.LENGTH_LONG).show();
+                            } else if (result.equals("hostUnreachable")) {
+                                Toast.makeText(getContext(), getString(R.string.hostUnreachable), Toast.LENGTH_LONG).show();
                             } else {
                                 String[] lines = result.split(",");
                                 if (lines[0].equals("error")) {
@@ -123,6 +134,12 @@ public class FileInfoFragment extends Fragment {
                     });
 
             WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
+        } else if (image.equals("image")) {
+            File image = new File(path);
+            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+            Bitmap bitmap = BitmapFactory.decodeFile(image.getAbsolutePath(),bmOptions);
+            Drawable d = new BitmapDrawable(getResources(), bitmap);
+            file.setBackground(d);
         } else {
             file.setText(R.string.imageFile);
         }
@@ -131,9 +148,12 @@ public class FileInfoFragment extends Fragment {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                startLoading();
+
                 String fileText = file.getText().toString();
                 Data data = new Data.Builder()
                         .putString("action", "echo '" +fileText+ "' > " + path)
+                        .putBoolean("keyPem", keyPem)
                         .build();
                 OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(SSHWorker.class)
                         .setInputData(data)
@@ -142,10 +162,13 @@ public class FileInfoFragment extends Fragment {
                         .observe(getActivity(), status -> {
                             if (status != null && status.getState().isFinished()) {
                                 String result = status.getOutputData().getString("result");
+                                stopLoading();
                                 if (result.equals("authFail")) {
-                                    Toast.makeText(getContext(), getString(R.string.authFail), Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getContext(), getString(R.string.connectRefused), Toast.LENGTH_LONG).show();
                                 } else if (result.equals("failConnect")) {
                                     Toast.makeText(getContext(), getString(R.string.sshFailConnect), Toast.LENGTH_LONG).show();
+                                } else if (result.equals("hostUnreachable")) {
+                                    Toast.makeText(getContext(), getString(R.string.hostUnreachable), Toast.LENGTH_LONG).show();
                                 } else {
                                     Toast.makeText(getContext(), getString(R.string.fileUpdated), Toast.LENGTH_SHORT).show();
                                 }
@@ -169,16 +192,18 @@ public class FileInfoFragment extends Fragment {
     //Creación del menú
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu, menu);
+        inflater.inflate(R.menu.file_info_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        ILoading iLoading = this;
         int id = item.getItemId();
         if (id == R.id.eliminar) {
             RemoveDialog removeDialog = new RemoveDialog();
+            removeDialog.loadingListener = iLoading;
             Bundle bundle = new Bundle();
             removeDialog.view = getView();
             bundle.putString("path", path);
@@ -186,7 +211,7 @@ public class FileInfoFragment extends Fragment {
             removeDialog.setArguments(bundle);
             removeDialog.show(getActivity().getSupportFragmentManager(), "eliminar");
         } if (id == R.id.edit) {
-            if (!image) {
+            if (image.equals("")) {
                 if (save.getVisibility() == View.VISIBLE) {
                     save.setVisibility(View.INVISIBLE);
                     file.setEnabled(false);
@@ -211,12 +236,14 @@ public class FileInfoFragment extends Fragment {
 
                 String folderLocation = data.getExtras().getString("data");
 
+                startLoading();
+
                 Data data1 = new Data.Builder()
                         .putString("action", "")
                         .putString("from", path)
                         .putString("to", folderLocation)
                         .putString("do", "download")
-
+                        .putBoolean("keyPem", keyPem)
                         .build();
                 OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(SSHWorker.class)
                         .setInputData(data1)
@@ -224,6 +251,7 @@ public class FileInfoFragment extends Fragment {
                 WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(otwr.getId())
                         .observe(getActivity(), status -> {
                             if (status != null && status.getState().isFinished()) {
+                                stopLoading();
                                 NotificationManager elManager = (NotificationManager)getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
                                 NotificationCompat.Builder elBuilder = new NotificationCompat.Builder(getActivity(), "IdCanal");
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -244,5 +272,15 @@ public class FileInfoFragment extends Fragment {
                 WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
             }
         }
+    }
+
+    public void startLoading() {
+        loadingDialog = new LoadingDialog();
+        loadingDialog.setCancelable(false);
+        loadingDialog.show(getActivity().getSupportFragmentManager(), "loading");
+    }
+
+    public void stopLoading() {
+        loadingDialog.dismiss();
     }
 }

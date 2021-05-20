@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
@@ -39,5 +40,12 @@ public class LoadingDialog extends DialogFragment {
 //        webView.getSettings().setDefaultZoom(WebSettings.ZoomDensity.FAR);
         builder.setView(loadingLayout);
         return builder.create();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Window window = getDialog().getWindow();
+        window.setLayout(800, 700);
     }
 }

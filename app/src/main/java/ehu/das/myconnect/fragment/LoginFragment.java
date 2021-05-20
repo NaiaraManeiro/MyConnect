@@ -201,7 +201,9 @@ public class LoginFragment extends Fragment {
                         if (loadingDialog != null) {
                             loadingDialog.dismiss();
                         }
-                        Navigation.findNavController(getView()).navigate(R.id.action_loginFragment_to_serverListFragment);
+                        try {
+                            Navigation.findNavController(getView()).navigate(R.id.action_loginFragment_to_serverListFragment);
+                        } catch (IllegalStateException e) {}
                     }
                 });
         WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);

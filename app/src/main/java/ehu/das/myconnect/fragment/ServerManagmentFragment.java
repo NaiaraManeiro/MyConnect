@@ -1,10 +1,10 @@
 package ehu.das.myconnect.fragment;
 
 import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,9 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import ehu.das.myconnect.R;
@@ -58,8 +56,8 @@ public class ServerManagmentFragment extends Fragment implements OnDialogOptionP
         ImageButton configButton = getActivity().findViewById(R.id.disconnectServer);
         configButton.setColorFilter(Color.WHITE);
         RecyclerView serverListRV = getActivity().findViewById(R.id.serverListRV);*/
-        ImageButton conf = getActivity().findViewById(R.id.configButton);
-        conf.setColorFilter(Color.WHITE);
+        ActionMenuItemView conf = getActivity().findViewById(R.id.configButton);
+        // conf.setColorFilter(Color.WHITE);
         conf.setOnClickListener(v -> {
             Navigation.findNavController(v).navigate(R.id.action_serverManagmentFragment_to_preferences);
         });
@@ -75,8 +73,8 @@ public class ServerManagmentFragment extends Fragment implements OnDialogOptionP
         serverList.add(new Server("das4"));
         serverList.add(new Server("das5"));
         */
-        ImageButton iv = getActivity().findViewById(R.id.disconnectServer);
-        iv.setColorFilter(Color.WHITE);
+        ActionMenuItemView iv = getActivity().findViewById(R.id.disconnectServer);
+        // iv.setColorFilter(Color.WHITE);
         iv.setOnClickListener(v -> {
             ServerListFragment.selectedServer = null;
             Navigation.findNavController(getView()).navigate(R.id.action_serverManagmentFragment_to_serverListFragment);
@@ -90,7 +88,7 @@ public class ServerManagmentFragment extends Fragment implements OnDialogOptionP
     @Override
     public void onYesPressed(String data1, String data2) {
         if (data1.equals("fail")) {
-            Toast.makeText(getContext(), getResources().getString(R.string.authFail), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getResources().getString(R.string.connectRefused), Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(getContext(), getResources().getString(R.string.authSuccessful), Toast.LENGTH_SHORT).show();
         }
@@ -105,9 +103,25 @@ public class ServerManagmentFragment extends Fragment implements OnDialogOptionP
         DialogoAccessPassword d = new DialogoAccessPassword();
         d.scriptAddListener = this;
         d.recreate = true;
+        d.serverManagmentFragment = this;
         d.loadingListener = this;
         d.position = position;
         d.show(getActivity().getSupportFragmentManager(),"");
+        /*if (selectedServer.getPem() == 0) {
+            DialogoAccessPassword d = new DialogoAccessPassword();
+            d.scriptAddListener = this;
+            d.recreate = true;
+            d.loadingListener = this;
+            d.position = position;
+            d.show(getActivity().getSupportFragmentManager(),"");
+        } else {
+            DialogAccessPem d = new DialogAccessPem();
+            d.scriptAddListener = this;
+            d.recreate = true;
+            d.loadingListener = this;
+            d.position = position;
+            d.show(getActivity().getSupportFragmentManager(),"");
+        }*/
     }
 
     public void recreateFragment() {

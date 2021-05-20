@@ -36,7 +36,7 @@ public class ServerWorker extends Worker {
         if (script == null) {
             script = "servidor.php";
         }
-        String direccion = "http://ec2-54-167-31-169.compute-1.amazonaws.com/nmaneiro001/WEB/MyConnect/" + script;
+        String direccion = "http://ec2-54-242-79-204.compute-1.amazonaws.com/nmaneiro001/WEB/MyConnect/" + script;
         Log.i("register", direccion);
         HttpURLConnection urlConnection = null;
         String action = getInputData().getString("action");
@@ -49,76 +49,75 @@ public class ServerWorker extends Worker {
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoOutput(true);
 
-            if (action.equals("addServer") || action.equals("editServer") || action.equals("conectServer")) {
+            boolean conexion = getInputData().getBoolean("conexion", false);
+
+            if ((action.equals("addServer") || action.equals("editServer")) && conexion) {
                 SSHConnector sshConnector = new SSHConnector();
                 try {
                     exception = sshConnector.connect(getInputData().getString("user"), getInputData().getString("password"), getInputData().getString("host"), getInputData().getInt("port",22), getInputData().getBoolean("keyPem", false));
-                    if (!action.equals("conectServer")) {
-                        sshConnector.disconnect();
-                    }
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }
             }
 
-            if (exception.contains("Auth fail")) {
+            if (exception.toLowerCase().contains("auth fail")) {
                 result = "authFail";
-            } else if (exception.contains("failed to")) {
+            } else if (exception.contains("failed to connect")) {
                 result = "failConnect";
+            } else if (exception.contains("Host unreachable")) {
+                result = "hostUnreachable";
             } else {
-                if (!action.equals("conectServer")) {
-                    JSONObject parametrosJSON = new JSONObject();
-                    parametrosJSON.put("action", action);
-                    if (action.equals("addServer")) {
-                        parametrosJSON.put("user", getInputData().getString("user"));
-                        parametrosJSON.put("host", getInputData().getString("host"));
-                        parametrosJSON.put("port", getInputData().getInt("port",22));
-                        parametrosJSON.put("password", getInputData().getString("password"));
-                        parametrosJSON.put("serverName", getInputData().getString("serverName"));
-                        parametrosJSON.put("userName", getInputData().getString("userName"));
-                    } else if (action.equals("serverData")) {
-                        parametrosJSON.put("userName", getInputData().getString("userName"));
-                    } else if (action.equals("removeServer") || action.equals("infoServer")) {
-                        parametrosJSON.put("serverName", getInputData().getString("serverName"));
-                    } else if (action.equals("editServer")) {
-                        parametrosJSON.put("user", getInputData().getString("user"));
-                        parametrosJSON.put("host", getInputData().getString("host"));
-                        parametrosJSON.put("port", getInputData().getInt("port",22));
-                        parametrosJSON.put("serverName", getInputData().getString("serverName"));
-                        parametrosJSON.put("oldServerName", getInputData().getString("oldServerName"));
-                    } else if (action.equals("register")) {
-                        Log.i("register", "register_input");
-                        parametrosJSON.put("user", getInputData().getString("user"));
-                        parametrosJSON.put("email", getInputData().getString("email"));
-                        parametrosJSON.put("password", getInputData().getString("password"));
-                    } else if (action.equals("login")) {
-                        parametrosJSON.put("user", getInputData().getString("user"));
-                        parametrosJSON.put("password", getInputData().getString("password"));
-                    } else if (action.equals("user")) {
-                        parametrosJSON.put("email", getInputData().getString("email"));
-                    } else if (action.equals("scripts")) {
-                        parametrosJSON.put("user", getInputData().getString("user"));
-                    } else if (action.equals("addScript")) {
-                        parametrosJSON.put("user", getInputData().getString("user"));
-                        parametrosJSON.put("name", getInputData().getString("name"));
-                        parametrosJSON.put("cmd", getInputData().getString("cmd"));
-                    } else if (action.equals("deleteScript")) {
-                        Log.i("script", "elimino");
-                        parametrosJSON.put("user", getInputData().getString("user"));
-                        parametrosJSON.put("name", getInputData().getString("name"));
-                        parametrosJSON.put("cmd", getInputData().getString("cmd"));
-                    } else if (action.equals("deleteUser")) {
-                        parametrosJSON.put("user", getInputData().getString("user"));
-                    }
-                    urlConnection.setRequestProperty("Content-Type","application/json");
-                    PrintWriter out = new PrintWriter(urlConnection.getOutputStream());
-                    out.print(parametrosJSON.toString());
-                    out.close();
+                JSONObject parametrosJSON = new JSONObject();
+                parametrosJSON.put("action", action);
+                if (action.equals("addServer")) {
+                    parametrosJSON.put("user", getInputData().getString("user"));
+                    parametrosJSON.put("host", getInputData().getString("host"));
+                    parametrosJSON.put("port", getInputData().getInt("port",22));
+                    parametrosJSON.put("serverName", getInputData().getString("serverName"));
+                    parametrosJSON.put("userName", getInputData().getString("userName"));
+                    parametrosJSON.put("keyPem", getInputData().getInt("passwordPem",0));
+                } else if (action.equals("serverData")) {
+                    parametrosJSON.put("userName", getInputData().getString("userName"));
+                } else if (action.equals("removeServer")) {
+                    parametrosJSON.put("serverName", getInputData().getString("serverName"));
+                    parametrosJSON.put("userName", getInputData().getString("userName"));
+                } else if (action.equals("editServer")) {
+                    parametrosJSON.put("user", getInputData().getString("user"));
+                    parametrosJSON.put("host", getInputData().getString("host"));
+                    parametrosJSON.put("port", getInputData().getInt("port",22));
+                    parametrosJSON.put("serverName", getInputData().getString("serverName"));
+                    parametrosJSON.put("oldServerName", getInputData().getString("oldServerName"));
+                    parametrosJSON.put("userName", getInputData().getString("userName"));
+                } else if (action.equals("register")) {
+                    Log.i("register", "register_input");
+                    parametrosJSON.put("user", getInputData().getString("user"));
+                    parametrosJSON.put("email", getInputData().getString("email"));
+                    parametrosJSON.put("password", getInputData().getString("password"));
+                } else if (action.equals("login")) {
+                    parametrosJSON.put("user", getInputData().getString("user"));
+                    parametrosJSON.put("password", getInputData().getString("password"));
+                } else if (action.equals("user")) {
+                    parametrosJSON.put("email", getInputData().getString("email"));
+                } else if (action.equals("scripts")) {
+                    parametrosJSON.put("user", getInputData().getString("user"));
+                } else if (action.equals("addScript")) {
+                    parametrosJSON.put("user", getInputData().getString("user"));
+                    parametrosJSON.put("name", getInputData().getString("name"));
+                    parametrosJSON.put("cmd", getInputData().getString("cmd"));
+                } else if (action.equals("deleteScript")) {
+                    Log.i("script", "elimino");
+                    parametrosJSON.put("user", getInputData().getString("user"));
+                    parametrosJSON.put("name", getInputData().getString("name"));
+                    parametrosJSON.put("cmd", getInputData().getString("cmd"));
+                } else if (action.equals("deleteUser")) {
+                    parametrosJSON.put("user", getInputData().getString("user"));
                 }
+                urlConnection.setRequestProperty("Content-Type","application/json");
+                PrintWriter out = new PrintWriter(urlConnection.getOutputStream());
+                out.print(parametrosJSON.toString());
+                out.close();
             }
 
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
         } catch (IOException | JSONException e) {
             e.printStackTrace();
         }

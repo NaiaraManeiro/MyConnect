@@ -5,12 +5,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingLeft="20dp"
+    android:paddingTop="20dp"
+    android:paddingRight="20dp">
 
-
-    <ImageView
-        android:id="@+id/imageView5"
+    <TextView
+        android:id="@+id/textView2"
+        style="@style/Texto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/wifi" />
+        android:text="@string/perdidaConexion" />
 </LinearLayout>

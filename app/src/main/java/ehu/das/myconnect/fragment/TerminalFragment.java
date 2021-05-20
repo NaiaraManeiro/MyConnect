@@ -30,10 +30,9 @@ import ehu.das.myconnect.service.SSHWorker;
 
 public class TerminalFragment extends Fragment implements PasswordListener {
 
-    public TerminalFragment() {
-        // Required empty public constructor
-    }
+    private boolean keyPem = false;
 
+    public TerminalFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,8 +49,15 @@ public class TerminalFragment extends Fragment implements PasswordListener {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        if (ServerListFragment.selectedServer.getPem() == 1) {
+            keyPem = true;
+        }
+
         TextView textView = getActivity().findViewById(R.id.userHost);
         textView.setText(ServerListFragment.selectedServer.getUser() + "@" + ServerListFragment.selectedServer.getHost());
+        TextView terminalPath = getActivity().findViewById(R.id.terminalPath);
+        terminalPath.setText("/home/"+ ServerListFragment.selectedServer.getUser());
         EditText cmdInput = getActivity().findViewById(R.id.cmdInput);
         Button runButton = getActivity().findViewById(R.id.runCmdButton);
         TextView tv = getActivity().findViewById(R.id.resultArea);
@@ -108,6 +114,7 @@ public class TerminalFragment extends Fragment implements PasswordListener {
                 .putString("host", ServerListFragment.selectedServer.getHost())
                 .putString("password", ServerListFragment.selectedServer.getPassword())
                 .putInt("port", ServerListFragment.selectedServer.getPort())
+                .putBoolean("keyPem", keyPem)
                 .build();
         OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(SSHWorker.class)
                 .setInputData(data)

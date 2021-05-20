@@ -16,6 +16,7 @@
 
         <TextView
             android:id="@+id/textView5"
+            style="@style/Texto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="2dp"
@@ -23,15 +24,14 @@
 
         <EditText
             android:id="@+id/addScriptName"
+            style="@style/EditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/border"
-            android:ems="10"
             android:hint="@string/add_script_name_hint"
             android:inputType="textPersonName"
             android:padding="4dp"
-            android:theme="@style/EditTextColor"
-            android:textSize="12sp" />
+            android:theme="@style/EditTextColor" />
 
         <TextView
             android:id="@+id/textView8"
@@ -40,6 +40,7 @@
 
         <TextView
             android:id="@+id/textView7"
+            style="@style/Texto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="2dp"
@@ -47,14 +48,13 @@
 
         <EditText
             android:id="@+id/addScriptCmd"
+            style="@style/EditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/border"
-            android:ems="10"
             android:hint="@string/add_script_enter_command_hint"
             android:inputType="textPersonName"
             android:padding="4dp"
-            android:theme="@style/EditTextColor"
-            android:textSize="12sp" />
+            android:theme="@style/EditTextColor" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

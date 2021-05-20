@@ -53,6 +53,7 @@ public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<S
     private List<String> scriptCmds = new ArrayList<>();
     private String scriptName;
     private String cmd;
+    private boolean keyPem = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,6 +65,11 @@ public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<S
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_scripts, container, false);
+
+        if (ServerListFragment.selectedServer.getPem() == 1) {
+            keyPem = true;
+        }
+
         Data data = new Data.Builder()
                 .putString("action", "scripts")
                 .putString("script", "scripts.php")
@@ -220,10 +226,7 @@ public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<S
     public void execCmd(String cmd) {
         Data data = new Data.Builder()
                 .putString("action", cmd)
-                .putString("user", ServerListFragment.selectedServer.getUser())
-                .putString("host", ServerListFragment.selectedServer.getHost())
-                .putString("password", ServerListFragment.selectedServer.getPassword())
-                .putInt("port", ServerListFragment.selectedServer.getPort())
+                .putBoolean("keyPem", keyPem)
                 .build();
         OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(SSHWorker.class)
                 .setInputData(data)
@@ -232,8 +235,8 @@ public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<S
                 .observe(getActivity(), status -> {
                     if (status != null && status.getState().isFinished()) {
                         String result = status.getOutputData().getString("result");
-                        String success = status.getOutputData().getString("result");
-                        String failed = status.getOutputData().getString("result");
+                        String success = status.getOutputData().getString("success");
+                        String failed = status.getOutputData().getString("fail");
                         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
                         if (prefs.getBoolean("notify_script", true)) {
                             if (failed.trim().equals("") && !success.trim().equals("")) {

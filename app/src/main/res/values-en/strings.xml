@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">MyConnect</string>
     <string name="usuario">User</string>
     <string name="puerto">Port</string>
     <string name="nombreServidor">Server name</string>
@@ -9,7 +8,7 @@
     <string name="contrasena">Password</string>
     <string name="servidorExistente">That server name already exists, think another one.</string>
     <string name="servidorCreado">Server created!</string>
-    <string name="authFail">Authentication error, chech the data.</string>
+    <string name="connectRefused">Connection refused, chech the server connection.</string>
     <string name="usuarioVacio">The user can\'t be empty.</string>
     <string name="contraVacia">The password can\'t be empty.</string>
     <string name="servidorVacio">The server name can\'t be empty.</string>
@@ -19,7 +18,7 @@
     <string name="edit">Edit</string>
     <string name="saveData">Save data</string>
     <string name="nuevaContra">New password</string>
-    <string name="eliminarServer">Do you want to delete the server?</string>
+    <string name="eliminarServer">Are you sure you want to delete the server?</string>
     <string name="serverInfo">Server data:</string>
     <string name="volver">Back</string>
     <string name="servidorEditado">Server data has been updated!</string>
@@ -37,34 +36,20 @@
     <string name="selectOption">Don\'t forget to choose what you want to create!</string>
     <string name="folderCreated">The folder has been created!</string>
     <string name="fileCreated">The file has been created!</string>
-    <string name="username_or_email">username or email</string>
+    <string name="username_or_email">Username or email</string>
     <string name="authSuccessful">Authentication successful</string>
     <string name="sudo_password">Enter sudo password</string>
     <string name="languages">Language</string>
     <string name="notify_script">Notify script result</string>
     <string name="access_password">Access with password</string>
-    <string name="title_activity_main">MainActivity</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
-    <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
-    <string name="path">path</string>
-    <string name="file">files</string>
-    <string name="scripts">scripts</string>
-    <string name="monitoring">monitoring</string>
     <string name="back">..</string>
     <string name="command">command:</string>
     <string name="output">output:</string>
     <string name="run">run</string>
-    <string name="search">search</string>
+    <string name="search">Search</string>
     <string name="add_script">Add script</string>
     <string name="add_script_name">Choose a name</string>
-    <string name="add_script_name_hint">name</string>
+    <string name="add_script_name_hint">Name</string>
     <string name="add_script_enter_command">Enter the command:</string>
     <string name="add_script_enter_command_hint">cmd</string>
     <string name="add">Add</string>
@@ -72,13 +57,12 @@
     <string name="forgot_password">Forgot your password?</string>
     <string name="password">password</string>
     <string name="server_list_user">User:</string>
-    <string name="server_list_host">Host:</string>
     <string name="command_no_dots">command</string>
     <string name="servers">Servers</string>
-    <string name="username">usernmae</string>
-    <string name="repeat_password">repeat password</string>
-    <string name="signup">singup</string>
-    <string name="login">login</string>
+    <string name="username">Username</string>
+    <string name="repeat_password">Repeat password</string>
+    <string name="signup">Singup</string>
+    <string name="login">Login</string>
     <string name="register">Register</string>
     <string name="or">OR</string>
     <string name="insert_email_username">\"Insert an email or a username\"</string>
@@ -108,7 +92,6 @@
     <string name="sure_delete_account">Are you sure you want to delete your account?</string>
     <string name="server_connection_lost">Notificar conexión perdida con el servidor</string>
     <string name="server_connect_added">Server must connect to be added</string>
-    <string name="connection_lost">El servidor debe estar accesible para poder añadirlo</string>
     <string name="wrongPath">The writen path doesn\'t exist.</string>
     <string name="bigFile">The file is too big, download it to see complete,</string>
     <string name="saveDownload">Choose where to download the file:</string>
@@ -125,4 +108,18 @@
     <string name="imageFile">The file data can\'t be shown.</string>
     <string name="badFileType">The type of file can\'t be uploaded.</string>
     <string name="notPem">Choosen file is not a \'.pem\'.</string>
+    <string name="settings">settings</string>
+    <string name="disconnect">disconnect</string>
+    <string name="pemButton">Obtain .pem</string>
+    <string name="accessPem">Access with a .pem file</string>
+    <string name="editWithPassword">Edit with password</string>
+    <string name="editWithPem">Edit with a .pem file</string>
+    <string name="file">Files</string>
+    <string name="conexion">Do you want to check the conexion now?</string>
+    <string name="removeServer">Remove server</string>
+    <string name="connection_lost">Connection lost</string>
+    <string name="perdidaConexion">The connection with the server has been lost, please chech that everything is okey.</string>
+    <string name="hostUnreachable">The host is unreachable, check if the data is okey.</string>
+    <string name="authFail">Failed authentication.</string>
+    <string name="noPassword">Don\'t forget to add the password o the .pem file!</string>
 </resources>
