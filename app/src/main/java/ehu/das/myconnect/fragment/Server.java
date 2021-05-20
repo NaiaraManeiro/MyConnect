@@ -6,12 +6,14 @@ public class Server {
     private final String host;
     private final int port;
     private String password;
+    private final int pem;
 
-    public Server (String name, String user, String host, int port) {
+    public Server (String name, String user, String host, int port, int pem) {
         this.name = name;
         this.user = user;
         this.host = host;
         this.port = port;
+        this.pem = pem;
     }
 
     public String getName() {
@@ -37,4 +39,6 @@ public class Server {
     public String getPassword() {
         return password;
     }
+
+    public int getPem() { return this.pem; }
 }

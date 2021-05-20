@@ -17,8 +17,8 @@ import ehu.das.myconnect.fragment.ServerManagmentFragment;
 
 public class ServerListReducedAdapter extends RecyclerView.Adapter<ServerListReducedElementViewHolder> {
 
-    private List<Server> servers;
-    private Server connectedServer;
+    private final List<Server> servers;
+    private final Server connectedServer;
     public ServerManagmentFragment fragment;
 
     public ServerListReducedAdapter(List<Server> servers, Server connectedServer, ServerManagmentFragment fragment) {

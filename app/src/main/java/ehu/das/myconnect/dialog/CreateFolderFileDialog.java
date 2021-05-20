@@ -2,6 +2,7 @@ package ehu.das.myconnect.dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import ehu.das.myconnect.R;
+import ehu.das.myconnect.fragment.ILoading;
 import ehu.das.myconnect.fragment.ServerListFragment;
 import ehu.das.myconnect.service.SSHWorker;
 
@@ -29,6 +31,8 @@ public class CreateFolderFileDialog extends DialogFragment {
     public View view;
     private String action = "";
     public OnDialogDismiss<String> onDialogDismiss;
+    private boolean keyPem = false;
+    public ILoading loadingListener;
 
     @NonNull
     @Override
@@ -45,10 +49,13 @@ public class CreateFolderFileDialog extends DialogFragment {
             path = bundle.getString("path");
         }
 
-        Button create = vw.findViewById(R.id.createButton);
-        create.setOnClickListener(new View.OnClickListener() {
+        if (ServerListFragment.selectedServer.getPem() == 1) {
+            keyPem = true;
+        }
+
+        builder.setPositiveButton(getString(R.string.create), new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(DialogInterface dialog, int which) {
                 EditText nameBox = vw.findViewById(R.id.newName);
                 String name = nameBox.getText().toString();
                 RadioGroup rg = vw.findViewById(R.id.options);
@@ -63,8 +70,11 @@ public class CreateFolderFileDialog extends DialogFragment {
                         action = "touch " + path + "/" + name;
                     }
 
+                    loadingListener.startLoading();
+
                     Data data = new Data.Builder()
                             .putString("action", action)
+                            .putBoolean("keyPem", keyPem)
                             .build();
 
                     OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(SSHWorker.class)
@@ -78,8 +88,8 @@ public class CreateFolderFileDialog extends DialogFragment {
                                     } else if (action.equals("touch")) {
                                         Toast.makeText(getContext(), getString(R.string.fileCreated), Toast.LENGTH_SHORT).show();
                                     }
+                                    loadingListener.stopLoading();
                                     dismiss();
-
                                     onDialogDismiss.onDismiss(path);
                                 }
                             });
@@ -88,10 +98,9 @@ public class CreateFolderFileDialog extends DialogFragment {
             }
         });
 
-        Button back = vw.findViewById(R.id.volverNewButton);
-        back.setOnClickListener(new View.OnClickListener() {
+        builder.setNegativeButton(getString(R.string.back), new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(DialogInterface dialog, int which) {
                 dismiss();
             }
         });

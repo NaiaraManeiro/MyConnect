@@ -86,7 +86,6 @@ public class DialogoAccessPassword extends DialogFragment {
                                         ServerListFragment.selectedServer = ServerListFragment.serverList.get(position);
                                         serverManagmentFragment.recreateFragment();
                                     }
-                                    //Toast.makeText(getActivity(), getResources().getString(R.string.authSuccessful), Toast.LENGTH_LONG).show();
                                 }
                                 loadingListener.stopLoading();
                             }

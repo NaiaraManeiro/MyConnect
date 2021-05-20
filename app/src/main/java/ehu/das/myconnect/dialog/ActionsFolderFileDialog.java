@@ -2,6 +2,7 @@ package ehu.das.myconnect.dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -22,6 +23,8 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import ehu.das.myconnect.R;
+import ehu.das.myconnect.fragment.ILoading;
+import ehu.das.myconnect.fragment.ServerListFragment;
 import ehu.das.myconnect.service.SSHWorker;
 
 public class ActionsFolderFileDialog extends DialogFragment {
@@ -31,6 +34,8 @@ public class ActionsFolderFileDialog extends DialogFragment {
     private String fileType;
     private String command;
     public OnDialogDismiss<String> onDialogDismiss;
+    private boolean keyPem = false;
+    public ILoading loadingListener;
 
     @NonNull
     @Override
@@ -47,6 +52,10 @@ public class ActionsFolderFileDialog extends DialogFragment {
             path = bundle.getString("path");
             name = bundle.getString("name");
             fileType = bundle.getString("fileType");
+        }
+
+        if (ServerListFragment.selectedServer.getPem() == 1) {
+            keyPem = true;
         }
 
         String completePath = path + "/" + name;
@@ -93,6 +102,8 @@ public class ActionsFolderFileDialog extends DialogFragment {
         action.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                loadingListener.startLoading();
+
                 String name = action.getText().toString();
                 command = "";
                 if (name.equals("Eliminar") || name.equals("Delete")) {
@@ -101,13 +112,16 @@ public class ActionsFolderFileDialog extends DialogFragment {
                     } else if (fileType.equals("file")) {
                         command = "rm " + completePath;
                     }
+                    executeCommand(command);
                 } else if (name.equals("Editar") || name.equals("Edit")) {
                     command = "mv " + completePath + " " + path + "/" + nameFileFolder.getText().toString();
+                    executeCommand(command);
                 } else {
                     String pathMoveCopy = pathToAction.getText().toString();
                     //Primero comprobamos si el path existe
                     Data data = new Data.Builder()
                             .putString("action", "[ -d "+ pathMoveCopy +" ] && echo 'existe'")
+                            .putBoolean("keyPem", keyPem)
                             .build();
                     OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(SSHWorker.class)
                             .setInputData(data)
@@ -134,27 +148,9 @@ public class ActionsFolderFileDialog extends DialogFragment {
                                                     command = "cp " + completePath + " " + pathMove;
                                                 }
                                             }
+                                            executeCommand(command);
                                         }
                                     }
-                                }
-                            });
-                    WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
-                }
-
-                if (!command.equals("")) {
-                    Data data = new Data.Builder()
-                            .putString("action", command)
-                            .build();
-
-                    OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(SSHWorker.class)
-                            .setInputData(data)
-                            .build();
-                    WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(otwr.getId())
-                            .observe(getActivity(), status -> {
-                                if (status != null && status.getState().isFinished()) {
-                                    dismiss();
-
-                                    onDialogDismiss.onDismiss(path);
                                 }
                             });
                     WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
@@ -162,10 +158,9 @@ public class ActionsFolderFileDialog extends DialogFragment {
             }
         });
 
-        Button back = actionsLayout.findViewById(R.id.backActions);
-        back.setOnClickListener(new View.OnClickListener() {
+        alertDialog.setNegativeButton(getString(R.string.back), new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(DialogInterface dialog, int which) {
                 dismiss();
             }
         });
@@ -173,5 +168,27 @@ public class ActionsFolderFileDialog extends DialogFragment {
         alertDialog.setView(actionsLayout);
 
         return alertDialog.create();
+    }
+
+    private void executeCommand(String command) {
+        if (!command.equals("")) {
+            Data data = new Data.Builder()
+                    .putString("action", command)
+                    .putBoolean("keyPem", keyPem)
+                    .build();
+
+            OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(SSHWorker.class)
+                    .setInputData(data)
+                    .build();
+            WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(otwr.getId())
+                    .observe(getActivity(), status -> {
+                        if (status != null && status.getState().isFinished()) {
+                            loadingListener.stopLoading();
+                            dismiss();
+                            onDialogDismiss.onDismiss(path);
+                        }
+                    });
+            WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
+        }
     }
 }

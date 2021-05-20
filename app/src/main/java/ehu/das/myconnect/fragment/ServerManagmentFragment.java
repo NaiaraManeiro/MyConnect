@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import ehu.das.myconnect.R;
+import ehu.das.myconnect.dialog.DialogAccessPem;
 import ehu.das.myconnect.dialog.DialogoAccessPassword;
 import ehu.das.myconnect.dialog.LoadingDialog;
 import ehu.das.myconnect.dialog.OnDialogOptionPressed;
@@ -108,6 +109,21 @@ public class ServerManagmentFragment extends Fragment implements OnDialogOptionP
         d.loadingListener = this;
         d.position = position;
         d.show(getActivity().getSupportFragmentManager(),"");
+        /*if (selectedServer.getPem() == 0) {
+            DialogoAccessPassword d = new DialogoAccessPassword();
+            d.scriptAddListener = this;
+            d.recreate = true;
+            d.loadingListener = this;
+            d.position = position;
+            d.show(getActivity().getSupportFragmentManager(),"");
+        } else {
+            DialogAccessPem d = new DialogAccessPem();
+            d.scriptAddListener = this;
+            d.recreate = true;
+            d.loadingListener = this;
+            d.position = position;
+            d.show(getActivity().getSupportFragmentManager(),"");
+        }*/
     }
 
     public void recreateFragment() {

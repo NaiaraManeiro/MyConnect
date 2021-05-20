@@ -30,6 +30,8 @@ import ehu.das.myconnect.service.SSHWorker;
 
 public class TerminalFragment extends Fragment implements PasswordListener {
 
+    private boolean keyPem = false;
+
     public TerminalFragment() {
         // Required empty public constructor
     }
@@ -50,6 +52,11 @@ public class TerminalFragment extends Fragment implements PasswordListener {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        if (ServerListFragment.selectedServer.getPem() == 1) {
+            keyPem = true;
+        }
+
         TextView textView = getActivity().findViewById(R.id.userHost);
         textView.setText(ServerListFragment.selectedServer.getUser() + "@" + ServerListFragment.selectedServer.getHost());
         EditText cmdInput = getActivity().findViewById(R.id.cmdInput);
@@ -108,6 +115,7 @@ public class TerminalFragment extends Fragment implements PasswordListener {
                 .putString("host", ServerListFragment.selectedServer.getHost())
                 .putString("password", ServerListFragment.selectedServer.getPassword())
                 .putInt("port", ServerListFragment.selectedServer.getPort())
+                .putBoolean("keyPem", keyPem)
                 .build();
         OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(SSHWorker.class)
                 .setInputData(data)

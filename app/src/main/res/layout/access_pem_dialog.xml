@@ -15,14 +15,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <EditText
-            android:id="@+id/passwordAccess"
-            style="@style/EditText"
+        <Button
+            android:id="@+id/pemButton"
+            style="@style/Buttons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/password"
-            android:inputType="textPassword"
-            android:theme="@style/EditTextColor" />
+            android:text="@string/pemButton"
+            app:strokeWidth="2dp" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

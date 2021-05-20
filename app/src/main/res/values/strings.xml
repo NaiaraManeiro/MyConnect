@@ -1,27 +1,26 @@
 <resources>
-    <string name="app_name">MyConnect</string>
+    <string name="app_name" translatable="false">MyConnect</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="title_activity_main">MainActivity</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
+    <string name="title_activity_main" translatable="false">MainActivity</string>
+    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
+    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
+    <string name="nav_header_title" translatable="false">Android Studio</string>
+    <string name="nav_header_subtitle" translatable="false">android.studio@android.com</string>
+    <string name="nav_header_desc" translatable="false">Navigation header</string>
+    <string name="action_settings" translatable="false">Settings</string>
 
-    <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
-    <string name="scripts">scripts</string>
-    <string name="monitoring">monitoreo</string>
+    <string name="menu_home" translatable="false">Home</string>
+    <string name="menu_gallery" translatable="false">Gallery</string>
+    <string name="menu_slideshow" translatable="false">Slideshow</string>
+    <string name="scripts" translatable="false">Scripts</string>
     <string name="back">..</string>
     <string name="command">comando:</string>
     <string name="output">salida:</string>
     <string name="run">ejecutar</string>
-    <string name="search">buscar</string>
+    <string name="search">Buscar</string>
     <string name="add_script">Añadir script</string>
     <string name="add_script_name">Elige un nombre</string>
-    <string name="add_script_name_hint">nombre</string>
+    <string name="add_script_name_hint">Nombre</string>
     <string name="add_script_enter_command">Introduce el comando:</string>
     <string name="add_script_enter_command_hint">cmd</string>
     <string name="add">Añadir</string>
@@ -35,8 +34,8 @@
     <string name="contrasena">Contraseña</string>
     <string name="servidorExistente">Ese nombre de servidor ya existe, piense en otro.</string>
     <string name="servidorCreado">¡Servidor creado!</string>
-    <string name="path">path</string>
-    <string name="file">file</string>
+    <string name="path" translatable="false">Path</string>
+    <string name="file">Archivos</string>
     <string name="authFail">Error de autenticación, compruebe los datos.</string>
     <string name="usuarioVacio">El usuario no puede estar vacío.</string>
     <string name="contraVacia">La contraseña no puede estar vacía</string>
@@ -66,19 +65,19 @@
     <string name="folderCreated">La carpeta se ha creado!</string>
     <string name="fileCreated">El archivo ha sido creado!</string>
     <string name="access_password">Acceder con contraseña</string>
-    <string name="username_or_email">usuario o email</string>
+    <string name="username_or_email">Usuario o email</string>
     <string name="authSuccessful">Auntenticación con éxito</string>
     <string name="sudo_password">Introduce contraseña sudo</string>
     <string name="languages">Idioma</string>
     <string name="notify_script">Notificar resultado del script</string>
     <string name="password">Contraseña</string>
     <string name="server_list_user">Usuario:</string>
-    <string name="server_list_host">Host:</string>
+    <string name="server_list_host" translatable="false">Host:</string>
     <string name="command_no_dots">comando</string>
     <string name="servers">Servidores</string>
-    <string name="username">nombre de usuario</string>
-    <string name="repeat_password">repite contraseña</string>
-    <string name="signup">registrarse</string>
+    <string name="username">Nombre de usuario</string>
+    <string name="repeat_password">Repite contraseña</string>
+    <string name="signup">Registrarse</string>
     <string name="login">Iniciar sesión</string>
     <string name="register">Registro</string>
     <string name="or">O</string>
@@ -135,4 +134,11 @@
     <string name="notPem">El archivo escogido no es un \'.pem\'.</string>
     <string name="settings">configuración</string>
     <string name="disconnect">desconectarse</string>
+    <string name="pemButton">Obtener .pem</string>
+    <string name="accessPem">Acceder con un fichero .pem</string>
+    <string name="editWithPassword">Editar con contraseña</string>
+    <string name="editWithPem">Editar con un fichero .pem</string>
+    <string name="keyPem" translatable="false">Key .pem</string>
+    <string name="email" translatable="false">Email</string>
+    <string name="terminal" translatable="false">Terminal</string>
 </resources>

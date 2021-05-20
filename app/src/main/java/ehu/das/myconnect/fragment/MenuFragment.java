@@ -29,11 +29,8 @@ public class MenuFragment extends Fragment {
     private ViewPagerAdapter pagerAdapter;
     private int[] tabs = {R.id.filesFragment, R.id.terminalTab, R.id.terminalTab};
     private ArrayList<Integer> tabsLayout;
-    public MenuFragment() {
-        // Required empty public constructor
-    }
 
-
+    public MenuFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
