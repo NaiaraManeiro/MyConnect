@@ -152,4 +152,5 @@
     <string name="scriptNameInvalidLong">El nombre del script tiene que tener menos de 255 caracteres</string>
     <string name="scriptNameInsert">Introduce un nombre para el script</string>
     <string name="scriptCmdInsert">Introduce un comando</string>
+    <string name="insertUsername">Insert a username</string>
 </resources>
