@@ -213,6 +213,11 @@ public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<S
 
     }
 
+    @Override
+    public void notifyError(String string) {
+        Toast.makeText(getContext(), string, Toast.LENGTH_SHORT).show();
+    }
+
     public void executeScript(String cmd, String scriptName) {
         this.scriptName = scriptName;
         this.cmd = cmd;

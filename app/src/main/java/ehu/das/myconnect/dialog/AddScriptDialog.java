@@ -32,7 +32,16 @@ public class AddScriptDialog extends DialogFragment {
         alertDialog.setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                scriptAddListener.onYesPressed(scriptName.getText().toString(), scriptCmd.getText().toString());
+                if (scriptName.getText().toString().trim().length() == 0) {
+                    scriptAddListener.notifyError(getResources().getString(R.string.scriptNameInsert));
+                }
+                else if (scriptName.getText().toString().length() > 255) {
+                    scriptAddListener.notifyError(getResources().getString(R.string.scriptNameInvalidLong));
+                } else if (scriptCmd.getText().toString().trim().length() == 0) {
+                    scriptAddListener.notifyError(getResources().getString(R.string.scriptCmdInsert));
+                } else {
+                    scriptAddListener.onYesPressed(scriptName.getText().toString(), scriptCmd.getText().toString());
+                }
             }
         });
         alertDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

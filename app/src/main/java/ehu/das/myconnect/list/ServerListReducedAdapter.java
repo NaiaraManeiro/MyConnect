@@ -43,9 +43,9 @@ public class ServerListReducedAdapter extends RecyclerView.Adapter<ServerListRed
         // holder.name.setText("ander");
         holder.serverCircle.setImageResource(R.drawable.circle);
         if (servers.get(position).equals(connectedServer)) {
-            holder.serverCircle.setColorFilter(Color.GREEN);
+            holder.serverCircle.setColorFilter(Color.rgb(27, 209, 27));
         } else {
-            holder.serverCircle.setColorFilter(Color.RED);
+            holder.serverCircle.setColorFilter(Color.rgb(209, 61, 27));
         }
         holder.itemView.setOnClickListener(v ->
         {
