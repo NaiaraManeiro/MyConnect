@@ -46,6 +46,6 @@ public class LoadingDialog extends DialogFragment {
     public void onResume() {
         super.onResume();
         Window window = getDialog().getWindow();
-        window.setLayout(800, 800);
+        window.setLayout(800, 700);
     }
 }
