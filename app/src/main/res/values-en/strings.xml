@@ -18,7 +18,7 @@
     <string name="edit">Edit</string>
     <string name="saveData">Save data</string>
     <string name="nuevaContra">New password</string>
-    <string name="eliminarServer">Do you want to delete the server?</string>
+    <string name="eliminarServer">Are you sure you want to delete the server?</string>
     <string name="serverInfo">Server data:</string>
     <string name="volver">Back</string>
     <string name="servidorEditado">Server data has been updated!</string>
@@ -115,4 +115,5 @@
     <string name="editWithPem">Edit with a .pem file</string>
     <string name="file">Files</string>
     <string name="conexion">Do you want to check the conexion now?</string>
+    <string name="removeServer">Remove server</string>
 </resources>
