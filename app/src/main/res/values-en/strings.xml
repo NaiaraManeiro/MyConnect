@@ -123,4 +123,5 @@
     <string name="authFail">Failed authentication.</string>
     <string name="noPassword">Don\'t forget to add the password o the .pem file!</string>
     <string name="changeName">Change name</string>
+    <string name="exit">Exit</string>
 </resources>
