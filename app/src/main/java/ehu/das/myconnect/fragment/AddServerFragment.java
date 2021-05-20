@@ -114,7 +114,7 @@ public class AddServerFragment extends Fragment {
                 //Validamos los datos
                 if (user.equals("")) {
                     Toast.makeText(getContext(), getString(R.string.usuarioVacio), Toast.LENGTH_SHORT).show();
-                } else if (!Pattern.compile("^([0-9]{1,3})\\.([0-9]{1,3})\\.([0-9]{1,3})\\.([0-9]{1,3})$").matcher(host).matches()) {
+                } else if (!Pattern.compile("^([0-9]{1,3})\\.([0-9]{1,3})\\.([0-9]{1,3})\\.([0-9]{1,3})$").matcher(host).matches() || !Pattern.compile("^((?!-)[A-Za-z0-9-]{1,63}(?<!-)\\\\.)+[A-Za-z]{2,6}$").matcher(host).matches()) {
                     Toast.makeText(getContext(), getString(R.string.hostPattern), Toast.LENGTH_SHORT).show();
                     hostBox.setText("");
                 } else if (password.equals("") && !keyPemSwitch.isChecked()) {
@@ -123,6 +123,9 @@ public class AddServerFragment extends Fragment {
                     Toast.makeText(getContext(), getString(R.string.servidorVacio), Toast.LENGTH_SHORT).show();
                 } else if (server.length() > 20) {
                     Toast.makeText(getContext(), getString(R.string.servidorLargo), Toast.LENGTH_SHORT).show();
+                    portBox.setText("");
+                } else if (port > 65535) {
+                    Toast.makeText(getContext(), getString(R.string.invalidPort), Toast.LENGTH_SHORT).show();
                 } else {
                     boolean keyPem = keyPemSwitch.isChecked();
 

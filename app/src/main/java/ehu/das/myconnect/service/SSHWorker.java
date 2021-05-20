@@ -33,13 +33,13 @@ public class SSHWorker  extends Worker {
             e.printStackTrace();
         }
 
-        String result = "";
+        String[] resultM = new String[]{"",""};
         if (exception.contains("Auth fail")) {
-            result = "authFail";
+            resultM[0] = "authFail";
         } else if (exception.contains("failed to")) {
-            result = "failConnect";
+            resultM[0] = "failConnect";
         }
-        String[] resultM = new String[]{};
+
         if (!exception.contains("Auth fail") && !exception.contains("failed to")) {
             try {
                 if (command.equals("")) {

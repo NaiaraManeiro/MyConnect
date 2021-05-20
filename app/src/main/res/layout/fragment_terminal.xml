@@ -46,6 +46,7 @@
 
                 <TextView
                     android:id="@+id/textView9"
+                    style="@style/Texto"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
