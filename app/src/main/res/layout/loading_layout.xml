@@ -8,7 +8,7 @@
     <pl.droidsonroids.gif.GifTextView
         android:id="@+id/gifTextView2"
         android:layout_width="match_parent"
-        android:layout_height="258dp"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:background="@drawable/loading"
         android:src="@drawable/loading" />
