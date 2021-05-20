@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -52,6 +53,14 @@ public class ActionsFolderFileDialog extends DialogFragment {
             path = bundle.getString("path");
             name = bundle.getString("name");
             fileType = bundle.getString("fileType");
+        }
+
+        ImageView typeFile = getActivity().findViewById(R.id.fileTypeImagen);
+
+        if (fileType.equals("folder")) {
+            typeFile.setBackgroundResource(R.drawable.folder);
+        } else if (fileType.equals("file")) {
+            typeFile.setBackgroundResource(R.drawable.file);
         }
 
         if (ServerListFragment.selectedServer.getPem() == 1) {

@@ -1,6 +1,5 @@
 package ehu.das.myconnect.service;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 
@@ -9,7 +8,6 @@ import androidx.work.Data;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-import ehu.das.myconnect.fragment.FilesFragment;
 import ehu.das.myconnect.fragment.ServerListFragment;
 
 public class SSHConnectionWorker extends Worker {

@@ -15,7 +15,6 @@ import ehu.das.myconnect.fragment.ServerListFragment;
 
 public class SSHWorker  extends Worker {
 
-    private String result = "";
     private String exception = "";
 
     public SSHWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
@@ -34,6 +33,7 @@ public class SSHWorker  extends Worker {
             e.printStackTrace();
         }
 
+        String result = "";
         if (exception.contains("Auth fail")) {
             result = "authFail";
         } else if (exception.contains("failed to")) {

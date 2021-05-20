@@ -174,16 +174,15 @@ public class FilesFragment extends Fragment implements OnClickRecycleView, OnDia
                 TextView oldPath = getActivity().findViewById(R.id.path);
                 String pathText = oldPath.getText().toString();
                 String newPath = pathText.substring(0, pathText.lastIndexOf("/"));
-                if (newPath.equals("")) {
-                    newPath = pathText;
+                if (!newPath.equals("")) {
+                    oldPath.setText(newPath);
+                    path = newPath;
+                    Data data = new Data.Builder()
+                            .putString("action", "ls -l "+newPath)
+                            .putBoolean("keyPem", keyPem)
+                            .build();
+                    showData(data);
                 }
-                oldPath.setText(newPath);
-                path = newPath;
-                Data data = new Data.Builder()
-                        .putString("action", "ls -l "+newPath)
-                        .putBoolean("keyPem", keyPem)
-                        .build();
-                showData(data);
             }
         });
 

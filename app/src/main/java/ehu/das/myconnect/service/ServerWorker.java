@@ -36,7 +36,7 @@ public class ServerWorker extends Worker {
         if (script == null) {
             script = "servidor.php";
         }
-        String direccion = "http://ec2-54-167-31-169.compute-1.amazonaws.com/nmaneiro001/WEB/MyConnect/" + script;
+        String direccion = "http://ec2-54-242-79-204.compute-1.amazonaws.com/nmaneiro001/WEB/MyConnect/" + script;
         Log.i("register", direccion);
         HttpURLConnection urlConnection = null;
         String action = getInputData().getString("action");
