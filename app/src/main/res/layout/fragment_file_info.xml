@@ -17,7 +17,7 @@
             android:background="@drawable/down_border_with_background"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
-            app:menu="@menu/global_menu"
+            app:menu="@menu/file_info_menu"
             app:subtitleTextColor="#FFFFFF"
             app:title="@string/app_name"
             app:titleTextColor="#FFFFFF" />

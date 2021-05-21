@@ -26,6 +26,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
@@ -82,7 +83,7 @@ public class FileInfoFragment extends Fragment implements ILoading {
         if (ServerListFragment.selectedServer.getPem() == 1) {
             keyPem = true;
         }
-        ((AppCompatActivity) getActivity()).setSupportActionBar(getActivity().findViewById(R.id.labarra));
+        //((AppCompatActivity) getActivity()).setSupportActionBar(getActivity().findViewById(R.id.labarra));
         save = getActivity().findViewById(R.id.saveFileButton);
         save.setVisibility(View.INVISIBLE);
         file = getActivity().findViewById(R.id.fileText);
@@ -173,38 +174,15 @@ public class FileInfoFragment extends Fragment implements ILoading {
             }
         });
 
-        Button back = getActivity().findViewById(R.id.volverFile);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(v).popBackStack();
-            }
+        ActionMenuItemView iv = getActivity().findViewById(R.id.download);
+        iv.setOnClickListener(v -> {
+            //Para descargar un fichero del servidor ha nuestro teléfono
+            Intent intent = new Intent(getContext(), FolderPicker.class);
+            startActivityForResult(intent, COD_NUEVO_FICHERO);
         });
 
-    }
-
-    //Creación del menú
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.file_info_menu, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Realiza la acción seleccionada
-        ILoading iLoading = this;
-        int id = item.getItemId();
-        if (id == R.id.eliminar) {
-            RemoveDialog removeDialog = new RemoveDialog();
-            removeDialog.loadingListener = iLoading;
-            Bundle bundle = new Bundle();
-            removeDialog.view = getView();
-            bundle.putString("path", path);
-            bundle.putString("where", "file");
-            removeDialog.setArguments(bundle);
-            removeDialog.show(getActivity().getSupportFragmentManager(), "eliminar");
-        } if (id == R.id.edit) {
+        ActionMenuItemView iv1 = getActivity().findViewById(R.id.edit);
+        iv1.setOnClickListener(v -> {
             if (image.equals("")) {
                 if (save.getVisibility() == View.VISIBLE) {
                     save.setVisibility(View.INVISIBLE);
@@ -214,12 +192,30 @@ public class FileInfoFragment extends Fragment implements ILoading {
                     file.setEnabled(true);
                 }
             }
-        } if (id == R.id.download) {
-            //Para descargar un fichero del servidor ha nuestro teléfono
-            Intent intent = new Intent(getContext(), FolderPicker.class);
-            startActivityForResult(intent, COD_NUEVO_FICHERO);
-        }
-        return super.onOptionsItemSelected(item);
+        });
+
+        ILoading iLoading = this;
+
+        ActionMenuItemView iv2 = getActivity().findViewById(R.id.eliminar);
+        iv2.setOnClickListener(v -> {
+            RemoveDialog removeDialog = new RemoveDialog();
+            removeDialog.loadingListener = iLoading;
+            Bundle bundle = new Bundle();
+            removeDialog.view = getView();
+            bundle.putString("path", path);
+            bundle.putString("where", "file");
+            removeDialog.setArguments(bundle);
+            removeDialog.show(getActivity().getSupportFragmentManager(), "eliminar");
+        });
+
+        Button back = getActivity().findViewById(R.id.volverFile);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).popBackStack();
+            }
+        });
+
     }
 
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
