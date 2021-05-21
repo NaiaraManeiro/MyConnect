@@ -18,12 +18,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import ehu.das.myconnect.R;
-import ehu.das.myconnect.dialog.LoadingDialog;
-import ehu.das.myconnect.dialog.PasswordListener;
+import ehu.das.myconnect.interfaces.PasswordListener;
 import ehu.das.myconnect.dialog.SudoPasswordDialog;
 import ehu.das.myconnect.service.SSHWorker;
 
@@ -48,14 +44,13 @@ public class TerminalFragment extends Fragment implements PasswordListener {
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        // Simula una terminal interactiva
         super.onActivityCreated(savedInstanceState);
-
         if (ServerListFragment.selectedServer.getPem() == 1) {
             keyPem = true;
         }
-
         TextView textView = getActivity().findViewById(R.id.userHost);
-        textView.setText(ServerListFragment.selectedServer.getUser() + "@" + ServerListFragment.selectedServer.getHost());
+        textView.setText(ServerListFragment.selectedServer.getUser() + "@" + ServerListFragment.selectedServer.getHost() + ":");
         TextView terminalPath = getActivity().findViewById(R.id.terminalPath);
         terminalPath.setText("/home/"+ ServerListFragment.selectedServer.getUser());
         EditText cmdInput = getActivity().findViewById(R.id.cmdInput);
@@ -85,26 +80,21 @@ public class TerminalFragment extends Fragment implements PasswordListener {
 
     @Override
     public void passPassword(String password) {
+        // Obtiene la contraseña sudo y al añade al comando
         EditText cmdInput = getActivity().findViewById(R.id.cmdInput);
         execCmd("echo " + password + " | " + cmdInput.getText().toString().replace("sudo", "sudo -S "));
     }
 
     @SuppressLint("NewApi")
     public void execCmd(String cmd) {
+        // Ejecuta el comando en el servidor
         Button runButton = getActivity().findViewById(R.id.runCmdButton);
         TextView terminalPath = getActivity().findViewById(R.id.terminalPath);
-        String path = terminalPath.getText().toString().substring(1);
+        String path = terminalPath.getText().toString();
         if (cmd.contains("ls")) {
             cmd = cmd.replace("ls", "ls " + path);
         }
         if (cmd.contains("cd")) {
-            String[] cmds = cmd.trim().split(" ");
-            ArrayList<String> cmd_arraylist = new ArrayList<>(Arrays.asList(cmds));
-            int idx = cmd_arraylist.indexOf("cd");
-            if (cmds.length > 1 && !cmds[idx + 1].substring(0,1).equals("/")) {
-                cmds[idx + 1] = path + "/" + cmds[idx + 1];
-                cmd = String.join(" ", cmds);
-            }
             cmd += " & pwd";
         }
         TextView tv = getActivity().findViewById(R.id.resultArea);
@@ -127,8 +117,8 @@ public class TerminalFragment extends Fragment implements PasswordListener {
                         String error = status.getOutputData().getString("fail");
                         System.out.println(success);
                         if (finalCmd.contains("cd")) {
-                            String[] lines = success.split("\n");
-                            terminalPath.setText(":" + lines[lines.length-1]);
+                            String[] lines = success.split("&");
+                            terminalPath.setText(lines[lines.length - 1]);
                         }
                         else {
                             if (error.contains("[sudo] password")) {
@@ -147,5 +137,4 @@ public class TerminalFragment extends Fragment implements PasswordListener {
                 });
         WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
     }
-
 }

@@ -12,8 +12,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,9 +21,10 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import ehu.das.myconnect.R;
-import ehu.das.myconnect.fragment.ILoading;
+import ehu.das.myconnect.interfaces.ILoading;
 import ehu.das.myconnect.fragment.LoginFragment;
 import ehu.das.myconnect.fragment.ServerListFragment;
+import ehu.das.myconnect.interfaces.OnDialogDismiss;
 import ehu.das.myconnect.service.ServerWorker;
 
 public class DialogPem extends DialogFragment {
@@ -44,15 +43,13 @@ public class DialogPem extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        // Sirve para editar un servidor cuando la conexión se realiza mediante un archivo pem
         super.onCreateDialog(savedInstanceState);
-
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(getResources().getString(R.string.editWithPem));
         builder.setIcon(R.drawable.password);
-
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View vista = inflater.inflate(R.layout.access_pem_dialog, null);
-
         Bundle bundle = getArguments();
         if (bundle != null) {
             serverName = bundle.getString("serverName");
@@ -60,13 +57,10 @@ public class DialogPem extends DialogFragment {
             host = bundle.getString("host");
             port = bundle.getInt("port");
         }
-
         String oldServerName = ServerListFragment.selectedServer.getName();
         String username = LoginFragment.username;
-
         Button pemButton = vista.findViewById(R.id.pemButton);
-
-        //Para obtener el archivo pem
+        // Para obtener el archivo pem
         pemButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,12 +69,11 @@ public class DialogPem extends DialogFragment {
                 startActivityForResult(chooseFile, PICKFILE_RESULT_CODE);
             }
         });
-
         builder.setPositiveButton(getResources().getString(R.string.edit), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 loadingListener.startLoading();
-                //Editamos los datos a la bd en caso de que se pueda realizar el ssh
+                // Editamos los datos a la bd en caso de que se pueda realizar el ssh
                 Data datos = new Data.Builder()
                         .putString("action", "editServer")
                         .putString("user", user)
@@ -91,7 +84,6 @@ public class DialogPem extends DialogFragment {
                         .putString("userName", username)
                         .putString("password", key)
                         .build();
-
                 OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(ServerWorker.class)
                         .setInputData(datos)
                         .build();
@@ -125,13 +117,12 @@ public class DialogPem extends DialogFragment {
     }
 
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        // Obtiene la ubicación del pem
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICKFILE_RESULT_CODE && resultCode == Activity.RESULT_OK) {
             if (data != null) {
                 Uri uri = data.getData();
-
                 String uri2 = getPath(getContext(), uri);
-
                 if (uri2 != null) {
                     if (uri2.contains(".pem")) {
                         key = uri2;
@@ -146,14 +137,15 @@ public class DialogPem extends DialogFragment {
     }
     @Nullable
     public static String getPath(Context context, Uri uri) {
+        // Obtiene el path a partir de una uri
         if ("content".equalsIgnoreCase(uri.getScheme())) {
             return getDataColumn(context, uri, null, null);
-
         }
         return null;
     }
 
     public static String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
+        // Usar content resolver para obtener el path a partir de una uri
         Cursor cursor = null;
         final String column = "_data";
         final String[] projection = {column};

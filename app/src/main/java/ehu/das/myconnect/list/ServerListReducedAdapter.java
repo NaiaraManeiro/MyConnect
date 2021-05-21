@@ -15,6 +15,9 @@ import ehu.das.myconnect.dialog.DialogoAccessPassword;
 import ehu.das.myconnect.fragment.Server;
 import ehu.das.myconnect.fragment.ServerManagmentFragment;
 
+/**
+ * Adaptador de la lista reducida de servidores del serverManagmentFragment
+ */
 public class ServerListReducedAdapter extends RecyclerView.Adapter<ServerListReducedElementViewHolder> {
 
     private final List<Server> servers;
@@ -43,9 +46,9 @@ public class ServerListReducedAdapter extends RecyclerView.Adapter<ServerListRed
         // holder.name.setText("ander");
         holder.serverCircle.setImageResource(R.drawable.circle);
         if (servers.get(position).equals(connectedServer)) {
-            holder.serverCircle.setColorFilter(Color.GREEN);
+            holder.serverCircle.setColorFilter(Color.rgb(27, 209, 27));
         } else {
-            holder.serverCircle.setColorFilter(Color.RED);
+            holder.serverCircle.setColorFilter(Color.rgb(209, 61, 27));
         }
         holder.itemView.setOnClickListener(v ->
         {

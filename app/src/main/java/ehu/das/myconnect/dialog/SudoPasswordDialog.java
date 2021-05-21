@@ -11,15 +11,9 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.navigation.Navigation;
-import androidx.work.Data;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkManager;
 
 import ehu.das.myconnect.R;
-import ehu.das.myconnect.fragment.Server;
-import ehu.das.myconnect.fragment.ServerListFragment;
-import ehu.das.myconnect.service.SSHConnectionWorker;
+import ehu.das.myconnect.interfaces.PasswordListener;
 
 public class SudoPasswordDialog extends DialogFragment {
 
@@ -28,6 +22,7 @@ public class SudoPasswordDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        // Dialogo que pide la contraseña de superusuario y la añade al comando
         super.onCreateDialog(savedInstanceState);
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
         alert.setTitle(getResources().getString(R.string.sudo_password));

@@ -10,6 +10,9 @@ import androidx.work.WorkerParameters;
 
 import ehu.das.myconnect.fragment.ServerListFragment;
 
+/**
+ * Worker que realiza la conexión ssh al servidor y indica si se ha conectado con éxito
+ */
 public class SSHConnectionWorker extends Worker {
 
     public SSHConnectionWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {

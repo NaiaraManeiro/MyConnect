@@ -8,8 +8,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ehu.das.myconnect.R;
-import ehu.das.myconnect.dialog.OnClickRecycleView;
+import ehu.das.myconnect.interfaces.OnClickRecycleView;
 
+/**
+ * Cada elemento de la listad e archivos
+ */
 public class FileListElementViewHolder extends RecyclerView.ViewHolder {
 
     public TextView name;

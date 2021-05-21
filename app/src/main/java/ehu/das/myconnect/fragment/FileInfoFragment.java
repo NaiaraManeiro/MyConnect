@@ -26,6 +26,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
@@ -37,12 +38,14 @@ import java.io.File;
 import java.util.Arrays;
 
 import ehu.das.myconnect.R;
+import ehu.das.myconnect.dialog.ConnectionLostDialog;
 import ehu.das.myconnect.dialog.LoadingDialog;
 import ehu.das.myconnect.dialog.RemoveDialog;
+import ehu.das.myconnect.interfaces.ILoading;
 import ehu.das.myconnect.service.SSHWorker;
 import lib.folderpicker.FolderPicker;
 
-public class FileInfoFragment extends Fragment implements ILoading{
+public class FileInfoFragment extends Fragment implements ILoading {
 
     private String path;
     private Button save;
@@ -70,34 +73,27 @@ public class FileInfoFragment extends Fragment implements ILoading{
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        // Fragment para ver el contenido de un archivo
         super.onActivityCreated(savedInstanceState);
-
         Bundle extras = this.getArguments();
         if (extras != null) {
             path = extras.getString("path");
             image = extras.getString("image");
         }
-
         if (ServerListFragment.selectedServer.getPem() == 1) {
             keyPem = true;
         }
-
-        ((AppCompatActivity) getActivity()).setSupportActionBar(getActivity().findViewById(R.id.labarra));
-
+        //((AppCompatActivity) getActivity()).setSupportActionBar(getActivity().findViewById(R.id.labarra));
         save = getActivity().findViewById(R.id.saveFileButton);
         save.setVisibility(View.INVISIBLE);
         file = getActivity().findViewById(R.id.fileText);
         file.setEnabled(false);
-
         TextView filePath = getActivity().findViewById(R.id.filePath);
         filePath.setText(path);
         filePath.setMovementMethod(new ScrollingMovementMethod());
-
         fileName = path.substring(path.lastIndexOf("/")+1);
-
         if (image.equals("")) {
             startLoading();
-
             //Mostramos el texto del archivo
             Data data = new Data.Builder()
                     .putString("action", "cat " + path)
@@ -115,9 +111,8 @@ public class FileInfoFragment extends Fragment implements ILoading{
                             if (result.equals("authFail")) {
                                 Toast.makeText(getContext(), getString(R.string.connectRefused), Toast.LENGTH_LONG).show();
                             } else if (result.equals("failConnect")) {
-                                Toast.makeText(getContext(), getString(R.string.sshFailConnect), Toast.LENGTH_LONG).show();
-                            } else if (result.equals("hostUnreachable")) {
-                                Toast.makeText(getContext(), getString(R.string.hostUnreachable), Toast.LENGTH_LONG).show();
+                                ConnectionLostDialog connectionLostDialog = new ConnectionLostDialog();
+                                connectionLostDialog.show(getActivity().getSupportFragmentManager(), "lost");                            } else if (result.equals("hostUnreachable")) {
                             } else {
                                 String[] lines = result.split(",");
                                 if (lines[0].equals("error")) {
@@ -135,13 +130,12 @@ public class FileInfoFragment extends Fragment implements ILoading{
 
             WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
         } else if (image.equals("image")) {
-            File image = new File(path);
+            file.setText(R.string.imageFile);
+            /*File image = new File(path);
             BitmapFactory.Options bmOptions = new BitmapFactory.Options();
             Bitmap bitmap = BitmapFactory.decodeFile(image.getAbsolutePath(),bmOptions);
             Drawable d = new BitmapDrawable(getResources(), bitmap);
-            file.setBackground(d);
-        } else {
-            file.setText(R.string.imageFile);
+            file.setBackground(d);*/
         }
 
         //Cuando se quieren guardar los cambios realizados en el archivo
@@ -166,7 +160,8 @@ public class FileInfoFragment extends Fragment implements ILoading{
                                 if (result.equals("authFail")) {
                                     Toast.makeText(getContext(), getString(R.string.connectRefused), Toast.LENGTH_LONG).show();
                                 } else if (result.equals("failConnect")) {
-                                    Toast.makeText(getContext(), getString(R.string.sshFailConnect), Toast.LENGTH_LONG).show();
+                                    ConnectionLostDialog connectionLostDialog = new ConnectionLostDialog();
+                                    connectionLostDialog.show(getActivity().getSupportFragmentManager(), "lost");
                                 } else if (result.equals("hostUnreachable")) {
                                     Toast.makeText(getContext(), getString(R.string.hostUnreachable), Toast.LENGTH_LONG).show();
                                 } else {
@@ -179,6 +174,40 @@ public class FileInfoFragment extends Fragment implements ILoading{
             }
         });
 
+        ActionMenuItemView iv = getActivity().findViewById(R.id.download);
+        iv.setOnClickListener(v -> {
+            //Para descargar un fichero del servidor ha nuestro teléfono
+            Intent intent = new Intent(getContext(), FolderPicker.class);
+            startActivityForResult(intent, COD_NUEVO_FICHERO);
+        });
+
+        ActionMenuItemView iv1 = getActivity().findViewById(R.id.edit);
+        iv1.setOnClickListener(v -> {
+            if (image.equals("")) {
+                if (save.getVisibility() == View.VISIBLE) {
+                    save.setVisibility(View.INVISIBLE);
+                    file.setEnabled(false);
+                } else {
+                    save.setVisibility(View.VISIBLE);
+                    file.setEnabled(true);
+                }
+            }
+        });
+
+        ILoading iLoading = this;
+
+        ActionMenuItemView iv2 = getActivity().findViewById(R.id.eliminar);
+        iv2.setOnClickListener(v -> {
+            RemoveDialog removeDialog = new RemoveDialog();
+            removeDialog.loadingListener = iLoading;
+            Bundle bundle = new Bundle();
+            removeDialog.view = getView();
+            bundle.putString("path", path);
+            bundle.putString("where", "file");
+            removeDialog.setArguments(bundle);
+            removeDialog.show(getActivity().getSupportFragmentManager(), "eliminar");
+        });
+
         Button back = getActivity().findViewById(R.id.volverFile);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -189,55 +218,13 @@ public class FileInfoFragment extends Fragment implements ILoading{
 
     }
 
-    //Creación del menú
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.file_info_menu, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        ILoading iLoading = this;
-        int id = item.getItemId();
-        if (id == R.id.eliminar) {
-            RemoveDialog removeDialog = new RemoveDialog();
-            removeDialog.loadingListener = iLoading;
-            Bundle bundle = new Bundle();
-            removeDialog.view = getView();
-            bundle.putString("path", path);
-            bundle.putString("where", "file");
-            removeDialog.setArguments(bundle);
-            removeDialog.show(getActivity().getSupportFragmentManager(), "eliminar");
-        } if (id == R.id.edit) {
-            if (image.equals("")) {
-                if (save.getVisibility() == View.VISIBLE) {
-                    save.setVisibility(View.INVISIBLE);
-                    file.setEnabled(false);
-                } else {
-                    save.setVisibility(View.VISIBLE);
-                    file.setEnabled(true);
-                }
-            }
-        } if (id == R.id.download) {
-            //Para descargar un fichero del servidor ha nuestro teléfono
-            Intent intent = new Intent(getContext(), FolderPicker.class);
-            startActivityForResult(intent, COD_NUEVO_FICHERO);
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        // Obtiene el path en el que se va a descargar el fichero
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == COD_NUEVO_FICHERO && resultCode == Activity.RESULT_OK) {
             if (data != null) {
-
                 String folderLocation = data.getExtras().getString("data");
-
                 startLoading();
-
                 Data data1 = new Data.Builder()
                         .putString("action", "")
                         .putString("from", path)
@@ -264,7 +251,6 @@ public class FileInfoFragment extends Fragment implements ILoading{
                                     elCanal.enableLights(true);
                                     elManager.createNotificationChannel(elCanal);
                                 }
-
                                 elManager.notify(1, elBuilder.build());
                             }
                         });
@@ -275,12 +261,14 @@ public class FileInfoFragment extends Fragment implements ILoading{
     }
 
     public void startLoading() {
+        // Inicia la pantalla de carga
         loadingDialog = new LoadingDialog();
         loadingDialog.setCancelable(false);
         loadingDialog.show(getActivity().getSupportFragmentManager(), "loading");
     }
 
     public void stopLoading() {
+        // Quita la pantalla de carga
         loadingDialog.dismiss();
     }
 }

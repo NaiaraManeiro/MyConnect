@@ -15,12 +15,8 @@
         android:persistent="true"
         android:title="@string/server_connect_added"
         app:persistent="true" />
-    <SwitchPreference
-        android:defaultValue="true"
-        android:key="switch_preference_1"
-        android:title="@string/server_connection_lost" />
     <ListPreference
-        android:defaultValue="true"
+        android:defaultValue="0"
         android:entries="@array/languages"
         android:entryValues="@array/languages"
         android:key="language"

@@ -77,6 +77,7 @@
                     android:id="@+id/textView11"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-smallcaps"
                     android:gravity="center"
                     android:text="@string/register"
                     android:textColor="#FFFFFF"
@@ -116,9 +117,7 @@
 
                     <ImageView
                         android:id="@+id/imageView"
-                        android:layout_width="114dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
+                        style="@style/icon"
                         android:src="@drawable/account" />
 
                     <EditText
@@ -142,9 +141,7 @@
 
                     <ImageView
                         android:id="@+id/imageView6"
-                        android:layout_width="114dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
+                        style="@style/icon"
                         android:src="@drawable/email" />
 
                     <EditText
@@ -178,9 +175,7 @@
 
                     <ImageView
                         android:id="@+id/imageView2"
-                        android:layout_width="114dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
+                        style="@style/icon"
                         android:src="@drawable/password" />
 
                     <EditText
@@ -206,9 +201,7 @@
 
                     <ImageView
                         android:id="@+id/imageView3"
-                        android:layout_width="114dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
+                        style="@style/icon"
                         android:src="@drawable/password" />
 
                     <EditText
@@ -248,14 +241,14 @@
 
                 <TextView
                     android:id="@+id/textView20"
+                    style="@style/Texto"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
                     android:layout_weight="1"
                     android:background="@android:color/transparent"
                     android:gravity="center"
-                    android:text="@string/or"
-                    android:textColor="#000000" />
+                    android:text="@string/or" />
 
                 <Button
                     android:id="@+id/login_register"

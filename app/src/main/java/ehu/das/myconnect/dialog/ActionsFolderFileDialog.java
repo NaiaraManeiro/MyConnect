@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,8 +23,9 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import ehu.das.myconnect.R;
-import ehu.das.myconnect.fragment.ILoading;
+import ehu.das.myconnect.interfaces.ILoading;
 import ehu.das.myconnect.fragment.ServerListFragment;
+import ehu.das.myconnect.interfaces.OnDialogDismiss;
 import ehu.das.myconnect.service.SSHWorker;
 
 public class ActionsFolderFileDialog extends DialogFragment {
@@ -44,6 +44,7 @@ public class ActionsFolderFileDialog extends DialogFragment {
         super.onCreateDialog(savedInstanceState);
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+        alertDialog.setTitle(getString(R.string.actionToDo));
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View actionsLayout = inflater.inflate(R.layout.dialog_actions, null);
@@ -56,7 +57,7 @@ public class ActionsFolderFileDialog extends DialogFragment {
         }
 
         ImageView typeFile = actionsLayout.findViewById(R.id.fileTypeImagen);
-
+        // Elige el icono en función de si es una carpeta o un fichero
         if (fileType.equals("folder")) {
             typeFile.setBackgroundResource(R.drawable.folder);
         } else if (fileType.equals("file")) {
@@ -82,28 +83,32 @@ public class ActionsFolderFileDialog extends DialogFragment {
 
         RadioGroup actions = actionsLayout.findViewById(R.id.actions);
         actions.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            // Actualiza el nombre del boton en funcion de la acción a realizar
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 RadioButton checkedRadioButton = group.findViewById(checkedId);
-                String name = checkedRadioButton.getText().toString();
+                String nameB = checkedRadioButton.getText().toString();
                 action.setEnabled(true);
-                if (name.equals("Eliminar") || name.equals("Delete")) {
+                if (nameB.equals("Eliminar") || nameB.equals("Delete")) {
                     action.setText(R.string.eliminar);
                     pathToAction.setEnabled(false);
-                } else if (name.equals("Editar") || name.equals("Edit")) {
+                    nameFileFolder.setText(name);
+                } else if (nameB.contains("Cambiar") || nameB.contains("Change")) {
                     action.setText(R.string.edit);
                     pathToAction.setEnabled(false);
                     nameFileFolder.setEnabled(true);
-                } else if (name.equals("Mover") || name.equals("Move")) {
+                } else if (nameB.contains("Mover") || nameB.contains("Move")) {
                     action.setText(R.string.move);
                     pathToAction.setHint(R.string.moveTo);
                     pathToAction.setEnabled(true);
                     nameFileFolder.setEnabled(false);
-                } else if (name.equals("Copiar") || name.equals("Copy")) {
+                    nameFileFolder.setText(name);
+                } else if (nameB.contains("Copiar") || nameB.contains("Copy")) {
                     action.setText(R.string.copy);
                     pathToAction.setHint(R.string.copyTo);
                     pathToAction.setEnabled(true);
                     nameFileFolder.setEnabled(false);
+                    nameFileFolder.setText(name);
                 }
             }
         });
@@ -111,20 +116,22 @@ public class ActionsFolderFileDialog extends DialogFragment {
         action.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Realiza las acciones sobre los ficheros
                 loadingListener.startLoading();
-
-                String name = action.getText().toString();
+                String nameF = action.getText().toString();
                 command = "";
-                if (name.equals("Eliminar") || name.equals("Delete")) {
+                if (nameF.equals("Eliminar") || nameF.equals("Delete")) {
                     if (fileType.equals("folder")) {
                         command = "rm -r " + completePath;
                     } else if (fileType.equals("file")) {
                         command = "rm " + completePath;
                     }
                     executeCommand(command);
-                } else if (name.equals("Editar") || name.equals("Edit")) {
-                    command = "mv " + completePath + " " + path + "/" + nameFileFolder.getText().toString();
+                } else if (nameF.equals("Editar") || nameF.equals("Edit")) {
+                    String nff = nameFileFolder.getText().toString();
+                    command = "mv " + completePath + " " + path + "/" + nff;
                     executeCommand(command);
+                    name = nff;
                 } else {
                     String pathMoveCopy = pathToAction.getText().toString();
                     //Primero comprobamos si el path existe
@@ -139,6 +146,7 @@ public class ActionsFolderFileDialog extends DialogFragment {
                             .observe(getActivity(), status -> {
                                 if (status != null && status.getState().isFinished()) {
                                     String result = status.getOutputData().getString("result");
+                                    loadingListener.stopLoading();
                                     if (!result.equals("existe")) {
                                         pathToAction.setText("");
                                         pathToAction.setHint(R.string.noPath);
@@ -148,15 +156,16 @@ public class ActionsFolderFileDialog extends DialogFragment {
                                             TextView text = actionsLayout.findViewById(R.id.completePath);
                                             text.setTextColor(Color.RED);
                                         } else {
-                                            if (name.equals("Mover") || name.equals("Move")) {
+                                            if (nameF.equals("Mover") || nameF.equals("Move")) {
                                                 command = "mv " + completePath + " " + pathMove;
-                                            } else if (name.equals("Copiar") || name.equals("Copy")) {
+                                            } else if (nameF.equals("Copiar") || nameF.equals("Copy")) {
                                                 if (fileType.equals("folder")) {
                                                     command = "cp -r " + completePath + " " + pathMove;
                                                 } else if (fileType.equals("file")) {
                                                     command = "cp " + completePath + " " + pathMove;
                                                 }
                                             }
+                                            loadingListener.startLoading();
                                             executeCommand(command);
                                         }
                                     }
@@ -180,6 +189,7 @@ public class ActionsFolderFileDialog extends DialogFragment {
     }
 
     private void executeCommand(String command) {
+        // Ejecuta un comando mediante worker
         if (!command.equals("")) {
             Data data = new Data.Builder()
                     .putString("action", command)

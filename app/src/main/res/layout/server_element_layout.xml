@@ -21,7 +21,9 @@
             style="@style/Texto"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:ellipsize="end"
             android:gravity="left"
+            android:maxLines="1"
             android:textColor="#050505"
             android:textSize="20sp" />
 
@@ -43,7 +45,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="left" />
+                android:ellipsize="end"
+                android:gravity="left"
+                android:maxLines="1" />
         </LinearLayout>
 
         <LinearLayout
@@ -63,7 +67,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="left" />
+                android:ellipsize="end"
+                android:gravity="left"
+                android:maxLines="1" />
         </LinearLayout>
 
     </LinearLayout>

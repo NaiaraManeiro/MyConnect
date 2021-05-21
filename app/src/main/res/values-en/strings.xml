@@ -13,7 +13,7 @@
     <string name="contraVacia">The password can\'t be empty.</string>
     <string name="servidorVacio">The server name can\'t be empty.</string>
     <string name="servidorLargo">The server name can\'t be longer than 20 letters.</string>
-    <string name="hostPattern">The host format has to be \'XXX.XXX.XXX.XXX\'.</string>
+    <string name="hostPattern">The host format it\'s wrong.</string>
     <string name="eliminar">Delete</string>
     <string name="edit">Edit</string>
     <string name="saveData">Save data</string>
@@ -28,7 +28,7 @@
     <string name="saveFile">Save file</string>
     <string name="fileUpdated">The file has been updated!</string>
     <string name="create">Create</string>
-    <string name="createFolderFile">Create a folder or a file:</string>
+    <string name="createFolderFile">Create a folder or a file</string>
     <string name="name">Name</string>
     <string name="folder">Folder</string>
     <string name="archivo">File</string>
@@ -118,8 +118,16 @@
     <string name="conexion">Do you want to check the conexion now?</string>
     <string name="removeServer">Remove server</string>
     <string name="connection_lost">Connection lost</string>
-    <string name="perdidaConexion">The connection with the server has been lost, please chech that everything is okey.</string>
+    <string name="perdidaConexion">The internet connection has been lost, please check that everything is okey.</string>
     <string name="hostUnreachable">The host is unreachable, check if the data is okey.</string>
     <string name="authFail">Failed authentication.</string>
     <string name="noPassword">Don\'t forget to add the password o the .pem file!</string>
+    <string name="changeName">Change name</string>
+    <string name="invalidPort">The maximun value accepted is 65535.</string>
+    <string name="exit">Exit</string>
+    <string name="scriptNameInvalidLong">Script name has to be shorter than 255 characters</string>
+    <string name="scriptNameInsert">Insert a script name</string>
+    <string name="scriptCmdInsert">Insert a command</string>
+    <string name="insertUsername">Insert a username</string>
+    <string name="actionToDo">Choose the action to make</string>
 </resources>

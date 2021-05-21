@@ -40,8 +40,8 @@ import java.util.List;
 import ehu.das.myconnect.R;
 import ehu.das.myconnect.dialog.AddScriptDialog;
 import ehu.das.myconnect.dialog.LoadingDialog;
-import ehu.das.myconnect.dialog.OnDialogOptionPressed;
-import ehu.das.myconnect.dialog.PasswordListener;
+import ehu.das.myconnect.interfaces.OnDialogOptionPressed;
+import ehu.das.myconnect.interfaces.PasswordListener;
 import ehu.das.myconnect.dialog.SudoPasswordDialog;
 import ehu.das.myconnect.list.ScriptListAdapter;
 import ehu.das.myconnect.service.SSHWorker;
@@ -69,11 +69,12 @@ public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<S
         if (ServerListFragment.selectedServer.getPem() == 1) {
             keyPem = true;
         }
-
+        // Obtiene los scripts y los añade a la lista
         Data data = new Data.Builder()
                 .putString("action", "scripts")
                 .putString("script", "scripts.php")
                 .putString("user", LoginFragment.username)
+                .putString("serverName", ServerListFragment.selectedServer.getName())
                 .build();
         OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(ServerWorker.class)
                 .setInputData(data)
@@ -121,10 +122,10 @@ public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<S
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
-
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // Buscador de scripts
                 if (!s.toString().trim().equals("")) {
                     ArrayList<String> names = new ArrayList<>();
                     ArrayList<String> cmds = new ArrayList<>();
@@ -144,7 +145,6 @@ public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<S
                     updateRV(getView(), scriptNames, scriptCmds);
                 }
             }
-
             @Override
             public void afterTextChanged(Editable s) {
 
@@ -163,6 +163,7 @@ public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<S
     }
 
     private void updateRV(View v, List<String> scriptNames, List<String> scriptCmds) {
+        // Actualiza la lista de scripts
         RecyclerView rv = v.findViewById(R.id.scriptRV);
         ScriptListAdapter scriptListAdapter = new ScriptListAdapter(scriptNames, scriptCmds);
         scriptListAdapter.fragment = this;
@@ -174,12 +175,14 @@ public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<S
 
     @Override
     public void onYesPressed(String data1, String data2) {
+        // Se añade el script en la interfaz y en la bd
         LoadingDialog loadingDialog = new LoadingDialog();
         loadingDialog.show(getActivity().getSupportFragmentManager(), "loading");
         Data data = new Data.Builder()
                 .putString("action", "addScript")
                 .putString("script", "add_script.php")
                 .putString("user", LoginFragment.username)
+                .putString("serverName", ServerListFragment.selectedServer.getName())
                 .putString("name", data1)
                 .putString("cmd", data2)
                 .build();
@@ -190,6 +193,7 @@ public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<S
                 .observe(getActivity(), status -> {
                     if (status != null && status.getState().isFinished()) {
                         String result = status.getOutputData().getString("result");
+                        Log.i("scripts", "add " + result);
                         if (result.equals("0")) {
                             scriptNames.add(data1);
                             scriptCmds.add(data2);
@@ -210,7 +214,14 @@ public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<S
 
     }
 
+    @Override
+    public void notifyError(String string) {
+        // Notifica error al añadir
+        Toast.makeText(getContext(), string, Toast.LENGTH_SHORT).show();
+    }
+
     public void executeScript(String cmd, String scriptName) {
+        // Ejecuta elemento de la lista scripts
         this.scriptName = scriptName;
         this.cmd = cmd;
         if (cmd.contains("sudo")) {
@@ -224,6 +235,7 @@ public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<S
     }
 
     public void execCmd(String cmd) {
+        // Ejecuta un comando
         Data data = new Data.Builder()
                 .putString("action", cmd)
                 .putBoolean("keyPem", keyPem)
@@ -251,6 +263,7 @@ public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<S
     }
 
     public void notifyResult(String scriptName, String result, boolean failed) {
+        // Notifica el resultado del comando
         NotificationManager elManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder elBuilder = new NotificationCompat.Builder(getContext(), "01");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -265,7 +278,7 @@ public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<S
         }
 
         PendingIntent intentEnNot = PendingIntent.getActivity(getContext(), 0, getActivity().getIntent(), 0);
-        elBuilder.setSmallIcon(R.drawable.add)
+        elBuilder.setSmallIcon(R.drawable.myconnect_icon)
                 .setContentText(result)
                 .setVibrate(new long[]{0, 1000, 500, 1000})
                 .setAutoCancel(true)
@@ -280,11 +293,13 @@ public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<S
     }
 
     public void deleteScript(String name, String cmd) {
+        // Elimina un script de la aplicación y de la bd
         LoadingDialog loadingDialog = new LoadingDialog();
         loadingDialog.show(getActivity().getSupportFragmentManager(), "loading");
         Data data = new Data.Builder()
                 .putString("action", "deleteScript")
                 .putString("script", "delete_script.php")
+                .putString("serverName", ServerListFragment.selectedServer.getName())
                 .putString("user", LoginFragment.username)
                 .putString("name", name)
                 .putString("cmd", cmd)
@@ -312,6 +327,7 @@ public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<S
 
     @Override
     public void passPassword(String password) {
+        // Obtiene la contraseña del dialog
         execCmd("echo " + password + " | " + this.cmd.replace("sudo", "sudo -S "));
     }
 

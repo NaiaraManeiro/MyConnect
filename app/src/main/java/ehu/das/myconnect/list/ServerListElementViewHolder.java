@@ -11,6 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import ehu.das.myconnect.R;
 
+/**
+ * Cada elemento de la lista de servidores
+ */
 public class ServerListElementViewHolder extends RecyclerView.ViewHolder {
 
     public TextView serverName;

@@ -1,5 +1,6 @@
 package ehu.das.myconnect.fragment;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.preference.PreferenceManager;
@@ -28,9 +30,11 @@ import ehu.das.myconnect.R;
 import ehu.das.myconnect.dialog.DialogPassword;
 import ehu.das.myconnect.dialog.DialogPem;
 import ehu.das.myconnect.dialog.LoadingDialog;
-import ehu.das.myconnect.dialog.OnDialogDismiss;
+import ehu.das.myconnect.interfaces.ILoading;
+import ehu.das.myconnect.interfaces.OnDialogDismiss;
 import ehu.das.myconnect.dialog.RemoveDialog;
 import ehu.das.myconnect.service.ServerWorker;
+import lib.folderpicker.FolderPicker;
 
 public class ServerInfoFragment extends Fragment implements OnDialogDismiss<String>, ILoading {
 
@@ -63,17 +67,15 @@ public class ServerInfoFragment extends Fragment implements OnDialogDismiss<Stri
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        // Muestra los datos del servidor
         super.onActivityCreated(savedInstanceState);
-
         conexion = getActivity().findViewById(R.id.checkBox);
         conexion.setText(getString(R.string.conexion));
         conexion.setVisibility(View.INVISIBLE);
-
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
         if (prefs.getBoolean("server_connnect", true)) {
             conexion.setChecked(true);
         }
-
         serveNameBox = getActivity().findViewById(R.id.nombreServidorInfo);
         serveNameBox.setEnabled(false);
         serverUserBox = getActivity().findViewById(R.id.usuarioInfo);
@@ -82,14 +84,11 @@ public class ServerInfoFragment extends Fragment implements OnDialogDismiss<Stri
         serverHostBox.setEnabled(false);
         serverPortBox = getActivity().findViewById(R.id.puertoInfo);
         serverPortBox.setEnabled(false);
-
         //Obtenemos los datos del servidor
         obtenerDatosServidor();
-
-        ((AppCompatActivity) getActivity()).setSupportActionBar(getActivity().findViewById(R.id.labarra));
+        //((AppCompatActivity) getActivity()).setSupportActionBar(getActivity().findViewById(R.id.labarra));
         edit = getActivity().findViewById(R.id.editarServidorInfo);
         edit.setVisibility(View.INVISIBLE);
-
         fragment = this;
         iLoading = this;
         edit.setOnClickListener(new View.OnClickListener() {
@@ -99,17 +98,19 @@ public class ServerInfoFragment extends Fragment implements OnDialogDismiss<Stri
                 String user = serverUserBox.getText().toString();
                 String host = serverHostBox.getText().toString();
                 int port = Integer.parseInt(serverPortBox.getText().toString());
-
                 //Validamos los datos
                 if (user.equals("")) {
                     Toast.makeText(getContext(), getString(R.string.usuarioVacio), Toast.LENGTH_SHORT).show();
-                } else if (!Pattern.compile("^([0-9]{1,3})\\.([0-9]{1,3})\\.([0-9]{1,3})\\.([0-9]{1,3})$").matcher(host).matches()) {
+                } else if (!Pattern.compile("^([0-9]{1,3})\\.([0-9]{1,3})\\.([0-9]{1,3})\\.([0-9]{1,3})$").matcher(host).matches() || !Pattern.compile("^((?!-)[A-Za-z0-9-]{1,63}(?<!-)\\\\.)+[A-Za-z]{2,6}$").matcher(host).matches()) {
                     Toast.makeText(getContext(), getString(R.string.hostPattern), Toast.LENGTH_SHORT).show();
                     serverHostBox.setText("");
                 } else if (name.equals("")) {
                     Toast.makeText(getContext(), getString(R.string.servidorVacio), Toast.LENGTH_SHORT).show();
                 } else if (name.length() > 20) {
                     Toast.makeText(getContext(), getString(R.string.servidorLargo), Toast.LENGTH_SHORT).show();
+                } else if (port > 65535) {
+                    Toast.makeText(getContext(), getString(R.string.invalidPort), Toast.LENGTH_SHORT).show();
+                    serverPortBox.setText("");
                 } else {
                     boolean checked = conexion.isChecked();
 
@@ -168,8 +169,40 @@ public class ServerInfoFragment extends Fragment implements OnDialogDismiss<Stri
             }
         });
 
+        ActionMenuItemView iv = getActivity().findViewById(R.id.edit2);
+        iv.setOnClickListener(v -> {
+            if (edit.getVisibility() == View.VISIBLE) {
+                edit.setVisibility(View.INVISIBLE);
+                conexion.setVisibility(View.INVISIBLE);
+                serveNameBox.setEnabled(false);
+                serverUserBox.setEnabled(false);
+                serverHostBox.setEnabled(false);
+                serverPortBox.setEnabled(false);
+            } else {
+                edit.setVisibility(View.VISIBLE);
+                conexion.setVisibility(View.VISIBLE);
+                serveNameBox.setEnabled(true);
+                serverUserBox.setEnabled(true);
+                serverHostBox.setEnabled(true);
+                serverPortBox.setEnabled(true);
+            }
+        });
+
+        ActionMenuItemView iv1 = getActivity().findViewById(R.id.eliminar2);
+        iv1.setOnClickListener(v -> {
+            RemoveDialog dialogoEliminar = new RemoveDialog();
+            dialogoEliminar.loadingListener = iLoading;
+            Bundle bundle = new Bundle();
+            dialogoEliminar.view = getView();
+            bundle.putString("serverName", ServerListFragment.selectedServer.getName());
+            bundle.putString("where", "server");
+            dialogoEliminar.setArguments(bundle);
+            dialogoEliminar.show(getActivity().getSupportFragmentManager(), "eliminar");
+        });
+
         Button back = getActivity().findViewById(R.id.volverInfo);
         back.setOnClickListener(new View.OnClickListener() {
+            // Volver atrás
             @Override
             public void onClick(View v) {
                 Navigation.findNavController(v).popBackStack();
@@ -178,7 +211,7 @@ public class ServerInfoFragment extends Fragment implements OnDialogDismiss<Stri
     }
 
     //Creación del menú
-    @Override
+  /*  @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.server_info_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
@@ -186,6 +219,7 @@ public class ServerInfoFragment extends Fragment implements OnDialogDismiss<Stri
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        // Al seleccionar una opción del servidor
         int id = item.getItemId();
         if (id == R.id.eliminar) {
             RemoveDialog dialogoEliminar = new RemoveDialog();
@@ -214,9 +248,10 @@ public class ServerInfoFragment extends Fragment implements OnDialogDismiss<Stri
             }
         }
         return super.onOptionsItemSelected(item);
-    }
+    } */
 
     private void obtenerDatosServidor() {
+        // Poner los datos del servidor en la interfaz
         serveNameBox.setText(ServerListFragment.selectedServer.getName());
         serverUserBox.setText(ServerListFragment.selectedServer.getUser());
         serverHostBox.setText(ServerListFragment.selectedServer.getHost());
@@ -240,12 +275,14 @@ public class ServerInfoFragment extends Fragment implements OnDialogDismiss<Stri
     }
 
     public void startLoading() {
+        // Poner pantalla de carga
         loadingDialog = new LoadingDialog();
         loadingDialog.setCancelable(false);
         loadingDialog.show(getActivity().getSupportFragmentManager(), "loading");
     }
 
     public void stopLoading() {
+        // Quitar pantalla de carga
         loadingDialog.dismiss();
     }
 }

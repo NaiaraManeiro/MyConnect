@@ -16,6 +16,9 @@ import ehu.das.myconnect.R;
 import ehu.das.myconnect.fragment.Server;
 import ehu.das.myconnect.fragment.ServerListFragment;
 
+/**
+ * Adaptador de la lista de servidores
+ */
 public class ServerListAdapter extends RecyclerView.Adapter<ServerListElementViewHolder> {
 
     public ServerListFragment fragment;

@@ -41,7 +41,7 @@
     <string name="contraVacia">La contraseña no puede estar vacía</string>
     <string name="servidorVacio">El nombre del servidor no puede estar vacío.</string>
     <string name="servidorLargo">El nombre del servidor no puede tener más de 20 letras.</string>
-    <string name="hostPattern">El host tiene que tener formato \'XXX.XXX.XXX.XXX\'.</string>
+    <string name="hostPattern">El formato del host es incorrecto.</string>
     <string name="eliminar">Eliminar</string>
     <string name="edit">Editar</string>
     <string name="saveData">Guardar datos</string>
@@ -56,7 +56,7 @@
     <string name="saveFile">Guardar archivo</string>
     <string name="fileUpdated">¡El archivo ha sido actualizado!</string>
     <string name="create">Crear</string>
-    <string name="createFolderFile">Crea una carpeta o un archivo:</string>
+    <string name="createFolderFile">Crea una carpeta o un archivo</string>
     <string name="name">Nombre</string>
     <string name="folder">Carpeta</string>
     <string name="archivo">Archivo</string>
@@ -143,8 +143,16 @@
     <string name="terminal" translatable="false">Terminal</string>
     <string name="conexion">¿Quiere comprobar la conexión ahora?</string>
     <string name="removeServer">Eliminar servidor</string>
-    <string name="perdidaConexion">Se ha perdido la conexión con el servidor, por favor compruebe que todo está bien.</string>
+    <string name="perdidaConexion">Se ha perdido la conexión a internet, por favor compruebe que todo está bien.</string>
     <string name="hostUnreachable">El host es inalcanzable, compruebe si es el correcto.</string>
     <string name="authFail">Autenticación fallida.</string>
     <string name="noPassword">¡Qué no se te olvide añadir la contraseña o el .pem!</string>
+    <string name="changeName">Cambiar nombre</string>
+    <string name="exit">Salir</string>
+    <string name="scriptNameInvalidLong">El nombre del script tiene que tener menos de 255 caracteres</string>
+    <string name="scriptNameInsert">Introduce un nombre para el script</string>
+    <string name="scriptCmdInsert">Introduce un comando</string>
+    <string name="insertUsername">Insert a username</string>
+    <string name="invalidPort">El valor máximo aceptado es 65535.</string>
+    <string name="actionToDo">Seleccione la acción a realizar</string>
 </resources>

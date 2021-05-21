@@ -26,13 +26,14 @@ public class ConnectionLostDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        // Dialogo para indicar la pérdida de conexión wifi
         super.onCreateDialog(savedInstanceState);
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
         alert.setTitle(getResources().getString(R.string.connection_lost));
         alert.setIcon(R.drawable.connection_lost);
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View loginServer = inflater.inflate(R.layout.connection_lost_layout, null);
-        alert.setNegativeButton("Exit", new DialogInterface.OnClickListener() {
+        alert.setNegativeButton(getResources().getString(R.string.exit), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 getActivity().finish();

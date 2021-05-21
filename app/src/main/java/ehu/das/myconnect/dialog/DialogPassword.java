@@ -6,22 +6,20 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.navigation.Navigation;
 import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import ehu.das.myconnect.R;
-import ehu.das.myconnect.fragment.ILoading;
+import ehu.das.myconnect.interfaces.ILoading;
 import ehu.das.myconnect.fragment.LoginFragment;
 import ehu.das.myconnect.fragment.ServerListFragment;
+import ehu.das.myconnect.interfaces.OnDialogDismiss;
 import ehu.das.myconnect.service.ServerWorker;
 
 public class DialogPassword extends DialogFragment {
@@ -37,15 +35,13 @@ public class DialogPassword extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        // Dialógo para editar con contraseña
         super.onCreateDialog(savedInstanceState);
-
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(getResources().getString(R.string.editWithPassword));
         builder.setIcon(R.drawable.password);
-
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View vista = inflater.inflate(R.layout.access_password_layout, null);
-
         Bundle bundle = getArguments();
         if (bundle != null) {
             serverName = bundle.getString("serverName");
@@ -53,16 +49,14 @@ public class DialogPassword extends DialogFragment {
             host = bundle.getString("host");
             port = bundle.getInt("port");
         }
-
         String oldServerName = ServerListFragment.selectedServer.getName();
         String username = LoginFragment.username;
-
         builder.setPositiveButton(getResources().getString(R.string.edit), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                // Modifica la contraseña en el servidor
                 EditText contraServidor = vista.findViewById(R.id.passwordAccess);
                 String contra = contraServidor.getText().toString();
-
                 loadingListener.startLoading();
                 //Editamos los datos a la bd en caso de que se pueda realizar el ssh
                 Data datos = new Data.Builder()
@@ -75,7 +69,6 @@ public class DialogPassword extends DialogFragment {
                         .putString("userName", username)
                         .putString("password", contra)
                         .build();
-
                 OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(ServerWorker.class)
                         .setInputData(datos)
                         .build();

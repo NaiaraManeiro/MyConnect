@@ -12,14 +12,6 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textNew"
-            style="@style/Texto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/createFolderFile" />
-
         <EditText
             android:id="@+id/newName"
             style="@style/EditText"
