@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,8 +23,9 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import ehu.das.myconnect.R;
-import ehu.das.myconnect.fragment.ILoading;
+import ehu.das.myconnect.interfaces.ILoading;
 import ehu.das.myconnect.fragment.ServerListFragment;
+import ehu.das.myconnect.interfaces.OnDialogDismiss;
 import ehu.das.myconnect.service.SSHWorker;
 
 public class ActionsFolderFileDialog extends DialogFragment {
@@ -56,7 +56,7 @@ public class ActionsFolderFileDialog extends DialogFragment {
         }
 
         ImageView typeFile = actionsLayout.findViewById(R.id.fileTypeImagen);
-
+        // Elige el icono en función de si es una carpeta o un fichero
         if (fileType.equals("folder")) {
             typeFile.setBackgroundResource(R.drawable.folder);
         } else if (fileType.equals("file")) {
@@ -82,6 +82,7 @@ public class ActionsFolderFileDialog extends DialogFragment {
 
         RadioGroup actions = actionsLayout.findViewById(R.id.actions);
         actions.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            // Actualiza el nombre del boton en funcion de la acción a realizar
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 RadioButton checkedRadioButton = group.findViewById(checkedId);
@@ -114,8 +115,8 @@ public class ActionsFolderFileDialog extends DialogFragment {
         action.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Realiza las acciones sobre los ficheros
                 loadingListener.startLoading();
-
                 String nameF = action.getText().toString();
                 command = "";
                 if (nameF.equals("Eliminar") || nameF.equals("Delete")) {
@@ -187,6 +188,7 @@ public class ActionsFolderFileDialog extends DialogFragment {
     }
 
     private void executeCommand(String command) {
+        // Ejecuta un comando mediante worker
         if (!command.equals("")) {
             Data data = new Data.Builder()
                     .putString("action", command)

@@ -25,11 +25,13 @@ import ehu.das.myconnect.dialog.DeleteUserDialog;
  public class MainActivity extends AppCompatActivity  {
 
      private ConnectionLostDialog connectionLostDialog;
+     // Clase anonima de receiver para cuando se cambia el estado de la conexion
      private BroadcastReceiver networkChangeReceiver = new BroadcastReceiver() {
          @Override
          public void onReceive(Context context, Intent intent) {
              if (!isConnectedToInternet(context)) {
                  Log.i("internet", "lost");
+                 // muestra dialog para indicar este caso
                  connectionLostDialog = new ConnectionLostDialog();
                  connectionLostDialog.setCancelable(false);
                  connectionLostDialog.show(getSupportFragmentManager(), "delete_user");
@@ -43,6 +45,7 @@ import ehu.das.myconnect.dialog.DeleteUserDialog;
              }
          }
 
+         // Comprueba si el dispositivo tiene conexion a internet
          public boolean isConnectedToInternet(Context context){
              ConnectivityManager connectivity = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
              if (connectivity != null)
@@ -64,6 +67,7 @@ import ehu.das.myconnect.dialog.DeleteUserDialog;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // Pide los permisos, a futuro ponerlos cuando se necesiten
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET)!=
                 PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET},

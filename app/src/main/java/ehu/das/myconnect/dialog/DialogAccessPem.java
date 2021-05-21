@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,10 +22,12 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import ehu.das.myconnect.R;
-import ehu.das.myconnect.fragment.ILoading;
+import ehu.das.myconnect.interfaces.ILoading;
 import ehu.das.myconnect.fragment.Server;
 import ehu.das.myconnect.fragment.ServerListFragment;
 import ehu.das.myconnect.fragment.ServerManagmentFragment;
+import ehu.das.myconnect.interfaces.OnDialogDismiss;
+import ehu.das.myconnect.interfaces.OnDialogOptionPressed;
 import ehu.das.myconnect.service.SSHConnectionWorker;
 
 public class DialogAccessPem extends DialogFragment {
@@ -46,15 +47,14 @@ public class DialogAccessPem extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        // Dialogo para acceder al servidor mediante un archivo pem
         super.onCreateDialog(savedInstanceState);
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
         alert.setTitle(getResources().getString(R.string.accessPem));
         alert.setIcon(R.drawable.password);
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View loginServer = inflater.inflate(R.layout.access_pem_dialog, null);
-
         Button pemButton = loginServer.findViewById(R.id.pemButton);
-
         //Para obtener el archivo pem
         pemButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,8 +64,8 @@ public class DialogAccessPem extends DialogFragment {
                 startActivityForResult(chooseFile, PICKFILE_RESULT_CODE);
             }
         });
-
         alert.setPositiveButton(getResources().getString(R.string.access), new DialogInterface.OnClickListener() {
+            // Realiza la conexión
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (!key.equals("")) {
@@ -73,8 +73,7 @@ public class DialogAccessPem extends DialogFragment {
                     loadingListener.startLoading();
                     Server old = ServerListFragment.selectedServer;
                     if (recreate) {
-                        ServerListFragment.selectedServer = ServerListFragment.serverList.get(position);
-                    }
+                        ServerListFragment.selectedServer = ServerListFragment.serverList.get(position); }
                     Data data = new Data.Builder()
                             .putString("user", ServerListFragment.selectedServer.getUser())
                             .putString("host", ServerListFragment.selectedServer.getHost())
@@ -123,6 +122,7 @@ public class DialogAccessPem extends DialogFragment {
     }
 
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        // Recibe la ubicación del archivo pem
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICKFILE_RESULT_CODE && resultCode == Activity.RESULT_OK) {
             if (data != null) {
@@ -144,6 +144,7 @@ public class DialogAccessPem extends DialogFragment {
     }
     @Nullable
     public static String getPath(Context context, Uri uri) {
+        // Convierte una uri en un path
         if ("content".equalsIgnoreCase(uri.getScheme())) {
             return getDataColumn(context, uri, null, null);
 
@@ -152,6 +153,7 @@ public class DialogAccessPem extends DialogFragment {
     }
 
     public static String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
+        // Utiliza content resolver para conocer el path a partir de una uri
         Cursor cursor = null;
         final String column = "_data";
         final String[] projection = {column};

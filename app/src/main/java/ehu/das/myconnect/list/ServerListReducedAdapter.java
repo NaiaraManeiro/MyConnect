@@ -15,6 +15,9 @@ import ehu.das.myconnect.dialog.DialogoAccessPassword;
 import ehu.das.myconnect.fragment.Server;
 import ehu.das.myconnect.fragment.ServerManagmentFragment;
 
+/**
+ * Adaptador de la lista reducida de servidores del serverManagmentFragment
+ */
 public class ServerListReducedAdapter extends RecyclerView.Adapter<ServerListReducedElementViewHolder> {
 
     private final List<Server> servers;

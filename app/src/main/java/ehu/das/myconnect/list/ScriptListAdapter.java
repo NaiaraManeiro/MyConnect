@@ -13,6 +13,9 @@ import java.util.List;
 import ehu.das.myconnect.R;
 import ehu.das.myconnect.fragment.ScriptsFragment;
 
+/**
+ * Adaptador para la lista de scripts
+ */
 public class ScriptListAdapter extends RecyclerView.Adapter<ScriptElementViewHolder> {
 
     public ScriptsFragment fragment;

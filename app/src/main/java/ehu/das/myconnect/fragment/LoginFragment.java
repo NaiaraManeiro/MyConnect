@@ -49,6 +49,7 @@ public class LoginFragment extends Fragment {
     }
 
     private void updateUI(FirebaseUser currentUser) {
+        // Si ha iniciado sesión lleva a serveList
         if (currentUser != null) {
             loadingDialog = new LoadingDialog();
             loadingDialog.show(getActivity().getSupportFragmentManager(), "loading");
@@ -75,6 +76,7 @@ public class LoginFragment extends Fragment {
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        // Permite hacer login al usuario
         super.onActivityCreated(savedInstanceState);
         ImageView conf = getActivity().findViewById(R.id.confLogin);
         conf.setColorFilter(Color.WHITE);
@@ -83,6 +85,7 @@ public class LoginFragment extends Fragment {
         });
         Button login = getActivity().findViewById(R.id.login_login);
         login.setOnClickListener(v -> {
+            // Se hace una petición para comprobar si los usuarios son correctos
             loadingDialog = new LoadingDialog();
             loadingDialog.show(getActivity().getSupportFragmentManager(), "loading");
             EditText emailUserField = getActivity().findViewById(R.id.emailLogin);
@@ -131,6 +134,7 @@ public class LoginFragment extends Fragment {
         });
         Button register = getActivity().findViewById(R.id.signup_login);
         register.setOnClickListener(new View.OnClickListener() {
+            // Lleva a la pantalla de registro
             @Override
             public void onClick(View v) {
                 Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_registerFragment);
@@ -162,6 +166,7 @@ public class LoginFragment extends Fragment {
     }
 
     public void signInFirebase(String email, String password) {
+        // Hace login en firebase
         FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
@@ -184,6 +189,7 @@ public class LoginFragment extends Fragment {
     }
 
     private void getUsername(String email) {
+        // Obtiene el nombre de usuario asociado a un email
         Data data = new Data.Builder()
                 .putString("action", "user")
                 .putString("script", "user.php")

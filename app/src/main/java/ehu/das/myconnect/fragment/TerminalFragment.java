@@ -18,12 +18,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import ehu.das.myconnect.R;
-import ehu.das.myconnect.dialog.LoadingDialog;
-import ehu.das.myconnect.dialog.PasswordListener;
+import ehu.das.myconnect.interfaces.PasswordListener;
 import ehu.das.myconnect.dialog.SudoPasswordDialog;
 import ehu.das.myconnect.service.SSHWorker;
 
@@ -48,12 +44,11 @@ public class TerminalFragment extends Fragment implements PasswordListener {
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        // Simula una terminal interactiva
         super.onActivityCreated(savedInstanceState);
-
         if (ServerListFragment.selectedServer.getPem() == 1) {
             keyPem = true;
         }
-
         TextView textView = getActivity().findViewById(R.id.userHost);
         textView.setText(ServerListFragment.selectedServer.getUser() + "@" + ServerListFragment.selectedServer.getHost() + ":");
         TextView terminalPath = getActivity().findViewById(R.id.terminalPath);
@@ -85,12 +80,14 @@ public class TerminalFragment extends Fragment implements PasswordListener {
 
     @Override
     public void passPassword(String password) {
+        // Obtiene la contraseña sudo y al añade al comando
         EditText cmdInput = getActivity().findViewById(R.id.cmdInput);
         execCmd("echo " + password + " | " + cmdInput.getText().toString().replace("sudo", "sudo -S "));
     }
 
     @SuppressLint("NewApi")
     public void execCmd(String cmd) {
+        // Ejecuta el comadno en el servidor
         Button runButton = getActivity().findViewById(R.id.runCmdButton);
         TextView terminalPath = getActivity().findViewById(R.id.terminalPath);
         String path = terminalPath.getText().toString();

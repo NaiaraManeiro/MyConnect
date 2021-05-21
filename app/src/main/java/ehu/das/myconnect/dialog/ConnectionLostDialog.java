@@ -26,6 +26,7 @@ public class ConnectionLostDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        // Dialogo para indicar la pérdida de conexión wifi
         super.onCreateDialog(savedInstanceState);
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
         alert.setTitle(getResources().getString(R.string.connection_lost));

@@ -1,5 +1,8 @@
 package ehu.das.myconnect.fragment;
 
+/**
+ * Objeto que representa un servidor y permite agrupar varios datos y pasar solo un objeto entre fragments
+ */
 public class Server {
     private String name;
     private final String user;

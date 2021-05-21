@@ -28,7 +28,8 @@ import ehu.das.myconnect.R;
 import ehu.das.myconnect.dialog.DialogPassword;
 import ehu.das.myconnect.dialog.DialogPem;
 import ehu.das.myconnect.dialog.LoadingDialog;
-import ehu.das.myconnect.dialog.OnDialogDismiss;
+import ehu.das.myconnect.interfaces.ILoading;
+import ehu.das.myconnect.interfaces.OnDialogDismiss;
 import ehu.das.myconnect.dialog.RemoveDialog;
 import ehu.das.myconnect.service.ServerWorker;
 
@@ -63,17 +64,15 @@ public class ServerInfoFragment extends Fragment implements OnDialogDismiss<Stri
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        // Muestra los datos del servidor
         super.onActivityCreated(savedInstanceState);
-
         conexion = getActivity().findViewById(R.id.checkBox);
         conexion.setText(getString(R.string.conexion));
         conexion.setVisibility(View.INVISIBLE);
-
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
         if (prefs.getBoolean("server_connnect", true)) {
             conexion.setChecked(true);
         }
-
         serveNameBox = getActivity().findViewById(R.id.nombreServidorInfo);
         serveNameBox.setEnabled(false);
         serverUserBox = getActivity().findViewById(R.id.usuarioInfo);
@@ -82,14 +81,11 @@ public class ServerInfoFragment extends Fragment implements OnDialogDismiss<Stri
         serverHostBox.setEnabled(false);
         serverPortBox = getActivity().findViewById(R.id.puertoInfo);
         serverPortBox.setEnabled(false);
-
         //Obtenemos los datos del servidor
         obtenerDatosServidor();
-
         ((AppCompatActivity) getActivity()).setSupportActionBar(getActivity().findViewById(R.id.labarra));
         edit = getActivity().findViewById(R.id.editarServidorInfo);
         edit.setVisibility(View.INVISIBLE);
-
         fragment = this;
         iLoading = this;
         edit.setOnClickListener(new View.OnClickListener() {
@@ -99,7 +95,6 @@ public class ServerInfoFragment extends Fragment implements OnDialogDismiss<Stri
                 String user = serverUserBox.getText().toString();
                 String host = serverHostBox.getText().toString();
                 int port = Integer.parseInt(serverPortBox.getText().toString());
-
                 //Validamos los datos
                 if (user.equals("")) {
                     Toast.makeText(getContext(), getString(R.string.usuarioVacio), Toast.LENGTH_SHORT).show();
@@ -173,6 +168,7 @@ public class ServerInfoFragment extends Fragment implements OnDialogDismiss<Stri
 
         Button back = getActivity().findViewById(R.id.volverInfo);
         back.setOnClickListener(new View.OnClickListener() {
+            // Volver atrás
             @Override
             public void onClick(View v) {
                 Navigation.findNavController(v).popBackStack();
@@ -189,6 +185,7 @@ public class ServerInfoFragment extends Fragment implements OnDialogDismiss<Stri
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        // Al seleccionar una opción del servidor
         int id = item.getItemId();
         if (id == R.id.eliminar) {
             RemoveDialog dialogoEliminar = new RemoveDialog();
@@ -220,6 +217,7 @@ public class ServerInfoFragment extends Fragment implements OnDialogDismiss<Stri
     }
 
     private void obtenerDatosServidor() {
+        // Poner los datos del servidor en la interfaz
         serveNameBox.setText(ServerListFragment.selectedServer.getName());
         serverUserBox.setText(ServerListFragment.selectedServer.getUser());
         serverHostBox.setText(ServerListFragment.selectedServer.getHost());
@@ -243,12 +241,14 @@ public class ServerInfoFragment extends Fragment implements OnDialogDismiss<Stri
     }
 
     public void startLoading() {
+        // Poner pantalla de carga
         loadingDialog = new LoadingDialog();
         loadingDialog.setCancelable(false);
         loadingDialog.show(getActivity().getSupportFragmentManager(), "loading");
     }
 
     public void stopLoading() {
+        // Quitar pantalla de carga
         loadingDialog.dismiss();
     }
 }

@@ -4,12 +4,9 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,15 +17,12 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import ehu.das.myconnect.R;
-import ehu.das.myconnect.fragment.FilesFragment;
-import ehu.das.myconnect.fragment.ILoading;
+import ehu.das.myconnect.interfaces.ILoading;
 import ehu.das.myconnect.fragment.Server;
 import ehu.das.myconnect.fragment.ServerListFragment;
 import ehu.das.myconnect.fragment.ServerManagmentFragment;
-import ehu.das.myconnect.list.ServerListReducedAdapter;
+import ehu.das.myconnect.interfaces.OnDialogOptionPressed;
 import ehu.das.myconnect.service.SSHConnectionWorker;
-import ehu.das.myconnect.service.SSHConnector;
-import ehu.das.myconnect.service.ServerWorker;
 
 public class DialogoAccessPassword extends DialogFragment {
 
@@ -43,6 +37,7 @@ public class DialogoAccessPassword extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        // Dialogo para acceder la servidor mediante contraseña
         super.onCreateDialog(savedInstanceState);
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
         alert.setTitle(getResources().getString(R.string.access_password));

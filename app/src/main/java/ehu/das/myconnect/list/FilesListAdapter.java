@@ -10,8 +10,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import ehu.das.myconnect.R;
-import ehu.das.myconnect.dialog.OnClickRecycleView;
+import ehu.das.myconnect.interfaces.OnClickRecycleView;
 
+/**
+ * Adaptador de la lista de archivos
+ */
 public class FilesListAdapter extends RecyclerView.Adapter<FileListElementViewHolder> {
 
     private final List<String> fileNames;

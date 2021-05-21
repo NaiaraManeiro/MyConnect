@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import ehu.das.myconnect.R;
+import ehu.das.myconnect.interfaces.OnDialogOptionPressed;
 
 public class AddScriptDialog extends DialogFragment {
 
@@ -22,6 +23,7 @@ public class AddScriptDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         super.onCreateDialog(savedInstanceState);
+        // Dialogo para añadir un script
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
         alertDialog.setTitle(getResources().getString(R.string.add_script));
         alertDialog.setIcon(R.drawable.add);

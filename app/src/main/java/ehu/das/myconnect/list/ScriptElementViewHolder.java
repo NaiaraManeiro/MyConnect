@@ -9,6 +9,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import ehu.das.myconnect.R;
 
+/**
+ * Cada elemento de la lista de scripts
+ */
 public class ScriptElementViewHolder extends RecyclerView.ViewHolder {
 
     public TextView scriptName;

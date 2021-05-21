@@ -18,7 +18,8 @@ import ehu.das.myconnect.R;
 import ehu.das.myconnect.dialog.DialogAccessPem;
 import ehu.das.myconnect.dialog.DialogoAccessPassword;
 import ehu.das.myconnect.dialog.LoadingDialog;
-import ehu.das.myconnect.dialog.OnDialogOptionPressed;
+import ehu.das.myconnect.interfaces.ILoading;
+import ehu.das.myconnect.interfaces.OnDialogOptionPressed;
 import ehu.das.myconnect.list.ServerListReducedAdapter;
 
 public class ServerManagmentFragment extends Fragment implements OnDialogOptionPressed<String>, ILoading {

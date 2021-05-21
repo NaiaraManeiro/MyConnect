@@ -20,6 +20,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+/**
+ * Esta clase realiza trabajos en segundo plano para las peticion HTTP
+ */
 public class ServerWorker extends Worker {
 
     private String result = "";

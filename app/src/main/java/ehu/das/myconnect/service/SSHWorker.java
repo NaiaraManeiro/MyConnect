@@ -13,6 +13,9 @@ import java.io.IOException;
 
 import ehu.das.myconnect.fragment.ServerListFragment;
 
+/**
+ * Ejecuta comandos mediante ssh en el servidor en segundo plano
+ */
 public class SSHWorker  extends Worker {
 
     private String exception = "";

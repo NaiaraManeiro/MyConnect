@@ -11,6 +11,10 @@ import org.w3c.dom.Text;
 
 import ehu.das.myconnect.R;
 
+
+/**
+ * Adaptador de la lista reducida de servidores del serverManagmentFragment
+ */
 public class ServerListReducedElementViewHolder extends RecyclerView.ViewHolder {
 
     public TextView nameShort;

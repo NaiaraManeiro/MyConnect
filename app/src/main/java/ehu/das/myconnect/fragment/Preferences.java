@@ -27,6 +27,9 @@ import ehu.das.myconnect.dialog.DeleteUserDialog;
 import ehu.das.myconnect.dialog.LoadingDialog;
 import ehu.das.myconnect.service.ServerWorker;
 
+/**
+ * Preferencias de la aplicación
+ */
 public class Preferences extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     @Override
@@ -36,6 +39,7 @@ public class Preferences extends PreferenceFragmentCompat implements SharedPrefe
         Preferences preferences = this;
         if (button != null) {
             button.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                // Al seleccionar eliminar cuenta
                 @Override
                 public boolean onPreferenceClick(Preference arg0) {
                     if (FirebaseAuth.getInstance().getCurrentUser() != null) {
@@ -55,6 +59,7 @@ public class Preferences extends PreferenceFragmentCompat implements SharedPrefe
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         // https://stackoverflow.com/questions/531427/how-do-i-display-the-current-value-of-an-android-preference-in-the-preference-su
         // Si se cambia el idioma reiniciar la aplicación con el idioma cambiado
+        // Al cambiar el idioma
         if (key.equals("language")) {
             String idioma = "";
             if (sharedPreferences.getString(key, "español").equals("Spanish") || sharedPreferences.getString(key, "Español").equals("Español")) {
@@ -91,6 +96,7 @@ public class Preferences extends PreferenceFragmentCompat implements SharedPrefe
     }
 
     public void deleteUser() {
+        // Petición para eliminar el usuario
         LoadingDialog loadingDialog = new LoadingDialog();
         loadingDialog.setCancelable(false);
         loadingDialog.show(getActivity().getSupportFragmentManager(), "loading");

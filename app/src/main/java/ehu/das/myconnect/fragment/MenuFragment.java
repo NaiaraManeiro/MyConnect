@@ -46,6 +46,7 @@ public class MenuFragment extends Fragment {
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        // ViewPager con los tres fragments de gestion de servidor
         super.onActivityCreated(savedInstanceState);
         mPager = getActivity().findViewById(R.id.viewPager);
         pagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
@@ -93,25 +94,5 @@ public class MenuFragment extends Fragment {
                 tabView.select();
             }
         });
-
-        /**View placeholder = getActivity().findViewById(R.id.menuFragmentPlaceholder);
-
-        TabLayout tabs = getActivity().findViewById(R.id.menuTabs);
-        tabs.getTabAt(0).setId(R.id.filesTab);
-        tabs.getTabAt(3).setId(R.id.terminalTab);
-        TabLayout.TabView filesTab = getActivity().findViewById(R.id.filesTab);
-        TabLayout.TabView terminalTab = getActivity().findViewById(R.id.terminalTab);
-        filesTab.setOnClickListener(v -> {
-            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.menuFragmentPlaceholder, new FilesFragment());
-            ft.addToBackStack(null);
-            ft.commit();
-        });
-        terminalTab.setOnClickListener(v -> {
-            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.menuFragmentPlaceholder, new TerminalFragment());
-            ft.addToBackStack(null);
-            ft.commit();
-        });*/
     }
 }

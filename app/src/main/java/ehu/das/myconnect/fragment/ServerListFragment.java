@@ -34,8 +34,9 @@ import ehu.das.myconnect.R;
 import ehu.das.myconnect.dialog.DialogAccessPem;
 import ehu.das.myconnect.dialog.DialogoAccessPassword;
 import ehu.das.myconnect.dialog.LoadingDialog;
-import ehu.das.myconnect.dialog.OnDialogDismiss;
-import ehu.das.myconnect.dialog.OnDialogOptionPressed;
+import ehu.das.myconnect.interfaces.ILoading;
+import ehu.das.myconnect.interfaces.OnDialogDismiss;
+import ehu.das.myconnect.interfaces.OnDialogOptionPressed;
 import ehu.das.myconnect.list.ServerListAdapter;
 import ehu.das.myconnect.service.SSHConnector;
 import ehu.das.myconnect.service.ServerWorker;
@@ -59,7 +60,7 @@ public class ServerListFragment extends Fragment implements OnDialogOptionPresse
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
+        // Obtiene los servidores y rellena la lista
         View v = inflater.inflate(R.layout.fragment_server_list, container, false);
         RecyclerView serverListRV = v.findViewById(R.id.serverListRV);
         serverListRV.bringToFront();
@@ -69,7 +70,6 @@ public class ServerListFragment extends Fragment implements OnDialogOptionPresse
                 .putString("action", "serverData")
                 .putString("userName", LoginFragment.username)
                 .build();
-
         OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(ServerWorker.class)
                 .setInputData(data)
                 .build();
@@ -116,13 +116,6 @@ public class ServerListFragment extends Fragment implements OnDialogOptionPresse
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        /**RecyclerView serverListRV = getActivity().findViewById(R.id.serverListRV);
-        List<Server> serverList = new ArrayList<Server>();
-        serverListRV.setAdapter(new ServerListAdapter(serverList));
-        LinearLayoutManager linearLayoutManager= new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false);scriptAddListener
-        serverListRV.setLayoutManager(linearLayoutManager);
-         */
-
         ImageView conf = getActivity().findViewById(R.id.confServerList);
         conf.setColorFilter(Color.WHITE);
         conf.setOnClickListener(v -> {
@@ -132,6 +125,7 @@ public class ServerListFragment extends Fragment implements OnDialogOptionPresse
         username.setText(LoginFragment.username);
         ImageView logout = getActivity().findViewById(R.id.logout);
         logout.setOnClickListener(v -> {
+            // Cierra sesión
             FirebaseAuth.getInstance().signOut();
             Navigation.findNavController(v).navigate(R.id.action_serverListFragment_to_loginFragment);
         });
@@ -139,7 +133,6 @@ public class ServerListFragment extends Fragment implements OnDialogOptionPresse
         //Obtenemos los datos de los servidores del usuario
         RecyclerView serverListRV = getActivity().findViewById(R.id.serverListRV);
         serverListRV.bringToFront();
-
         ImageView addServer = getActivity().findViewById(R.id.addServer);
         addServer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,6 +144,7 @@ public class ServerListFragment extends Fragment implements OnDialogOptionPresse
     }
 
     public void connectServer() {
+        // Muestra el dialogo correspondiente si se utiliza pem o contraseña
         if (selectedServer.getPem() == 0) {
             DialogoAccessPassword d = new DialogoAccessPassword();
             d.scriptAddListener = this;
@@ -172,6 +166,7 @@ public class ServerListFragment extends Fragment implements OnDialogOptionPresse
 
     @Override
     public void onYesPressed(String data1, String data2) {
+        // Muestra mensaje de error o exito
         if (data1.equals("fail")) {
             Toast.makeText(getContext(), getResources().getString(R.string.connectRefused), Toast.LENGTH_SHORT).show();
         } else {
@@ -190,6 +185,7 @@ public class ServerListFragment extends Fragment implements OnDialogOptionPresse
     }
 
     public void startLoading() {
+        // Muestra la pantalla de carga
         loadingDialog = new LoadingDialog();
         loadingDialog.setCancelable(false);
         loadingDialog.show(getActivity().getSupportFragmentManager(), "loading");
@@ -201,6 +197,7 @@ public class ServerListFragment extends Fragment implements OnDialogOptionPresse
 
     @Override
     public void onDismiss(String data) {
+        // Muestra mensaje de error
         if (data.equals("noPem")) {
             Toast.makeText(getContext(), getString(R.string.notPem), Toast.LENGTH_SHORT).show();
         } else if (data.equals("noFile")) {

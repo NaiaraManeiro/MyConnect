@@ -40,10 +40,11 @@ import ehu.das.myconnect.R;
 import ehu.das.myconnect.dialog.ConnectionLostDialog;
 import ehu.das.myconnect.dialog.LoadingDialog;
 import ehu.das.myconnect.dialog.RemoveDialog;
+import ehu.das.myconnect.interfaces.ILoading;
 import ehu.das.myconnect.service.SSHWorker;
 import lib.folderpicker.FolderPicker;
 
-public class FileInfoFragment extends Fragment implements ILoading{
+public class FileInfoFragment extends Fragment implements ILoading {
 
     private String path;
     private Button save;
@@ -71,34 +72,27 @@ public class FileInfoFragment extends Fragment implements ILoading{
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        // Fragment para ver el contenido de un archivo
         super.onActivityCreated(savedInstanceState);
-
         Bundle extras = this.getArguments();
         if (extras != null) {
             path = extras.getString("path");
             image = extras.getString("image");
         }
-
         if (ServerListFragment.selectedServer.getPem() == 1) {
             keyPem = true;
         }
-
         ((AppCompatActivity) getActivity()).setSupportActionBar(getActivity().findViewById(R.id.labarra));
-
         save = getActivity().findViewById(R.id.saveFileButton);
         save.setVisibility(View.INVISIBLE);
         file = getActivity().findViewById(R.id.fileText);
         file.setEnabled(false);
-
         TextView filePath = getActivity().findViewById(R.id.filePath);
         filePath.setText(path);
         filePath.setMovementMethod(new ScrollingMovementMethod());
-
         fileName = path.substring(path.lastIndexOf("/")+1);
-
         if (image.equals("")) {
             startLoading();
-
             //Mostramos el texto del archivo
             Data data = new Data.Builder()
                     .putString("action", "cat " + path)
@@ -197,9 +191,9 @@ public class FileInfoFragment extends Fragment implements ILoading{
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        // Realiza la acción seleccionada
         ILoading iLoading = this;
         int id = item.getItemId();
         if (id == R.id.eliminar) {
@@ -229,16 +223,13 @@ public class FileInfoFragment extends Fragment implements ILoading{
         return super.onOptionsItemSelected(item);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        // Obtiene el path en el que se va a descargar el fichero
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == COD_NUEVO_FICHERO && resultCode == Activity.RESULT_OK) {
             if (data != null) {
-
                 String folderLocation = data.getExtras().getString("data");
-
                 startLoading();
-
                 Data data1 = new Data.Builder()
                         .putString("action", "")
                         .putString("from", path)
@@ -265,7 +256,6 @@ public class FileInfoFragment extends Fragment implements ILoading{
                                     elCanal.enableLights(true);
                                     elManager.createNotificationChannel(elCanal);
                                 }
-
                                 elManager.notify(1, elBuilder.build());
                             }
                         });
@@ -276,12 +266,14 @@ public class FileInfoFragment extends Fragment implements ILoading{
     }
 
     public void startLoading() {
+        // Inicia la pantalla de carga
         loadingDialog = new LoadingDialog();
         loadingDialog.setCancelable(false);
         loadingDialog.show(getActivity().getSupportFragmentManager(), "loading");
     }
 
     public void stopLoading() {
+        // Quita la pantalla de carga
         loadingDialog.dismiss();
     }
 }

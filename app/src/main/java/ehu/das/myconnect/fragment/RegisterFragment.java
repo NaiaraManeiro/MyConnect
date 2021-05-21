@@ -55,6 +55,7 @@ public class RegisterFragment extends Fragment {
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        // Permite registrarse al usuario
         super.onActivityCreated(savedInstanceState);
         ImageView conf = getActivity().findViewById(R.id.confSignup);
         conf.setColorFilter(Color.WHITE);
@@ -78,6 +79,7 @@ public class RegisterFragment extends Fragment {
     }
 
     private void register() {
+        // Valida los campos y realiza la petición a la bd
         LoadingDialog loadingDialog = new LoadingDialog();
         ImageView conf = getActivity().findViewById(R.id.confSignup);
         conf.setColorFilter(Color.WHITE);
