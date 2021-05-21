@@ -98,13 +98,6 @@ public class TerminalFragment extends Fragment implements PasswordListener {
             cmd = cmd.replace("ls", "ls " + path);
         }
         if (cmd.contains("cd")) {
-            String[] cmds = cmd.trim().split(" ");
-            ArrayList<String> cmd_arraylist = new ArrayList<>(Arrays.asList(cmds));
-            int idx = cmd_arraylist.indexOf("cd");
-            if (cmds.length > 1 && !cmds[idx + 1].substring(0,1).equals("/")) {
-                cmds[idx + 1] = path + "/" + cmds[idx + 1];
-                cmd = String.join(" ", cmds);
-            }
             cmd += " & pwd";
         }
         TextView tv = getActivity().findViewById(R.id.resultArea);
@@ -127,8 +120,8 @@ public class TerminalFragment extends Fragment implements PasswordListener {
                         String error = status.getOutputData().getString("fail");
                         System.out.println(success);
                         if (finalCmd.contains("cd")) {
-                            String[] lines = success.split("\n");
-                            terminalPath.setText(":" + lines[lines.length-1]);
+                            String[] lines = success.split("&");
+                            terminalPath.setText(lines[lines.length - 1]);
                         }
                         else {
                             if (error.contains("[sudo] password")) {

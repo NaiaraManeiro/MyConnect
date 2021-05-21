@@ -43,7 +43,7 @@ public class CreateFolderFileDialog extends DialogFragment {
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View vw = inflater.inflate(R.layout.dialogo_new_folder_file, null);
-
+        builder.setTitle(getResources().getString(R.string.createFolderFile));
         Bundle bundle = getArguments();
         if (bundle != null) {
             path = bundle.getString("path");
