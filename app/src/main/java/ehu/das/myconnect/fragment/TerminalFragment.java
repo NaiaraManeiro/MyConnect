@@ -87,7 +87,7 @@ public class TerminalFragment extends Fragment implements PasswordListener {
 
     @SuppressLint("NewApi")
     public void execCmd(String cmd) {
-        // Ejecuta el comadno en el servidor
+        // Ejecuta el comando en el servidor
         Button runButton = getActivity().findViewById(R.id.runCmdButton);
         TextView terminalPath = getActivity().findViewById(R.id.terminalPath);
         String path = terminalPath.getText().toString();

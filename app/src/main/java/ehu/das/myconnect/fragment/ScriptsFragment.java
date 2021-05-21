@@ -278,7 +278,7 @@ public class ScriptsFragment extends Fragment implements OnDialogOptionPressed<S
         }
 
         PendingIntent intentEnNot = PendingIntent.getActivity(getContext(), 0, getActivity().getIntent(), 0);
-        elBuilder.setSmallIcon(R.drawable.add)
+        elBuilder.setSmallIcon(R.drawable.myconnect_icon)
                 .setContentText(result)
                 .setVibrate(new long[]{0, 1000, 500, 1000})
                 .setAutoCancel(true)
