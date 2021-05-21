@@ -1,5 +1,6 @@
 package ehu.das.myconnect.fragment;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.preference.PreferenceManager;
@@ -32,6 +34,7 @@ import ehu.das.myconnect.interfaces.ILoading;
 import ehu.das.myconnect.interfaces.OnDialogDismiss;
 import ehu.das.myconnect.dialog.RemoveDialog;
 import ehu.das.myconnect.service.ServerWorker;
+import lib.folderpicker.FolderPicker;
 
 public class ServerInfoFragment extends Fragment implements OnDialogDismiss<String>, ILoading {
 
@@ -83,7 +86,7 @@ public class ServerInfoFragment extends Fragment implements OnDialogDismiss<Stri
         serverPortBox.setEnabled(false);
         //Obtenemos los datos del servidor
         obtenerDatosServidor();
-        ((AppCompatActivity) getActivity()).setSupportActionBar(getActivity().findViewById(R.id.labarra));
+        //((AppCompatActivity) getActivity()).setSupportActionBar(getActivity().findViewById(R.id.labarra));
         edit = getActivity().findViewById(R.id.editarServidorInfo);
         edit.setVisibility(View.INVISIBLE);
         fragment = this;
@@ -166,6 +169,37 @@ public class ServerInfoFragment extends Fragment implements OnDialogDismiss<Stri
             }
         });
 
+        ActionMenuItemView iv = getActivity().findViewById(R.id.edit2);
+        iv.setOnClickListener(v -> {
+            if (edit.getVisibility() == View.VISIBLE) {
+                edit.setVisibility(View.INVISIBLE);
+                conexion.setVisibility(View.INVISIBLE);
+                serveNameBox.setEnabled(false);
+                serverUserBox.setEnabled(false);
+                serverHostBox.setEnabled(false);
+                serverPortBox.setEnabled(false);
+            } else {
+                edit.setVisibility(View.VISIBLE);
+                conexion.setVisibility(View.VISIBLE);
+                serveNameBox.setEnabled(true);
+                serverUserBox.setEnabled(true);
+                serverHostBox.setEnabled(true);
+                serverPortBox.setEnabled(true);
+            }
+        });
+
+        ActionMenuItemView iv1 = getActivity().findViewById(R.id.eliminar2);
+        iv1.setOnClickListener(v -> {
+            RemoveDialog dialogoEliminar = new RemoveDialog();
+            dialogoEliminar.loadingListener = iLoading;
+            Bundle bundle = new Bundle();
+            dialogoEliminar.view = getView();
+            bundle.putString("serverName", ServerListFragment.selectedServer.getName());
+            bundle.putString("where", "server");
+            dialogoEliminar.setArguments(bundle);
+            dialogoEliminar.show(getActivity().getSupportFragmentManager(), "eliminar");
+        });
+
         Button back = getActivity().findViewById(R.id.volverInfo);
         back.setOnClickListener(new View.OnClickListener() {
             // Volver atrás
@@ -177,7 +211,7 @@ public class ServerInfoFragment extends Fragment implements OnDialogDismiss<Stri
     }
 
     //Creación del menú
-    @Override
+  /*  @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.server_info_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
@@ -214,7 +248,7 @@ public class ServerInfoFragment extends Fragment implements OnDialogDismiss<Stri
             }
         }
         return super.onOptionsItemSelected(item);
-    }
+    } */
 
     private void obtenerDatosServidor() {
         // Poner los datos del servidor en la interfaz

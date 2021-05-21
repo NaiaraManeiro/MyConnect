@@ -12,13 +12,15 @@
         android:orientation="vertical">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/labarra"
+            android:id="@+id/toolbar11"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="wrap_content"
             android:background="@drawable/down_border_with_background"
-            android:elevation="4dp"
-            app:menu="@menu/global_menu"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            app:menu="@menu/server_info_menu"
             app:subtitleTextColor="#FFFFFF"
+            app:title="@string/app_name"
             app:titleTextColor="#FFFFFF" />
 
         <ScrollView
