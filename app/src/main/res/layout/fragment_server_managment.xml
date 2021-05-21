@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.ServerManagmentFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/down_border_with_background"
+                android:minHeight="?attr/actionBarSize"
+                android:theme="?attr/actionBarTheme"
+                app:menu="@menu/server_managment_menu"
+                app:subtitleTextColor="#FFFFFF"
+                app:title="@string/app_name"
+                app:titleTextColor="#FFFFFF" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/serverListRV"
+                android:layout_width="match_parent"
+                android:layout_height="79dp"
+                android:background="@drawable/down_border" />
+
+            <fragment
+                android:id="@+id/fragment2"
+                android:name="ehu.das.myconnect.fragment.MenuFragment"
+                android:layout_width="match_parent"
+                android:layout_height="596dp" />
+        </LinearLayout>
+    </ScrollView>
+
+</FrameLayout>

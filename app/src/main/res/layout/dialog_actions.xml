@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="40dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textView3"
+            style="@style/Texto"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border"
+            android:paddingLeft="5dp"
+            android:text="@string/path" />
+
+        <TextView
+            android:id="@+id/filePath"
+            style="@style/Texto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/up_down_right_border"
+            android:maxLines="1"
+            android:paddingLeft="5dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/fileTypeImagen"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <EditText
+                android:id="@+id/nameFileFolder"
+                style="@style/EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="@string/name"
+                android:inputType="textPersonName"
+                android:theme="@style/EditTextColor" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/completePath"
+            style="@style/Texto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/completePath" />
+
+        <EditText
+            android:id="@+id/pathToAction"
+            style="@style/EditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="@string/path"
+            android:inputType="textPersonName"
+            android:maxLines="1"
+            android:scrollHorizontally="true"
+            android:theme="@style/EditTextColor" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RadioGroup
+            android:id="@+id/actions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/editAction"
+                style="@style/Texto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/changeName" />
+
+            <RadioButton
+                android:id="@+id/moveAction"
+                style="@style/Texto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/moveTo" />
+
+            <RadioButton
+                android:id="@+id/copyAction"
+                style="@style/Texto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/copyTo" />
+
+            <RadioButton
+                android:id="@+id/deleteAction"
+                style="@style/Texto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/eliminar" />
+
+        </RadioGroup>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/actionButton"
+            style="@style/Buttons"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            app:strokeWidth="2dp" />
+
+    </LinearLayout>
+
+</LinearLayout>

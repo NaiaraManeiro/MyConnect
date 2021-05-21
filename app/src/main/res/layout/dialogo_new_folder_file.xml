@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/newName"
+            style="@style/EditText"
+            android:layout_width="299dp"
+            android:layout_height="47dp"
+            android:layout_marginTop="32dp"
+            android:ems="10"
+            android:hint="@string/name"
+            android:theme="@style/EditTextColor" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RadioGroup
+            android:id="@+id/options"
+            android:layout_width="412dp"
+            android:layout_height="78dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+
+            <RadioButton
+                android:id="@+id/radioButtonFolder"
+                style="@style/Texto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="60dp"
+                android:layout_marginRight="60dp"
+                android:text="@string/folder"
+                app:layout_constraintBottom_toTopOf="@+id/volverNewButton"
+                app:layout_constraintEnd_toStartOf="@+id/radioButtonFile"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/newName" />
+
+            <RadioButton
+                android:id="@+id/radioButtonFile"
+                style="@style/Texto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/archivo"
+                app:layout_constraintBottom_toTopOf="@+id/createButton"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/radioButtonFolder"
+                app:layout_constraintTop_toBottomOf="@+id/newName" />
+        </RadioGroup>
+    </LinearLayout>
+
+</LinearLayout>
