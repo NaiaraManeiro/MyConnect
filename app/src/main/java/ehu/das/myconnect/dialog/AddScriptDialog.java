@@ -24,6 +24,7 @@ public class AddScriptDialog extends DialogFragment {
         super.onCreateDialog(savedInstanceState);
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
         alertDialog.setTitle(getResources().getString(R.string.add_script));
+        alertDialog.setIcon(R.drawable.add);
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View addScriptLayout = inflater.inflate(R.layout.add_script_layout, null);
         EditText scriptName = addScriptLayout.findViewById(R.id.addScriptName);
