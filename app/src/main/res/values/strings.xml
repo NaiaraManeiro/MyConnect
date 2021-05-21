@@ -154,5 +154,5 @@
     <string name="scriptCmdInsert">Introduce un comando</string>
     <string name="insertUsername">Insert a username</string>
     <string name="invalidPort">El valor máximo aceptado es 65535.</string>
-    <string name="actionToDo">Seleccione la acción a realizar.</string>
+    <string name="actionToDo">Seleccione la acción a realizar</string>
 </resources>

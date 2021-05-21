@@ -129,13 +129,12 @@ public class FileInfoFragment extends Fragment implements ILoading {
 
             WorkManager.getInstance(getActivity().getApplicationContext()).enqueue(otwr);
         } else if (image.equals("image")) {
-            File image = new File(path);
+            file.setText(R.string.imageFile);
+            /*File image = new File(path);
             BitmapFactory.Options bmOptions = new BitmapFactory.Options();
             Bitmap bitmap = BitmapFactory.decodeFile(image.getAbsolutePath(),bmOptions);
             Drawable d = new BitmapDrawable(getResources(), bitmap);
-            file.setBackground(d);
-        } else {
-            file.setText(R.string.imageFile);
+            file.setBackground(d);*/
         }
 
         //Cuando se quieren guardar los cambios realizados en el archivo
