@@ -198,10 +198,8 @@ public class FilesFragment extends Fragment implements OnClickRecycleView, OnDia
         } if (fileType.equals("file")) {
             name = name.toLowerCase();
             String image = "";
-            if (name.contains("png") || name.contains("jpge") || name.contains("jpg")) {
+            if (name.contains("png") || name.contains("jpge") || name.contains("jpg") || name.contains("opus") || name.contains("mp4") || name.contains("mp3")) {
                 image = "image";
-            } else if (name.contains("opus") || name.contains("mp4") || name.contains("mp3")) {
-                image = "else";
             }
             Bundle bundle = new Bundle();
             bundle.putString("path", completePath);
