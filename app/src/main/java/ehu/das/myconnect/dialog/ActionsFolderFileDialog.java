@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -44,6 +43,7 @@ public class ActionsFolderFileDialog extends DialogFragment {
         super.onCreateDialog(savedInstanceState);
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+        alertDialog.setTitle(getString(R.string.actionToDo));
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View actionsLayout = inflater.inflate(R.layout.dialog_actions, null);

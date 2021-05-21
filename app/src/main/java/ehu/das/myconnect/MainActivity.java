@@ -4,13 +4,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.navigation.Navigation;
+import androidx.preference.PreferenceManager;
 
 import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -19,13 +22,18 @@ import android.util.Log;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.Locale;
+
 import ehu.das.myconnect.dialog.ConnectionLostDialog;
 import ehu.das.myconnect.dialog.DeleteUserDialog;
+import ehu.das.myconnect.fragment.Preferences;
 
  public class MainActivity extends AppCompatActivity  {
 
+     private static boolean estaIdioma = false;
+
      private ConnectionLostDialog connectionLostDialog;
-     private BroadcastReceiver networkChangeReceiver = new BroadcastReceiver() {
+     private final BroadcastReceiver networkChangeReceiver = new BroadcastReceiver() {
          @Override
          public void onReceive(Context context, Intent intent) {
              if (!isConnectedToInternet(context)) {
@@ -89,9 +97,31 @@ import ehu.das.myconnect.dialog.DeleteUserDialog;
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     05);
         }
-    }
-        // getSupportActionBar().hide();
 
+         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+         String idioma = "";
+
+         if (prefs.getString("language", "español").equals("Spanish") || prefs.getString("language", "Español").equals("Español")) {
+             idioma = "es";
+         } else {
+             idioma = "en";
+         }
+
+        if (!estaIdioma && !idioma.equals(Locale.getDefault().getLanguage())) {
+            estaIdioma = true;
+            Log.i("Idioma", prefs.getString("language", "abcd"));
+            Locale nuevaloc = new Locale(idioma);
+            Locale.setDefault(nuevaloc);
+            Configuration configuration = getBaseContext().getResources().getConfiguration();
+            configuration.setLocale(nuevaloc);
+            configuration.setLayoutDirection(nuevaloc);
+            Context context = getBaseContext().createConfigurationContext(configuration);
+            getResources().updateConfiguration(configuration, context.getResources().getDisplayMetrics());
+            finish();
+            Intent i = getIntent();
+            startActivity(i);
+        }
+    }
 
      @Override
      protected void onResume() {
