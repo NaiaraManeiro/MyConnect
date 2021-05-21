@@ -44,6 +44,7 @@ public class ActionsFolderFileDialog extends DialogFragment {
         super.onCreateDialog(savedInstanceState);
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+        alertDialog.setTitle(getString(R.string.actionToDo));
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View actionsLayout = inflater.inflate(R.layout.dialog_actions, null);

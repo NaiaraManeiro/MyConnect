@@ -129,4 +129,5 @@
     <string name="scriptNameInsert">Insert a script name</string>
     <string name="scriptCmdInsert">Insert a command</string>
     <string name="insertUsername">Insert a username</string>
+    <string name="actionToDo">Choose the action to make.</string>
 </resources>

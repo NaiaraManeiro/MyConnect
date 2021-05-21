@@ -35,7 +35,7 @@ public class Preferences extends PreferenceFragmentCompat implements SharedPrefe
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
         addPreferencesFromResource(R.xml.pref_config);
-        Preference button = (Preference) getPreferenceManager().findPreference("delete_account");
+        Preference button = getPreferenceManager().findPreference("delete_account");
         Preferences preferences = this;
         if (button != null) {
             button.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
